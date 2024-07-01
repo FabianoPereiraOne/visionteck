@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ClassType {
+  EBOOK
+  VIDEO
+}
+
+model Plan {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  validity    DateTime
+  price       Float
+  users       User[]
+
+  @@map("plans")
+}
+
+model User {
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  password   String
+  profession String
+  phone      String
+  status     Boolean    @default(true)
+  type       Role       @default(USER)
+  trains     Train[]    @relation("usersOnTrain")
+  planId     Int
+  plan       Plan       @relation(fields: [planId], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  progress   Progress[]
+
+  @@map("users")
+}
+
+model Coletion {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  themeColor  String
+  trains      Train[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coletions")
+}
+
+model Train {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  linkCover   String
+  users       User[]    @relation("usersOnTrain")
+  modules     Module[]
+  coletion    Coletion? @relation(fields: [coletionId], references: [id])
+  coletionId  Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("trains")
+}
+
+model Module {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  train     Train?   @relation(fields: [trainId], references: [id])
+  trainId   String?
+  classes   Class[]
+
+  @@map("modules")
+}
+
+model Class {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  linkClass   String
+  type        ClassType  @default(EBOOK)
+  module      Module?    @relation(fields: [moduleId], references: [id])
+  moduleId    String?
+  progress    Progress[]
+
+  @@map("classes")
+}
+
+model Progress {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  class       Class     @relation(fields: [classId], references: [id])
+  classId     String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("progress")
+}
