@@ -18,10 +18,9 @@ enum ClassType {
 }
 
 model Plan {
-  id          Int      @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   title       String
   description String
-  validity    DateTime
   price       Float
   users       User[]
 

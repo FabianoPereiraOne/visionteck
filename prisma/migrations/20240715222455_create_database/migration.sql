@@ -9,7 +9,6 @@ CREATE TABLE "plans" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "validity" TIMESTAMP(3) NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "plans_pkey" PRIMARY KEY ("id")
