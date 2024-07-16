@@ -6,7 +6,8 @@ export const createUser = async ({
   email,
   phone,
   password,
-  profession
+  profession,
+  verificationToken
 }: postUserProps) => {
   const result = await prismaClient.user.create({
     data: {
@@ -15,6 +16,7 @@ export const createUser = async ({
       phone,
       password,
       profession,
+      verificationToken,
       plan: {
         connect: {
           id: 1

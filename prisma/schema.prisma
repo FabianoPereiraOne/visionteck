@@ -28,20 +28,22 @@ model Plan {
 }
 
 model User {
-  id         String     @id @default(uuid())
-  name       String
-  email      String     @unique
-  password   String
-  profession String
-  phone      String
-  status     Boolean    @default(true)
-  type       Role       @default(USER)
-  trains     Train[]    @relation("usersOnTrain")
-  planId     Int
-  plan       Plan       @relation(fields: [planId], references: [id])
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  progress   Progress[]
+  id                String     @id @default(uuid())
+  name              String
+  email             String     @unique
+  password          String
+  profession        String
+  phone             String
+  status            Boolean    @default(true)
+  emailVerified     Boolean    @default(false)
+  verificationToken String?
+  type              Role       @default(USER)
+  trains            Train[]    @relation("usersOnTrain")
+  planId            Int
+  plan              Plan       @relation(fields: [planId], references: [id])
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  progress          Progress[]
 
   @@map("users")
 }

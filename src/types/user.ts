@@ -4,4 +4,5 @@ export type postUserProps = {
   phone: string
   profession: string
   password: string
+  verificationToken: string
 }
