@@ -1,27 +1,38 @@
-import { postUserProps } from "@/types/user"
+import { patchUserProps } from "@/types/user"
 import { prismaClient } from "../config"
 
-export const fetchCreateUser = async ({
+export const fetchUpdateUser = async ({
+  id,
   name,
-  email,
   phone,
-  password,
   profession,
-  verificationToken
-}: postUserProps) => {
-  const result = await prismaClient.user.create({
-    data: {
-      name,
-      email,
-      phone,
-      password,
-      profession,
-      verificationToken,
-      plan: {
+  password,
+  type,
+  status,
+  planID,
+  emailVerified
+}: patchUserProps) => {
+  const plan = planID
+    ? {
         connect: {
-          id: 1
+          id: planID
         }
       }
+    : undefined
+
+  const result = await prismaClient.user.update({
+    where: {
+      id
+    },
+    data: {
+      name,
+      phone,
+      profession,
+      password,
+      type,
+      status,
+      plan,
+      emailVerified
     },
     select: {
       id: true,

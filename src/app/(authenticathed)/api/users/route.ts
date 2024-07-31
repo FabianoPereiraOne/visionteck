@@ -1,7 +1,7 @@
 import { useGenerateHash } from "@/hooks/useGenerateHash"
 import { userSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
-import { createUser } from "@/services/prisma/users/create"
+import { fetchCreateUser } from "@/services/prisma/users/create"
 import { httpStatus } from "@/utils/httpStatus"
 import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
@@ -19,14 +19,13 @@ export async function POST(request: NextRequest) {
     password
   })
 
-  if (!success) {
+  if (!success)
     return NextResponse.json(
-      { error: error.errors },
+      { statusCode: httpStatus.invalidRequest.statusCode, error: error.errors },
       {
         status: httpStatus.invalidRequest.statusCode
       }
     )
-  }
 
   const verificationToken = nanoid()
 
@@ -40,19 +39,12 @@ export async function POST(request: NextRequest) {
       password: await useGenerateHash(password!)
     }
 
-    await createUser(user).catch(error => {
-      return NextResponse.json(
-        { error: error },
-        {
-          status: httpStatus.serverError.statusCode
-        }
-      )
-    })
+    const data = await fetchCreateUser(user)
 
-    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify?token=${verificationToken}`
+    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify-account?id=${data?.id}&token=${verificationToken}`
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: process.env.NEXT_PUBLIC_EMAIL_USER,
       to: email,
       subject: "Verificação de E-mail | Vision Teck",
       html: `Clique <a href="${verificationLink}">aqui</a> para verificar seu email.`
@@ -60,7 +52,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: "Conta criada! Acesse seu email para confirmar sua conta."
+        statusCode: httpStatus.create.statusCode,
+        data,
+        success: "Conta criada! Acesse seu email para confirmar sua conta."
       },
       {
         status: httpStatus.create.statusCode
@@ -68,15 +62,10 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     return NextResponse.json(
-      { error: error },
+      { statusCode: httpStatus.serverError.statusCode, error: error },
       {
         status: httpStatus.serverError.statusCode
       }
     )
   }
-}
-
-export async function PATCH(request: NextRequest) {
-  const { name, email, phone, planID, profession, type, status } =
-    await request.json()
 }

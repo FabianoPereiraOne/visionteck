@@ -1,6 +1,6 @@
 export const httpStatus = {
-  ok: { statusCode: 200, error: "OK" },
-  create: { statusCode: 201, error: "Criado" },
+  ok: { statusCode: 200, success: "OK" },
+  create: { statusCode: 201, success: "Criado" },
   notContent: { statusCode: 204, error: "Nenhum Conteúdo" },
   invalidRequest: { statusCode: 400, error: "Requisição Inválida" },
   unAuthorized: { statusCode: 401, error: "Não Autorizado" },
