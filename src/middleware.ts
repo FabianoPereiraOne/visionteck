@@ -11,12 +11,12 @@ export async function middleware(request: NextRequest) {
   const publicURL = new URL("/login", request.url)
   const privateURL = new URL("/dash", request.url)
   const decodedToken = await useReturnDecoded(token?.value)
-  const isLogged = await useVerifyToken(decodedToken)
+  const logged = await useVerifyToken(decodedToken)
 
-  if (isLogged && (isRouterLogin || isRouterRegister))
+  if (logged.status && (isRouterLogin || isRouterRegister))
     return NextResponse.redirect(privateURL)
 
-  if (!isLogged && isRouterDash) return NextResponse.redirect(publicURL)
+  if (!logged.status && isRouterDash) return NextResponse.redirect(publicURL)
 
   return NextResponse.next()
 }
