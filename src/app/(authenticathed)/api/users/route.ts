@@ -3,9 +3,9 @@ import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { userCreateSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
 import { fetchCreateUser } from "@/services/prisma/users/create"
-import { fetchGetUserByID } from "@/services/prisma/users/fetch"
+import { fetchUser } from "@/services/prisma/users/fetch"
 import { fetchGetAllUsers } from "@/services/prisma/users/fetchAll"
-import { fetchUpdateUser } from "@/services/prisma/users/update"
+import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
@@ -102,13 +102,13 @@ export async function PATCH(request: NextRequest) {
     )
 
   try {
-    const hasUser = await fetchGetUserByID(id)
+    const hasUser = await fetchUser({ id })
 
     if (!hasUser)
       return NextResponse.json(
         {
           statusCode: httpStatus.invalidRequest.statusCode,
-          error: "Usuário não registrado no sistema."
+          error: "Usuário não está registrado no sistema."
         },
         {
           status: httpStatus.invalidRequest.statusCode
@@ -127,7 +127,7 @@ export async function PATCH(request: NextRequest) {
       password
     }
 
-    const data = await fetchUpdateUser(user)
+    const data = await updateUser(user)
 
     return NextResponse.json(
       {
@@ -165,19 +165,19 @@ export async function DELETE(request: NextRequest) {
     )
 
   try {
-    const user = await fetchGetUserByID(id)
+    const user = await fetchUser({ id })
     if (!user)
       return NextResponse.json(
         {
           statusCode: httpStatus.invalidRequest.statusCode,
-          error: "Usuário não registrado no sistema."
+          error: "Usuário não está registrado no sistema."
         },
         {
           status: httpStatus.invalidRequest.statusCode
         }
       )
 
-    const data = await fetchUpdateUser({
+    const data = await updateUser({
       id,
       status: false,
       emailVerified: false

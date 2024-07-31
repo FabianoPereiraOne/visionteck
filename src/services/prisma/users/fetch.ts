@@ -1,6 +1,12 @@
 import { prismaClient } from "../config"
 
-export const fetchGetUserByID = async (id: string) => {
+export const fetchUser = async ({
+  id,
+  email
+}: {
+  id?: string
+  email?: string
+}) => {
   const result = await prismaClient.user.findFirst({
     select: {
       id: true,
@@ -9,6 +15,7 @@ export const fetchGetUserByID = async (id: string) => {
       phone: true,
       plan: true,
       profession: true,
+      password: true,
       type: true,
       status: true,
       createdAt: true,
@@ -19,7 +26,8 @@ export const fetchGetUserByID = async (id: string) => {
       verificationToken: true
     },
     where: {
-      id
+      id,
+      email
     }
   })
 

@@ -1,5 +1,5 @@
-import { fetchGetUserByID } from "@/services/prisma/users/fetch"
-import { fetchUpdateUser } from "@/services/prisma/users/update"
+import { fetchUser } from "@/services/prisma/users/fetch"
+import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -24,13 +24,13 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const user = await fetchGetUserByID(params.id!)
+    const user = await fetchUser({ id: params.id! })
 
     if (!user)
       return NextResponse.json(
         {
           statusCode: httpStatus.invalidRequest.statusCode,
-          error: "Usuário não registrado no sistema."
+          error: "Usuário não está registrado no sistema."
         },
         {
           status: httpStatus.invalidRequest.statusCode
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
         }
       )
 
-    const data = await fetchUpdateUser({
+    const data = await updateUser({
       id: params.id!,
       emailVerified: true
     })

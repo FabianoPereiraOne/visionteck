@@ -1,7 +1,7 @@
 import { patchUserProps } from "@/types/user"
 import { prismaClient } from "../config"
 
-export const fetchUpdateUser = async ({
+export const updateUser = async ({
   id,
   name,
   phone,
