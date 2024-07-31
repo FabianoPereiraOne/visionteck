@@ -1,13 +1,17 @@
-import { fetchCollaborator } from "../services/prisma/collaborators/fetch"
-import { verify } from "../utils/jwt"
+import { fetchGetUserByID } from "@/services/prisma/users/fetch"
+import { PayloadType } from "@/types/payload"
 
-export const useVerifyToken = async (token: string) => {
-  const decodedToken = await verify(token)
+export const useVerifyToken = async (decodedToken: PayloadType | null) => {
+  if (!decodedToken) return false
 
-  if (typeof decodedToken == "string")
-    throw new Error("Unable to validate token")
+  try {
+    const result = await fetchGetUserByID(decodedToken?.id)
 
-  const result = await fetchCollaborator(decodedToken.id)
+    if (!result) return false
 
-  return result
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
 }
