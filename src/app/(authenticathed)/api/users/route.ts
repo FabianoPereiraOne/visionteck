@@ -1,4 +1,5 @@
 import { useGenerateHash } from "@/hooks/useGenerateHash"
+import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { userCreateSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
 import { fetchCreateUser } from "@/services/prisma/users/create"
@@ -201,7 +202,21 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const token = new Headers(request.headers).get("Authorization")
+  const isAuthorized = await useVerifyAdmin(token)
+
+  if (!isAuthorized)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
   try {
     const data = await fetchGetAllUsers()
 

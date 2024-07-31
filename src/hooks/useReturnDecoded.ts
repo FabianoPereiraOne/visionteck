@@ -1,14 +1,12 @@
 import { PayloadType } from "@/types/payload"
 import { verify } from "@/utils/jwt"
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies"
 
 export const useReturnDecoded = async (
-  authorization: RequestCookie | undefined
+  authorization: string | null | undefined
 ) => {
   if (!authorization) return null
 
-  const token = authorization?.value ?? ""
-  const decoded = await verify(token)
+  const decoded = await verify(authorization)
 
   if (typeof decoded != "string")
     return {

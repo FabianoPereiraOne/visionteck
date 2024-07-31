@@ -1,5 +1,5 @@
 import { PayloadType } from "@/types/payload"
-import jose from "jose"
+import * as jose from "jose"
 
 const key = process.env.NEXT_PUBLIC_SECRET_KEY ?? ""
 const alg = process.env.NEXT_PUBLIC_ALGORITHM ?? ""
