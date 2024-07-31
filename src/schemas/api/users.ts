@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const userSchema = z.object({
+export const userCreateSchema = z.object({
   name: z.string().min(5, "Nome requer mínimo de 5 dígitos!"),
   email: z.string().email("Email não é válido!"),
   phone: z.string().min(6, "Telefone requer mínimo de 6 dígitos"),

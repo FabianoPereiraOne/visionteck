@@ -1,7 +1,10 @@
 import { useGenerateHash } from "@/hooks/useGenerateHash"
-import { userSchema } from "@/schemas/api/users"
+import { userCreateSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
 import { fetchCreateUser } from "@/services/prisma/users/create"
+import { fetchGetUserByID } from "@/services/prisma/users/fetch"
+import { fetchGetAllUsers } from "@/services/prisma/users/fetchAll"
+import { fetchUpdateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
@@ -11,7 +14,7 @@ export async function POST(request: NextRequest) {
   const headers = new Headers(request.headers)
   const password = headers.get("password")
 
-  const { success, error } = userSchema.safeParse({
+  const { success, error } = userCreateSchema.safeParse({
     name,
     email,
     phone,
@@ -19,13 +22,21 @@ export async function POST(request: NextRequest) {
     password
   })
 
-  if (!success)
+  if (!success) {
+    const listErrors = error?.errors ?? []
+    const errors = listErrors.map(error => {
+      return {
+        message: `${error.message}(${error.path[0]})`
+      }
+    })
+
     return NextResponse.json(
-      { statusCode: httpStatus.invalidRequest.statusCode, error: error.errors },
+      { statusCode: httpStatus.invalidRequest.statusCode, error: errors },
       {
         status: httpStatus.invalidRequest.statusCode
       }
     )
+  }
 
   const verificationToken = nanoid()
 
@@ -58,6 +69,150 @@ export async function POST(request: NextRequest) {
       },
       {
         status: httpStatus.create.statusCode
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  const { name, phone, profession, type, status, planID, emailVerified } =
+    await request.json()
+  const { searchParams } = await new URL(request.url)
+  const id = searchParams.get("id")
+  const headers = new Headers(request.headers)
+  const password = headers.get("password") ?? undefined
+
+  if (!id)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: httpStatus.invalidRequest.error
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
+  try {
+    const hasUser = await fetchGetUserByID(id)
+
+    if (!hasUser)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.invalidRequest.statusCode,
+          error: "Usuário não registrado no sistema."
+        },
+        {
+          status: httpStatus.invalidRequest.statusCode
+        }
+      )
+
+    const user = {
+      id,
+      name,
+      phone,
+      profession,
+      type,
+      status,
+      planID,
+      emailVerified,
+      password
+    }
+
+    const data = await fetchUpdateUser(user)
+
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        data,
+        success: "Conta atualizada com sucesso."
+      },
+      {
+        status: httpStatus.ok.statusCode
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const { searchParams } = await new URL(request.url)
+  const id = searchParams.get("id")
+
+  if (!id)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: httpStatus.invalidRequest.error
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
+  try {
+    const user = await fetchGetUserByID(id)
+    if (!user)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.invalidRequest.statusCode,
+          error: "Usuário não registrado no sistema."
+        },
+        {
+          status: httpStatus.invalidRequest.statusCode
+        }
+      )
+
+    const data = await fetchUpdateUser({
+      id,
+      status: false,
+      emailVerified: false
+    })
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        data,
+        success: "Conta deletada com sucesso."
+      },
+      {
+        status: httpStatus.ok.statusCode
+      }
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function GET() {
+  try {
+    const data = await fetchGetAllUsers()
+
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        data,
+        success: httpStatus.ok.success
+      },
+      {
+        status: httpStatus.ok.statusCode
       }
     )
   } catch (error) {
