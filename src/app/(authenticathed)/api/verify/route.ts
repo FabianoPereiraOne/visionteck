@@ -1,4 +1,4 @@
-import { fetchUser } from "@/services/prisma/users/fetch"
+import { getUser } from "@/services/prisma/users/get"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const user = await fetchUser({ id: params.id! })
+    const user = await getUser({ id: params.id! })
 
     if (!user)
       return NextResponse.json(

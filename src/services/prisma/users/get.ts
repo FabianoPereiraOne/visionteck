@@ -1,6 +1,6 @@
 import { prismaClient } from "../config"
 
-export const fetchUser = async ({
+export const getUser = async ({
   id,
   email
 }: {

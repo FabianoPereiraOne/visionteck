@@ -6,14 +6,18 @@ export const useReturnDecoded = async (
 ) => {
   if (!authorization) return null
 
-  const decoded = await verify(authorization)
+  try {
+    const decoded = await verify(authorization)
+    if (typeof decoded !== "string")
+      return {
+        id: decoded.payload?.id,
+        email: decoded.payload?.email,
+        type: decoded.payload?.type
+      } as PayloadType
 
-  if (typeof decoded != "string")
-    return {
-      id: decoded.payload?.id,
-      email: decoded.payload?.email,
-      type: decoded.payload?.type
-    } as PayloadType
-
-  return null
+    return null
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }

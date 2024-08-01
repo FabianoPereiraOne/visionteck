@@ -1,6 +1,6 @@
 import { prismaClient } from "../config"
 
-export const fetchGetAllUsers = async () => {
+export const getAllUsers = async () => {
   const result = await prismaClient.user.findMany({
     select: {
       id: true,

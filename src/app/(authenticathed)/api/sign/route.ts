@@ -1,7 +1,7 @@
 import { useCompareHash } from "@/hooks/useCompareHash"
 import { useGenerateToken } from "@/hooks/useGenerateToken"
 import { signSchema } from "@/schemas/api/sign"
-import { fetchUser } from "@/services/prisma/users/fetch"
+import { getUser } from "@/services/prisma/users/get"
 import { httpStatus } from "@/utils/httpStatus"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const user = await fetchUser({ email: data.email })
+    const user = await getUser({ email: data.email })
 
     if (!user)
       return NextResponse.json(

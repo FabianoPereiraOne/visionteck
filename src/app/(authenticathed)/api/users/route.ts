@@ -3,8 +3,8 @@ import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { userCreateSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
 import { fetchCreateUser } from "@/services/prisma/users/create"
-import { fetchUser } from "@/services/prisma/users/fetch"
-import { fetchGetAllUsers } from "@/services/prisma/users/fetchAll"
+import { getUser } from "@/services/prisma/users/get"
+import { getAllUsers } from "@/services/prisma/users/getAll"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { nanoid } from "nanoid"
@@ -102,7 +102,7 @@ export async function PATCH(request: NextRequest) {
     )
 
   try {
-    const hasUser = await fetchUser({ id })
+    const hasUser = await getUser({ id })
 
     if (!hasUser)
       return NextResponse.json(
@@ -165,7 +165,7 @@ export async function DELETE(request: NextRequest) {
     )
 
   try {
-    const user = await fetchUser({ id })
+    const user = await getUser({ id })
     if (!user)
       return NextResponse.json(
         {
@@ -218,7 +218,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const data = await fetchGetAllUsers()
+    const data = await getAllUsers()
 
     return NextResponse.json(
       {
