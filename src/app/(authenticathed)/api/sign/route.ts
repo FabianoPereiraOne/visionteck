@@ -35,11 +35,11 @@ export async function POST(request: NextRequest) {
     if (!user)
       return NextResponse.json(
         {
-          statusCode: httpStatus.invalidRequest.statusCode,
+          statusCode: httpStatus.notFound.statusCode,
           error: "Usuário não está registrado no sistema."
         },
         {
-          status: httpStatus.invalidRequest.statusCode
+          status: httpStatus.notFound.statusCode
         }
       )
 

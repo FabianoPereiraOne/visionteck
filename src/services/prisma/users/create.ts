@@ -1,3 +1,4 @@
+import { selectSchema } from "@/schemas/prisma/users"
 import { postUserProps } from "@/types/user"
 import { prismaClient } from "../config"
 
@@ -23,22 +24,7 @@ export const fetchCreateUser = async ({
         }
       }
     },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      phone: true,
-      plan: true,
-      profession: true,
-      type: true,
-      status: true,
-      createdAt: true,
-      updatedAt: true,
-      progress: true,
-      trains: true,
-      emailVerified: true,
-      verificationToken: true
-    }
+    select: selectSchema
   })
 
   return result

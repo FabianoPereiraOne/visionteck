@@ -1,4 +1,5 @@
-import { getUser } from "@/services/prisma/users/get"
+import { useParseNumber } from "@/hooks/useParseNumber"
+import { getCollection } from "@/services/prisma/colletions/get"
 import { paramsProps } from "@/types/general"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
@@ -13,7 +14,7 @@ export async function GET(
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
+        error: "ID da Coleção obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -21,13 +22,14 @@ export async function GET(
     )
 
   try {
-    const data = await getUser({ id })
+    console.log(useParseNumber(id))
+    const data = await getCollection({ id: useParseNumber(id) })
 
     if (!data)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
+          error: "Coleção não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
@@ -37,7 +39,7 @@ export async function GET(
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
-        data: { ...data, password: "********" },
+        data,
         success: httpStatus.ok.success
       },
       {

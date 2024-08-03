@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: httpStatus.invalidRequest.error
+        error: "ID e Token são obrigatórios."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -29,11 +29,11 @@ export async function GET(request: NextRequest) {
     if (!user)
       return NextResponse.json(
         {
-          statusCode: httpStatus.invalidRequest.statusCode,
+          statusCode: httpStatus.notFound.statusCode,
           error: "Usuário não está registrado no sistema."
         },
         {
-          status: httpStatus.invalidRequest.statusCode
+          status: httpStatus.notFound.statusCode
         }
       )
 

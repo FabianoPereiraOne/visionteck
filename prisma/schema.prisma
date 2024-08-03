@@ -48,7 +48,7 @@ model User {
   @@map("users")
 }
 
-model Coletion {
+model Collection {
   id          Int      @id @default(autoincrement())
   title       String
   description String
@@ -57,20 +57,20 @@ model Coletion {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@map("coletions")
+  @@map("collections")
 }
 
 model Train {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  linkCover   String
-  users       User[]    @relation("usersOnTrain")
-  modules     Module[]
-  coletion    Coletion? @relation(fields: [coletionId], references: [id])
-  coletionId  Int?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id           String      @id @default(uuid())
+  title        String
+  description  String
+  linkCover    String
+  users        User[]      @relation("usersOnTrain")
+  modules      Module[]
+  collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  collectionId Int?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   @@map("trains")
 }
@@ -79,7 +79,7 @@ model Module {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  train     Train?   @relation(fields: [trainId], references: [id])
+  train     Train?   @relation(fields: [trainId], references: [id], onDelete: SetNull)
   trainId   String?
   classes   Class[]
 
@@ -92,7 +92,7 @@ model Class {
   description String
   linkClass   String
   type        ClassType  @default(EBOOK)
-  module      Module?    @relation(fields: [moduleId], references: [id])
+  module      Module?    @relation(fields: [moduleId], references: [id], onDelete: SetNull)
   moduleId    String?
   progress    Progress[]
 
@@ -103,7 +103,7 @@ model Progress {
   id          Int       @id @default(autoincrement())
   user        User      @relation(fields: [userId], references: [id])
   userId      String
-  class       Class     @relation(fields: [classId], references: [id])
+  class       Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId     String
   completed   Boolean   @default(false)
   completedAt DateTime?

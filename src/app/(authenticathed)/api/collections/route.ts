@@ -1,26 +1,33 @@
-import { useGenerateHash } from "@/hooks/useGenerateHash"
+import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
-import { userCreateSchema } from "@/schemas/api/users"
-import transporter from "@/services/mail/config"
-import { fetchCreateUser } from "@/services/prisma/users/create"
-import { getUser } from "@/services/prisma/users/get"
-import { getAllUsers } from "@/services/prisma/users/getAll"
-import { updateUser } from "@/services/prisma/users/update"
+import { collectionsSchema } from "@/schemas/api/collections"
+import { createCollection } from "@/services/prisma/colletions/create"
+import { deleteCollection } from "@/services/prisma/colletions/delete"
+import { getCollection } from "@/services/prisma/colletions/get"
+import { getAllColetions } from "@/services/prisma/colletions/getAll"
+import { updateCollection } from "@/services/prisma/colletions/update"
 import { httpStatus } from "@/utils/httpStatus"
-import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const { name, email, phone, profession } = await request.json()
-  const headers = new Headers(request.headers)
-  const password = headers.get("password")
+  const { isAdmin } = await useVerifyAdmin(request)
+  if (!isAdmin)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
 
-  const { success, error } = userCreateSchema.safeParse({
-    name,
-    email,
-    phone,
-    profession,
-    password
+  const { title, description, themeColor } = await request.json()
+
+  const { success, error } = collectionsSchema.safeParse({
+    title,
+    description,
+    themeColor
   })
 
   if (!success) {
@@ -39,34 +46,20 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const verificationToken = nanoid()
-
   try {
-    const user = {
-      name,
-      email,
-      phone,
-      profession,
-      verificationToken,
-      password: await useGenerateHash(password!)
+    const collection = {
+      title,
+      description,
+      themeColor
     }
 
-    const data = await fetchCreateUser(user)
-
-    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify-account?id=${data?.id}&token=${verificationToken}`
-
-    await transporter.sendMail({
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: email,
-      subject: "Verificação de E-mail | Vision Teck",
-      html: `Clique <a href="${verificationLink}">aqui</a> para verificar seu email.`
-    })
+    const data = await createCollection(collection)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.create.statusCode,
         data,
-        success: "Conta criada! Acesse seu email para confirmar sua conta."
+        success: "Coleção criada com sucesso."
       },
       {
         status: httpStatus.create.statusCode
@@ -83,18 +76,27 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const { name, phone, profession, type, status, planID, emailVerified } =
-    await request.json()
-  const { searchParams } = await new URL(request.url)
-  const id = searchParams.get("id")
-  const headers = new Headers(request.headers)
-  const password = headers.get("password") ?? undefined
+  const { isAdmin } = await useVerifyAdmin(request)
+  if (!isAdmin)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
 
-  if (!id)
+  const { title, description, themeColor } = await request.json()
+  const { searchParams } = await new URL(request.url)
+  const idString = searchParams.get("id")
+
+  if (!idString)
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
+        error: "ID da Coleção obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -102,38 +104,29 @@ export async function PATCH(request: NextRequest) {
     )
 
   try {
-    const hasUser = await getUser({ id })
+    const id = useParseNumber(idString)
+    const hasCollection = await getCollection({ id })
 
-    if (!hasUser)
+    if (!hasCollection)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
+          error: "Coleção não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const user = {
-      id,
-      name,
-      phone,
-      profession,
-      type,
-      status,
-      planID,
-      emailVerified,
-      password
-    }
+    const collection = { id, title, description, themeColor }
 
-    const data = await updateUser(user)
+    const data = await updateCollection(collection)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
-        success: "Conta atualizada com sucesso."
+        success: httpStatus.ok.success
       },
       {
         status: httpStatus.ok.statusCode
@@ -141,7 +134,10 @@ export async function PATCH(request: NextRequest) {
     )
   } catch (error) {
     return NextResponse.json(
-      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        statusCode: httpStatus.serverError.statusCode,
+        error: httpStatus.serverError.error
+      },
       {
         status: httpStatus.serverError.statusCode
       }
@@ -150,14 +146,26 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { searchParams } = await new URL(request.url)
-  const id = searchParams.get("id")
+  const { isAdmin } = await useVerifyAdmin(request)
+  if (!isAdmin)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
 
-  if (!id)
+  const { searchParams } = await new URL(request.url)
+  const idString = searchParams.get("id")
+
+  if (!idString)
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
+        error: "ID da Coleção obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -165,28 +173,26 @@ export async function DELETE(request: NextRequest) {
     )
 
   try {
-    const user = await getUser({ id })
-    if (!user)
+    const id = useParseNumber(idString)
+    const hasCollection = await getCollection({ id })
+
+    if (!hasCollection)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
+          error: "Coleção não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const data = await updateUser({
-      id,
-      status: false,
-      emailVerified: false
-    })
+    const data = await deleteCollection({ id })
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
-        success: "Conta deletada com sucesso."
+        success: "Coleção deletada com sucesso."
       },
       {
         status: httpStatus.ok.statusCode
@@ -194,7 +200,10 @@ export async function DELETE(request: NextRequest) {
     )
   } catch (error) {
     return NextResponse.json(
-      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        statusCode: httpStatus.serverError.statusCode,
+        error: httpStatus.serverError.error
+      },
       {
         status: httpStatus.serverError.statusCode
       }
@@ -204,7 +213,6 @@ export async function DELETE(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   const { isAdmin } = await useVerifyAdmin(request)
-
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -217,7 +225,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const data = await getAllUsers()
+    const data = await getAllColetions()
 
     return NextResponse.json(
       {
