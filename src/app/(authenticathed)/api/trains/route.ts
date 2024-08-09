@@ -1,12 +1,11 @@
-import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { collectionsSchema } from "@/schemas/api/collections"
-import { createCollection } from "@/services/prisma/colletions/create"
-import { deleteCollection } from "@/services/prisma/colletions/delete"
-import { getCollection } from "@/services/prisma/colletions/get"
-import { getAllColetions } from "@/services/prisma/colletions/getAll"
-import { updateCollection } from "@/services/prisma/colletions/update"
+import { trainsSchema } from "@/schemas/api/trains"
+import { createTrain } from "@/services/prisma/trains/create"
+import { deleteTrains } from "@/services/prisma/trains/delete"
+import { getTrain } from "@/services/prisma/trains/get"
+import { getAllTrains } from "@/services/prisma/trains/getAll"
+import { updateTrain } from "@/services/prisma/trains/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -23,12 +22,13 @@ export async function POST(request: NextRequest) {
       }
     )
 
-  const { title, description, themeColor } = await request.json()
+  const { title, description, linkCover, collectionId } = await request.json()
 
-  const { success, error } = collectionsSchema.safeParse({
+  const { success, error } = trainsSchema.safeParse({
     title,
     description,
-    themeColor
+    linkCover,
+    collectionId
   })
 
   if (!success) {
@@ -48,19 +48,20 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const collection = {
+    const train = {
       title,
       description,
-      themeColor
+      linkCover,
+      collectionId
     }
 
-    const data = await createCollection(collection)
+    const data = await createTrain(train)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.create.statusCode,
         data,
-        success: "Coleção criada com sucesso."
+        success: "Trilha criada com sucesso."
       },
       {
         status: httpStatus.create.statusCode
@@ -89,15 +90,15 @@ export async function PATCH(request: NextRequest) {
       }
     )
 
-  const { title, description, themeColor } = await request.json()
+  const { title, description, linkCover, collectionId } = await request.json()
   const { searchParams } = await new URL(request.url)
-  const idString = searchParams.get("id")
+  const id = searchParams.get("id")
 
-  if (!idString)
+  if (!id)
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID da Coleção obrigatório."
+        error: "ID da Trilha obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -105,23 +106,22 @@ export async function PATCH(request: NextRequest) {
     )
 
   try {
-    const id = useParseNumber(idString)
-    const hasCollection = await getCollection({ id })
+    const hasTrain = await getTrain({ id })
 
-    if (!hasCollection)
+    if (!hasTrain)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Coleção não encontrada."
+          error: "Trilha não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const collection = { id, title, description, themeColor }
+    const train = { id, title, description, linkCover, collectionId }
 
-    const data = await updateCollection(collection)
+    const data = await updateTrain(train)
 
     return NextResponse.json(
       {
@@ -160,13 +160,13 @@ export async function DELETE(request: NextRequest) {
     )
 
   const { searchParams } = await new URL(request.url)
-  const idString = searchParams.get("id")
+  const id = searchParams.get("id")
 
-  if (!idString)
+  if (!id)
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID da Coleção obrigatório."
+        error: "ID da Trilha obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -174,26 +174,25 @@ export async function DELETE(request: NextRequest) {
     )
 
   try {
-    const id = useParseNumber(idString)
-    const hasCollection = await getCollection({ id })
+    const hasTrain = await getTrain({ id })
 
-    if (!hasCollection)
+    if (!hasTrain)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Coleção não encontrada."
+          error: "Trilha não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const data = await deleteCollection({ id })
+    const data = await deleteTrains({ id })
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
-        success: "Coleção deletada com sucesso."
+        success: "Trilha deletada com sucesso."
       },
       {
         status: httpStatus.ok.statusCode
@@ -226,7 +225,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const data = await getAllColetions()
+    const data = await getAllTrains()
 
     return NextResponse.json(
       {

@@ -1,6 +1,5 @@
-import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { getCollection } from "@/services/prisma/colletions/get"
+import { getTrain } from "@/services/prisma/trains/get"
 import { paramsProps } from "@/types/general"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
@@ -27,7 +26,7 @@ export async function GET(
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID da Coleção obrigatório."
+        error: "ID da Trilha obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -35,13 +34,13 @@ export async function GET(
     )
 
   try {
-    const data = await getCollection({ id: useParseNumber(id) })
+    const data = await getTrain({ id })
 
     if (!data)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Coleção não encontrada."
+          error: "Trilha não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode

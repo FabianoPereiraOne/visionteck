@@ -1,4 +1,4 @@
-export const selectSchema = {
+export const selectSchemaUser = {
   id: true,
   name: true,
   email: true,

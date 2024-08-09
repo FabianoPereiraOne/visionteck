@@ -1,5 +1,6 @@
 import { useGenerateHash } from "@/hooks/useGenerateHash"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
+import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { userCreateSchema } from "@/schemas/api/users"
 import transporter from "@/services/mail/config"
 import { fetchCreateUser } from "@/services/prisma/users/create"
@@ -83,6 +84,18 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const { isUser } = await useVerifyUser(request)
+  if (!isUser)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: "Faça login no sistema."
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
   const { name, phone, profession, type, status, planID, emailVerified } =
     await request.json()
   const { searchParams } = await new URL(request.url)
@@ -150,6 +163,18 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const { isUser } = await useVerifyUser(request)
+  if (!isUser)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: "Faça login no sistema."
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
   const { searchParams } = await new URL(request.url)
   const id = searchParams.get("id")
 

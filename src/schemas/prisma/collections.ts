@@ -1,4 +1,4 @@
-export const selectSchema = {
+export const selectSchemaCollection = {
   id: true,
   title: true,
   description: true,

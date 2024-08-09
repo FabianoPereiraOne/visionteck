@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/users"
+import { selectSchemaUser } from "@/schemas/prisma/users"
 import { prismaClient } from "../config"
 
 export const deleteUser = async ({ id }: { id: string }) => {
@@ -6,7 +6,7 @@ export const deleteUser = async ({ id }: { id: string }) => {
     where: {
       id
     },
-    select: selectSchema
+    select: selectSchemaUser
   })
 
   return result

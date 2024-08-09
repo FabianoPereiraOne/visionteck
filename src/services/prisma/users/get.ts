@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/users"
+import { selectSchemaUser } from "@/schemas/prisma/users"
 import { prismaClient } from "../config"
 
 export const getUser = async ({
@@ -9,7 +9,7 @@ export const getUser = async ({
   email?: string
 }) => {
   const result = await prismaClient.user.findFirst({
-    select: { ...selectSchema, password: true },
+    select: { ...selectSchemaUser, password: true },
     where: {
       id,
       email

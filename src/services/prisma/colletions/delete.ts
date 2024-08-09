@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/collections"
+import { selectSchemaCollection } from "@/schemas/prisma/collections"
 import { prismaClient } from "../config"
 
 export const deleteCollection = async ({ id }: { id: number }) => {
@@ -6,7 +6,7 @@ export const deleteCollection = async ({ id }: { id: number }) => {
     where: {
       id
     },
-    select: selectSchema
+    select: selectSchemaCollection
   })
 
   return result

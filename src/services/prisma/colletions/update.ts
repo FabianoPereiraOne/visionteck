@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/collections"
+import { selectSchemaCollection } from "@/schemas/prisma/collections"
 import { patchCollectionProps } from "@/types/collection"
 import { prismaClient } from "../config"
 
@@ -17,7 +17,7 @@ export const updateCollection = async ({
     where: {
       id
     },
-    select: selectSchema
+    select: selectSchemaCollection
   })
 
   return result

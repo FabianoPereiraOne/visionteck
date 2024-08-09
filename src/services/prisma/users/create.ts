@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/users"
+import { selectSchemaUser } from "@/schemas/prisma/users"
 import { postUserProps } from "@/types/user"
 import { prismaClient } from "../config"
 
@@ -24,7 +24,7 @@ export const fetchCreateUser = async ({
         }
       }
     },
-    select: selectSchema
+    select: selectSchemaUser
   })
 
   return result

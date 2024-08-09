@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/collections"
+import { selectSchemaCollection } from "@/schemas/prisma/collections"
 import { postCollectionProps } from "@/types/collection"
 import { prismaClient } from "../config"
 
@@ -13,7 +13,7 @@ export const createCollection = async ({
       description,
       themeColor
     },
-    select: selectSchema
+    select: selectSchemaCollection
   })
 
   return result

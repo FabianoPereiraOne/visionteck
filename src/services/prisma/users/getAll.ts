@@ -1,9 +1,9 @@
-import { selectSchema } from "@/schemas/prisma/users"
+import { selectSchemaUser } from "@/schemas/prisma/users"
 import { prismaClient } from "../config"
 
 export const getAllUsers = async () => {
   const result = await prismaClient.user.findMany({
-    select: selectSchema
+    select: selectSchemaUser
   })
 
   return result

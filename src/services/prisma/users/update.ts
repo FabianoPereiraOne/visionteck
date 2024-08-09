@@ -1,4 +1,4 @@
-import { selectSchema } from "@/schemas/prisma/users"
+import { selectSchemaUser } from "@/schemas/prisma/users"
 import { patchUserProps } from "@/types/user"
 import { prismaClient } from "../config"
 
@@ -35,7 +35,7 @@ export const updateUser = async ({
       plan,
       emailVerified
     },
-    select: selectSchema
+    select: selectSchemaUser
   })
 
   return result
