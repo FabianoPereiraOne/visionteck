@@ -1,7 +1,4 @@
-import useVerifyDate from "@/hooks/userVerifyDate"
 import { z } from "zod"
-
-const { isValidDate } = useVerifyDate()
 
 export const modulesSchema = z.object({
   title: z.string().min(1, "Titulo obrigatório."),

@@ -1,27 +1,36 @@
-import { useGenerateHash } from "@/hooks/useGenerateHash"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { userCreateSchema } from "@/schemas/api/users"
-import transporter from "@/services/mail/config"
-import { createUser } from "@/services/prisma/users/create"
-import { getUser } from "@/services/prisma/users/get"
-import { getAllUsers } from "@/services/prisma/users/getAll"
-import { updateUser } from "@/services/prisma/users/update"
+import { classesSchema } from "@/schemas/api/classes"
+import { createClass } from "@/services/prisma/classes/create"
+import { deleteClass } from "@/services/prisma/classes/delete"
+import { getClass } from "@/services/prisma/classes/get"
+import { getAllClasses } from "@/services/prisma/classes/getAll"
+import { updateClass } from "@/services/prisma/classes/update"
+import { getModule } from "@/services/prisma/modules/get"
 import { httpStatus } from "@/utils/httpStatus"
-import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const { name, email, phone, profession, type } = await request.json()
-  const headers = new Headers(request.headers)
-  const password = headers.get("password")
+  const { isAdmin } = await useVerifyAdmin(request)
+  if (!isAdmin)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
 
-  const { success, error } = userCreateSchema.safeParse({
-    name,
-    email,
-    phone,
-    profession,
-    password
+  const { title, description, linkClass, moduleId, type } = await request.json()
+
+  const { success, error } = classesSchema.safeParse({
+    title,
+    description,
+    linkClass,
+    moduleId,
+    type
   })
 
   if (!success) {
@@ -40,35 +49,35 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const verificationToken = nanoid()
-
   try {
-    const user = {
-      name,
-      email,
-      phone,
-      profession,
-      type,
-      verificationToken,
-      password: await useGenerateHash(password!)
+    const hasModule = await getModule({ id: moduleId })
+
+    if (!hasModule)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Módulo não encontrado."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
+    const classCreate = {
+      title,
+      description,
+      linkClass,
+      moduleId,
+      type
     }
 
-    const data = await createUser(user)
-
-    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify-account?id=${data?.id}&token=${verificationToken}`
-
-    await transporter.sendMail({
-      from: process.env.NEXT_PUBLIC_EMAIL_USER,
-      to: email,
-      subject: "Verificação de E-mail | Vision Teck",
-      html: `Clique <a href="${verificationLink}">aqui</a> para verificar seu email.`
-    })
+    const data = await createClass(classCreate)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.create.statusCode,
         data,
-        success: "Conta criada! Acesse seu email para confirmar sua conta."
+        success: "Aula criada com sucesso."
       },
       {
         status: httpStatus.create.statusCode
@@ -86,154 +95,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const { isUser } = await useVerifyUser(request)
-  if (!isUser)
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.unAuthorized.statusCode,
-        error: "Faça login no sistema."
-      },
-      {
-        status: httpStatus.unAuthorized.statusCode
-      }
-    )
-
-  const { name, phone, profession, type, status, planID, emailVerified } =
-    await request.json()
-  const { searchParams } = await new URL(request.url)
-  const id = searchParams.get("id")
-  const headers = new Headers(request.headers)
-  const password = headers.get("password") ?? undefined
-
-  if (!id)
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
-      },
-      {
-        status: httpStatus.invalidRequest.statusCode
-      }
-    )
-
-  try {
-    const hasUser = await getUser({ id })
-
-    if (!hasUser)
-      return NextResponse.json(
-        {
-          statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
-        },
-        {
-          status: httpStatus.notFound.statusCode
-        }
-      )
-
-    const user = {
-      id,
-      name,
-      phone,
-      profession,
-      type,
-      status,
-      planID,
-      emailVerified,
-      password
-    }
-
-    const data = await updateUser(user)
-
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.ok.statusCode,
-        data,
-        success: "Conta atualizada com sucesso."
-      },
-      {
-        status: httpStatus.ok.statusCode
-      }
-    )
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { statusCode: httpStatus.serverError.statusCode, error: error },
-      {
-        status: httpStatus.serverError.statusCode
-      }
-    )
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  const { isUser } = await useVerifyUser(request)
-  if (!isUser)
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.unAuthorized.statusCode,
-        error: "Faça login no sistema."
-      },
-      {
-        status: httpStatus.unAuthorized.statusCode
-      }
-    )
-
-  const { searchParams } = await new URL(request.url)
-  const id = searchParams.get("id")
-
-  if (!id)
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
-      },
-      {
-        status: httpStatus.invalidRequest.statusCode
-      }
-    )
-
-  try {
-    const user = await getUser({ id })
-    if (!user)
-      return NextResponse.json(
-        {
-          statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
-        },
-        {
-          status: httpStatus.notFound.statusCode
-        }
-      )
-
-    const data = await updateUser({
-      id,
-      status: false,
-      emailVerified: false
-    })
-    return NextResponse.json(
-      {
-        statusCode: httpStatus.ok.statusCode,
-        data,
-        success: "Conta deletada com sucesso."
-      },
-      {
-        status: httpStatus.ok.statusCode
-      }
-    )
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { statusCode: httpStatus.serverError.statusCode, error: error },
-      {
-        status: httpStatus.serverError.statusCode
-      }
-    )
-  }
-}
-
-export async function GET(request: NextRequest) {
   const { isAdmin } = await useVerifyAdmin(request)
-
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -245,8 +107,180 @@ export async function GET(request: NextRequest) {
       }
     )
 
+  const { title, description, linkClass, moduleId, type } = await request.json()
+  const { searchParams } = await new URL(request.url)
+  const id = searchParams.get("id")
+
+  if (!id)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: "ID da Aula obrigatório."
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
+  const { success } = type
+    ? classesSchema.shape.type.safeParse(type)
+    : { success: true }
+
+  if (!success)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: "Tipo de Aula não encontrado."
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
   try {
-    const data = await getAllUsers()
+    const hasClass = await getClass({ id })
+
+    if (!hasClass)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Aula não encontrada."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
+    const hasModule = moduleId ? await getModule({ id: moduleId }) : true
+
+    if (!hasModule)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Módulo não encontrado."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
+    const classUpdate = {
+      id,
+      title,
+      description,
+      linkClass,
+      moduleId,
+      type
+    }
+
+    const data = await updateClass(classUpdate)
+
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        data,
+        success: "Aula atualizada com sucesso."
+      },
+      {
+        status: httpStatus.ok.statusCode
+      }
+    )
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.serverError.statusCode,
+        error: httpStatus.serverError.error
+      },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const { isAdmin } = await useVerifyAdmin(request)
+  if (!isAdmin)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: httpStatus.unAuthorized.error
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
+  const { searchParams } = await new URL(request.url)
+  const id = searchParams.get("id")
+
+  if (!id)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: "ID da Aula obrigatório."
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
+  try {
+    const hasClass = await getClass({ id })
+
+    if (!hasClass)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Aula não encontrada."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
+    const data = await deleteClass({ id })
+
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        data,
+        success: "Aula deletada com sucesso."
+      },
+      {
+        status: httpStatus.ok.statusCode
+      }
+    )
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.serverError.statusCode,
+        error: httpStatus.serverError.error
+      },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const { isUser } = await useVerifyUser(request)
+  if (!isUser)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: "Faça login no sistema."
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
+  try {
+    const data = await getAllClasses()
 
     return NextResponse.json(
       {

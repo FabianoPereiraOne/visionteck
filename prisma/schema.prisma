@@ -17,6 +17,16 @@ enum ClassType {
   VIDEO
 }
 
+enum Bullet {
+  BUGS
+  SECURITY
+  OPTIMIZATIONS
+  UPDATES
+  FEATURES
+  COMPATIBILITY
+  INTEGRATIONS
+}
+
 model Plan {
   id          Int    @id @default(autoincrement())
   title       String
@@ -95,10 +105,12 @@ model Class {
   title       String
   description String
   linkClass   String
-  type        ClassType  @default(EBOOK)
+  type        ClassType  @default(VIDEO)
   module      Module?    @relation(fields: [moduleId], references: [id], onDelete: SetNull)
   moduleId    String?
   progress    Progress[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@map("classes")
 }
@@ -109,10 +121,23 @@ model Progress {
   userId      String
   class       Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId     String
+  rating      Int?
   completed   Boolean   @default(false)
   completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   @@map("progress")
+}
+
+model Note {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  bullet      Bullet   @default(FEATURES)
+  bulletColor String   @default("#086B0B")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notes")
 }

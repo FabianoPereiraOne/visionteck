@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client"
 import { z } from "zod"
 
 export const userCreateSchema = z.object({
@@ -5,5 +6,6 @@ export const userCreateSchema = z.object({
   email: z.string().email("Email não é válido!"),
   phone: z.string().min(6, "Telefone requer mínimo de 6 dígitos"),
   profession: z.string().min(4, "Profissão requer mínimo de 4 dígitos"),
-  password: z.string().min(8, "Senha requer mínimo de 8 dígitos")
+  password: z.string().min(8, "Senha requer mínimo de 8 dígitos"),
+  type: z.nativeEnum(Role).optional()
 })
