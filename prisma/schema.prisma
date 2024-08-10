@@ -76,12 +76,16 @@ model Train {
 }
 
 model Module {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  train     Train?   @relation(fields: [trainId], references: [id], onDelete: SetNull)
-  trainId   String?
-  classes   Class[]
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  lock        Boolean?  @default(false)
+  open        DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  train       Train?    @relation(fields: [trainId], references: [id], onDelete: SetNull)
+  trainId     String?
+  classes     Class[]
 
   @@map("modules")
 }

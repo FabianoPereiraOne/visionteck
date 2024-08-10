@@ -1,12 +1,12 @@
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { trainsSchema } from "@/schemas/api/trains"
-import { getCollection } from "@/services/prisma/colletions/get"
-import { createTrain } from "@/services/prisma/trains/create"
-import { deleteTrains } from "@/services/prisma/trains/delete"
+import { modulesSchema } from "@/schemas/api/modules"
+import { createModule } from "@/services/prisma/modules/create"
+import { deleteModule } from "@/services/prisma/modules/delete"
+import { getModule } from "@/services/prisma/modules/get"
+import { getAllModules } from "@/services/prisma/modules/getAll"
+import { updateModule } from "@/services/prisma/modules/update"
 import { getTrain } from "@/services/prisma/trains/get"
-import { getAllTrains } from "@/services/prisma/trains/getAll"
-import { updateTrain } from "@/services/prisma/trains/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -23,13 +23,14 @@ export async function POST(request: NextRequest) {
       }
     )
 
-  const { title, description, linkCover, collectionId } = await request.json()
+  const { title, description, trainId, lock, open } = await request.json()
 
-  const { success, error } = trainsSchema.safeParse({
+  const { success, error } = modulesSchema.safeParse({
     title,
     description,
-    linkCover,
-    collectionId
+    trainId,
+    lock,
+    open
   })
 
   if (!success) {
@@ -49,39 +50,43 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const hasCollection = await getCollection({ id: collectionId })
+    const hasTrain = await getTrain({ id: trainId })
 
-    if (!hasCollection)
+    if (!hasTrain)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Coleção não encontrada."
+          error: "Trilha não encontrada."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const train = {
+    const openISO = new Date(open).toISOString()
+
+    const module = {
       title,
       description,
-      linkCover,
-      collectionId
+      trainId,
+      lock,
+      open: openISO
     }
 
-    const data = await createTrain(train)
+    const data = await createModule(module)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.create.statusCode,
         data,
-        success: "Trilha criada com sucesso."
+        success: "Módulo criado com sucesso."
       },
       {
         status: httpStatus.create.statusCode
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { statusCode: httpStatus.serverError.statusCode, error: error },
       {
@@ -104,7 +109,7 @@ export async function PATCH(request: NextRequest) {
       }
     )
 
-  const { title, description, linkCover, collectionId } = await request.json()
+  const { title, description, open, lock, trainId } = await request.json()
   const { searchParams } = await new URL(request.url)
   const id = searchParams.get("id")
 
@@ -112,7 +117,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID da Trilha obrigatório."
+        error: "ID do módulo obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -120,7 +125,20 @@ export async function PATCH(request: NextRequest) {
     )
 
   try {
-    const hasTrain = await getTrain({ id })
+    const hasModule = await getModule({ id })
+
+    if (!hasModule)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Módulo não encontrado."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
+    const hasTrain = trainId ? await getTrain({ id: trainId }) : true
 
     if (!hasTrain)
       return NextResponse.json(
@@ -133,21 +151,36 @@ export async function PATCH(request: NextRequest) {
         }
       )
 
-    const train = { id, title, description, linkCover, collectionId }
+    const openConvert = !isNaN(Date.parse(open)) && new Date(open).toISOString()
 
-    const data = await updateTrain(train)
+    if (typeof open === "boolean" || (typeof open === "string" && !openConvert))
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.invalidRequest.statusCode,
+          error: "Formato da data de abertura inválida."
+        },
+        {
+          status: httpStatus.invalidRequest.statusCode
+        }
+      )
+
+    const openResult = openConvert ? openConvert : open
+    const module = { id, title, description, open: openResult, lock, trainId }
+
+    const data = await updateModule(module)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
-        success: httpStatus.ok.success
+        success: "Módulo atualizado com sucesso."
       },
       {
         status: httpStatus.ok.statusCode
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       {
         statusCode: httpStatus.serverError.statusCode,
@@ -180,7 +213,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID da Trilha obrigatório."
+        error: "ID do Módulo obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -188,31 +221,32 @@ export async function DELETE(request: NextRequest) {
     )
 
   try {
-    const hasTrain = await getTrain({ id })
+    const hasModule = await getModule({ id })
 
-    if (!hasTrain)
+    if (!hasModule)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Trilha não encontrada."
+          error: "Módulo não encontrado."
         },
         {
           status: httpStatus.notFound.statusCode
         }
       )
 
-    const data = await deleteTrains({ id })
+    const data = await deleteModule({ id })
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
-        success: "Trilha deletada com sucesso."
+        success: "Módulo deletado com sucesso."
       },
       {
         status: httpStatus.ok.statusCode
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       {
         statusCode: httpStatus.serverError.statusCode,
@@ -239,7 +273,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const data = await getAllTrains()
+    const data = await getAllModules()
 
     return NextResponse.json(
       {
@@ -252,6 +286,7 @@ export async function GET(request: NextRequest) {
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { statusCode: httpStatus.serverError.statusCode, error: error },
       {
