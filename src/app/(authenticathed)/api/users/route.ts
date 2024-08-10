@@ -12,7 +12,7 @@ import { nanoid } from "nanoid"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const { name, email, phone, profession, type } = await request.json()
+  const { name, email, phone, profession } = await request.json()
   const headers = new Headers(request.headers)
   const password = headers.get("password")
 
@@ -48,7 +48,6 @@ export async function POST(request: NextRequest) {
       email,
       phone,
       profession,
-      type,
       verificationToken,
       password: await useGenerateHash(password!)
     }
@@ -86,6 +85,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const { isAdmin } = await useVerifyAdmin(request)
   const { isUser } = await useVerifyUser(request)
   if (!isUser)
     return NextResponse.json(
@@ -116,6 +116,21 @@ export async function PATCH(request: NextRequest) {
       }
     )
 
+  const { success } = type
+    ? userCreateSchema.shape.type.safeParse(type)
+    : { success: true }
+
+  if (!success)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.invalidRequest.statusCode,
+        error: "Tipo de Usuário não encontrado."
+      },
+      {
+        status: httpStatus.invalidRequest.statusCode
+      }
+    )
+
   try {
     const hasUser = await getUser({ id })
 
@@ -135,7 +150,7 @@ export async function PATCH(request: NextRequest) {
       name,
       phone,
       profession,
-      type,
+      type: isAdmin ? type : hasUser?.type,
       status,
       planID,
       emailVerified,

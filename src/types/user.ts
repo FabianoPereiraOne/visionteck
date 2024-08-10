@@ -5,7 +5,6 @@ export type postUserProps = {
   email: string
   phone: string
   profession: string
-  type?: Role
   password: string
   verificationToken: string
 }
