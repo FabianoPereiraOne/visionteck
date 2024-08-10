@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { statusCode: httpStatus.serverError.statusCode, error: error },
       {

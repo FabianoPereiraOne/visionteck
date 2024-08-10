@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { statusCode: httpStatus.serverError.statusCode, error: error },
       {
@@ -148,6 +149,7 @@ export async function PATCH(request: NextRequest) {
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       {
         statusCode: httpStatus.serverError.statusCode,
@@ -213,6 +215,7 @@ export async function DELETE(request: NextRequest) {
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       {
         statusCode: httpStatus.serverError.statusCode,
@@ -252,6 +255,7 @@ export async function GET(request: NextRequest) {
       }
     )
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { statusCode: httpStatus.serverError.statusCode, error: error },
       {
