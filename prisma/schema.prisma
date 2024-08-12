@@ -117,12 +117,12 @@ model Class {
 
 model Progress {
   id          Int       @id @default(autoincrement())
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   class       Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
   classId     String
   rating      Int?
-  completed   Boolean   @default(false)
+  completed   Boolean
   completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
