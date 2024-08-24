@@ -1,5 +1,7 @@
 'use client'
+import { VisionContextProvider } from "@/context";
 import "@/styles/globals.scss";
+import { config } from "@/styles/toast";
 import { Inter } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
 
@@ -11,14 +13,11 @@ export default function RootLayout({
  children: React.ReactNode;
 }>) {
  return (
-  <section className={inter.className}>
-   {children}
-   <Toaster position="top-right" toastOptions={{
-    style: {
-     background: "#1A1A1E",
-     color: "#F9F9F9"
-    }
-   }} />
-  </section>
+  <VisionContextProvider>
+   <section className={inter.className}>
+    {children}
+    <Toaster position="top-right" toastOptions={config} />
+   </section>
+  </VisionContextProvider>
  );
 }
