@@ -1,4 +1,4 @@
-import { useGenerateHash } from "@/hooks/useGenerateHash"
+import useGenerateHash from "@/hooks/useGenerateHash"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { userCreateSchema } from "@/schemas/api/users"
@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   const { name, email, phone, profession } = await request.json()
+  const { hashGenerate } = useGenerateHash()
   const headers = new Headers(request.headers)
   const password = headers.get("password")
 
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
       phone,
       profession,
       verificationToken,
-      password: await useGenerateHash(password!)
+      password: await hashGenerate(password!)
     }
 
     const data = await createUser(user)

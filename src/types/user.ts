@@ -1,5 +1,12 @@
 import { Role } from "@prisma/client"
 
+export type UserProps = {
+  name: string
+  email: string
+  phone: string
+  profession: string
+}
+
 export type postUserProps = {
   name: string
   email: string
