@@ -1,5 +1,4 @@
 'use client'
-import { useVisionContext } from "@/context"
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { userCreateSchema } from "@/schemas/api/users"
 import { schemaAssets } from "@/schemas/others/assets"
@@ -14,7 +13,6 @@ import styled from "./style.module.scss"
 const Register = () => {
  const { displayErrors } = useDisplayErrors()
  const { handleSubmit, register, reset } = useForm()
- const { setUser } = useVisionContext()
  const [loading, setLoading] = useState(false)
 
  const handlerSubmitLogin = async (dataCreate: any) => {
@@ -43,7 +41,6 @@ const Register = () => {
    return toast.error("Ops! Erro ao criar conta.")
   }
 
-  setUser(response?.data)
   setLoading(false)
   reset()
   toast.success(response?.success)

@@ -1,3 +1,6 @@
+import { setCookie } from "@/app/actions"
+import { useGenerateToken } from "@/hooks/useGenerateToken"
+import { cookieAuth } from "@/schemas/others/config"
 import { getUser } from "@/services/prisma/users/get"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
@@ -55,13 +58,21 @@ export async function GET(request: NextRequest) {
       emailVerified: true
     })
 
+    const token = await useGenerateToken({
+      id: user.id,
+      email: user.email,
+      type: user.type
+    })
+
+    setCookie({ name: cookieAuth, value: token })
+
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data,
         success: "Conta verificada com sucesso."
       },
-      { status: 200 }
+      { status: 200, headers: { "Set-Cookie": `Authorization=${token}` } }
     )
   } catch (error) {
     console.error(error)
