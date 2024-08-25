@@ -6,7 +6,6 @@ export const createUser = async ({
   name,
   email,
   phone,
-  type,
   password,
   profession,
   verificationToken
@@ -16,7 +15,6 @@ export const createUser = async ({
       name,
       email,
       phone,
-      type,
       password,
       profession,
       verificationToken,

@@ -1,9 +1,8 @@
-import { setCookie } from "@/app/actions"
 import { useGenerateToken } from "@/hooks/useGenerateToken"
-import { cookieAuth } from "@/schemas/others/config"
 import { getUser } from "@/services/prisma/users/get"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
@@ -64,7 +63,7 @@ export async function GET(request: NextRequest) {
       type: user.type
     })
 
-    setCookie({ name: cookieAuth, value: token })
+    cookies().set("Authorization", token)
 
     return NextResponse.json(
       {
@@ -72,7 +71,7 @@ export async function GET(request: NextRequest) {
         data,
         success: "Conta verificada com sucesso."
       },
-      { status: 200, headers: { "Set-Cookie": `Authorization=${token}` } }
+      { status: 200 }
     )
   } catch (error) {
     console.error(error)

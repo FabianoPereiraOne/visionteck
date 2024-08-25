@@ -1,7 +1,7 @@
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { trainsSchema } from "@/schemas/api/trains"
-import { getCollection } from "@/services/prisma/colletions/get"
+import { getCollection } from "@/services/prisma/collections/get"
 import { createTrain } from "@/services/prisma/trains/create"
 import { deleteTrains } from "@/services/prisma/trains/delete"
 import { getTrain } from "@/services/prisma/trains/get"
