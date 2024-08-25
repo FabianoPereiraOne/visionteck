@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       type: user.type
     })
 
-    cookies().set("Authorization", token)
+    cookies().set("Authorization", token, { domain: "http://localhost:3000" })
 
     return NextResponse.json(
       {
