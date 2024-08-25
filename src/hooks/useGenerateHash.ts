@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt"
 
-export const useGenerateHash = async (password: string) => {
+const useGenerateHash = () => {
   const salt = 10
-  const hashGenerate = await bcrypt.hash(password, salt)
-  return hashGenerate
+  const hashGenerate = async (password: string) => {
+    return await bcrypt.hash(password, salt)
+  }
+  return { hashGenerate }
 }
+
+export default useGenerateHash

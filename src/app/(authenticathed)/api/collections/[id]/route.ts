@@ -1,6 +1,6 @@
 import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { getCollection } from "@/services/prisma/colletions/get"
+import { getCollection } from "@/services/prisma/collections/get"
 import { paramsProps } from "@/types/general"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"

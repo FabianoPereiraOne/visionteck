@@ -5,6 +5,7 @@ import { useVerifyToken } from "./hooks/useVerifyToken"
 
 export async function middleware(request: NextRequest) {
   const token = cookies().get("Authorization")
+  console.log(cookies().getAll())
   const isRouterDash = request.nextUrl.pathname.startsWith("/dash")
   const isRouterLogin = request.nextUrl.pathname.startsWith("/login")
   const isRouterRegister = request.nextUrl.pathname.startsWith("/register")

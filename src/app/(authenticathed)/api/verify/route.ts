@@ -1,6 +1,8 @@
+import { useGenerateToken } from "@/hooks/useGenerateToken"
 import { getUser } from "@/services/prisma/users/get"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
@@ -54,6 +56,14 @@ export async function GET(request: NextRequest) {
       id: params.id!,
       emailVerified: true
     })
+
+    const token = await useGenerateToken({
+      id: user.id,
+      email: user.email,
+      type: user.type
+    })
+
+    cookies().set("Authorization", token)
 
     return NextResponse.json(
       {
