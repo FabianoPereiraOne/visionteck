@@ -2,7 +2,7 @@
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { userCreateSchema } from "@/schemas/api/users"
 import { schemaAssets } from "@/schemas/others/assets"
-import { createAccount } from "@/utils/fetch/login/create"
+import { createAccount } from "@/utils/fetch/register/create"
 import Link from "next/link"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -15,7 +15,7 @@ const Register = () => {
  const { handleSubmit, register, reset } = useForm()
  const [loading, setLoading] = useState(false)
 
- const handlerSubmitLogin = async (dataCreate: any) => {
+ const handlerSubmitRegister = async (dataCreate: any) => {
   setLoading(true)
 
   const { success, data, error } = userCreateSchema.safeParse(dataCreate)
@@ -51,11 +51,11 @@ const Register = () => {
    <div className={styled.backgroundImage}></div>
    <aside className={styled.sidebar}>
     <figure className={styled.figure}>
-     <img src={schemaAssets.general.logo} alt="" />
+     <img src={schemaAssets.general.logo} alt="Logo" />
     </figure>
     <h1 className={styled.title}>Registro</h1>
     <p className={styled.paragraph}>Entre na nossa comunidade para ter acesso a benefícios exclusivos e inéditos.</p>
-    <form className={styled.form} onSubmit={handleSubmit(handlerSubmitLogin)}>
+    <form className={styled.form} onSubmit={handleSubmit(handlerSubmitRegister)}>
      <input type="text" maxLength={50} placeholder="Nome Completo" required {...register("name")} />
      <input type="email" maxLength={50} placeholder="Email" required {...register("email")} />
      <input type="tel" maxLength={50} placeholder="Celular" required {...register("phone")} />

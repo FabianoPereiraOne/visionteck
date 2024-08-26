@@ -14,9 +14,7 @@ const VerifyAccount = async ({ searchParams }: { searchParams: searchParamsProps
  if (!result.ok) return <ErrorComponent message={`Não foi possível verificar sua conta no momento!
   \n Por favor, tente novamente mais tarde.`} link={{ name: "Voltar para home", url: "/" }} />
 
- //redirect('/dash')
-
- return <h1>hello{result.headers} </h1>
+ redirect("/dash")
 }
 
 export default VerifyAccount

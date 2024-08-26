@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
   const { searchParams } = await new URL(request.url)
+
   const params = {
     id: searchParams.get("id"),
     token: searchParams.get("token")
@@ -52,18 +53,18 @@ export async function GET(request: NextRequest) {
         }
       )
 
-    const data = await updateUser({
-      id: params.id!,
-      emailVerified: true
-    })
-
     const token = await useGenerateToken({
       id: user.id,
       email: user.email,
       type: user.type
     })
 
-    cookies().set("Authorization", token, { domain: "http://localhost:3000" })
+    cookies().set("Authorization", token)
+
+    const data = await updateUser({
+      id: params.id!,
+      emailVerified: true
+    })
 
     return NextResponse.json(
       {
@@ -71,7 +72,9 @@ export async function GET(request: NextRequest) {
         data,
         success: "Conta verificada com sucesso."
       },
-      { status: 200 }
+      {
+        status: 200
+      }
     )
   } catch (error) {
     console.error(error)

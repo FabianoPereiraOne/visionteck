@@ -1,16 +1,10 @@
+import { InterFont, MetaDataPage } from "@/schemas/pages/config";
 import "@/styles/globals.scss";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { config } from "@/styles/toast";
+import { Metadata } from "next";
+import { Toaster } from 'react-hot-toast';
 
-const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"] });
-
-export const metadata: Metadata = {
- title: "Login | Vision Teck",
- description: "Vision Teck investindo em um mundo melhor",
- icons: {
-  icon: '/assets/favicon.png'
- }
-};
+export const metadata: Metadata = MetaDataPage({ title: "Login" })
 
 export default function RootLayout({
  children,
@@ -18,8 +12,9 @@ export default function RootLayout({
  children: React.ReactNode;
 }>) {
  return (
-  <html lang="pt-BR">
-   <body className={inter.className}>{children}</body>
-  </html>
+  <section className={InterFont.className}>
+   {children}
+   <Toaster position="top-right" toastOptions={config} />
+  </section>
  );
 }
