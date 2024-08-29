@@ -2,15 +2,15 @@ import { cookies } from "next/headers"
 
 const useSaveTokenAuth = () => {
   const saveTokenAuth = async (token: string) => {
-    const fiveDays = 24 * 60 * 60 * 1000
+    const oneDay = 24 * 60 * 60 * 1000
     const today = Date.now()
 
     await cookies().set({
-      name: "name",
-      value: "value",
-      httpOnly: false,
+      name: "Authorization",
+      value: token,
+      httpOnly: true,
       path: "/",
-      expires: today + fiveDays
+      expires: today + oneDay
     })
   }
 

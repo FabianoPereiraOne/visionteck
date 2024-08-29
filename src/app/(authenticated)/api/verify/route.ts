@@ -1,12 +1,13 @@
 import { useGenerateToken } from "@/hooks/useGenerateToken"
+import useSaveTokenAuth from "@/hooks/useSaveTokenAuth"
 import { getUser } from "@/services/prisma/users/get"
 import { updateUser } from "@/services/prisma/users/update"
 import { httpStatus } from "@/utils/httpStatus"
-import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
   const { searchParams } = await new URL(request.url)
+  const { saveTokenAuth } = useSaveTokenAuth()
 
   const params = {
     id: searchParams.get("id"),
@@ -59,7 +60,7 @@ export async function GET(request: NextRequest) {
       type: user.type
     })
 
-    cookies().set("Authorization", token)
+    saveTokenAuth(token)
 
     const data = await updateUser({
       id: params.id!,
