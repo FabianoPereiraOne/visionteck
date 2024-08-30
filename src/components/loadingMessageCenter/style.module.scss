@@ -7,6 +7,10 @@
  justify-content: center;
  background-color: var(--color-black-light);
 
+.contentChildren{
+ margin: 36px 0 0 0;
+}
+
  & img{
   max-width: 500px;
   width: 80%;
@@ -21,6 +25,7 @@
   width: 80%;
   text-align: center;
   line-height: 1.2em;
+  white-space: pre-line;
 
 
   @media screen and (min-width: 768px){

@@ -5,9 +5,7 @@ export const verifyAccount = async ({
   id: string
   token: string
 }) => {
-  const baseURl = process.env.NEXT_PUBLIC_URL ?? ""
-
-  const result = await fetch(`${baseURl}/api/verify?id=${id}&token=${token}`, {
+  const result = await fetch(`/api/verify?id=${id}&token=${token}`, {
     method: "GET"
   })
 

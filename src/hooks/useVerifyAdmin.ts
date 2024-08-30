@@ -8,9 +8,10 @@ export const useVerifyAdmin = async (request: NextRequest) => {
   if (!token) return { isAdmin: false }
 
   const decodedToken = await useReturnDecoded(token)
-  const logged = await useVerifyToken(decodedToken)
+  const logged: any = await useVerifyToken(decodedToken)
 
-  if (!logged.status || logged.data?.type !== "ADMIN") return { isAdmin: false }
+  if (!logged?.status || logged?.data?.type !== "ADMIN")
+    return { isAdmin: false }
 
   return { isAdmin: true }
 }

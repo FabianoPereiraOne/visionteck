@@ -1,11 +1,10 @@
-'use client'
-import { VisionContextProvider } from "@/context";
+import { InterFont, MetaDataPage } from "@/schemas/pages/config";
 import "@/styles/globals.scss";
 import { config } from "@/styles/toast";
-import { Inter } from "next/font/google";
+import { Metadata } from "next";
 import { Toaster } from 'react-hot-toast';
 
-const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"] });
+export const metadata: Metadata = MetaDataPage({ title: "Registro" })
 
 export default function RootLayout({
  children,
@@ -13,11 +12,9 @@ export default function RootLayout({
  children: React.ReactNode;
 }>) {
  return (
-  <VisionContextProvider>
-   <section className={inter.className}>
-    {children}
-    <Toaster position="top-right" toastOptions={config} />
-   </section>
-  </VisionContextProvider>
+  <section className={InterFont.className}>
+   {children}
+   <Toaster position="top-right" toastOptions={config} />
+  </section>
  );
 }

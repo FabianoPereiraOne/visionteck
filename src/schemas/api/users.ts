@@ -9,3 +9,8 @@ export const userCreateSchema = z.object({
   password: z.string().min(8, "Senha obrigatória."),
   type: z.nativeEnum(Role).optional()
 })
+
+export const schemaLogin = userCreateSchema.pick({
+  email: true,
+  password: true
+})
