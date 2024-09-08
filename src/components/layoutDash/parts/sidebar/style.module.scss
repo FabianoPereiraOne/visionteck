@@ -1,89 +1,11 @@
 .aside{
  position: relative;
- left: 0;
- bottom: 0;
  height: calc(100vh - 70px);
  width: 100%;
  padding: 36px 20px;
  background-color: var(--color-black-dark);
  border-right: 1px solid var(--color-gray-light);
- // display: flex;
- // flex-direction: column;
- // justify-content: space-between;
  display: none;
-
- & .header{
-  & .contentSearch{
-   width: 100%;
-   height: auto;
-   display: flex;
-   align-items: center;
-   justify-content: flex-start;
-   position: relative;
- 
-   & svg{
-    color: var(--color-white-normal);
-    font-size: var(--size16);
-    font-weight: 400;
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translate(0,-50%);
-   }
- 
-   & input{
-    width: 100%;
-    height: auto;
-    background: var(--color-black-light);
-    border: none;
-    color: var(--color-white-normal);
-    font-size: var(--size16);
-    font-weight: 400;
-    padding: 12px 12px 12px 36px;
-    border-radius: 3px;
-    outline: 1px solid var(--color-gray-light);
- 
-    &:active,&:focus{
-     outline: 1px solid var(--color-orange-normal);
-    }
-   }
-  }
- 
-  & .navigation{
-   width: 100%;
-   height: auto;
-   display: flex;
-   flex-direction: column;
-   align-items: flex-start;
-   justify-content: flex-start;
-   margin: 36px 0 0 0;
-   gap: 10px;
- 
-   & a{
-    width: 100%;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    font-size: var(--size20);
-    color: var(--color-white-normal);
-    font-weight: 400;
-    text-decoration: none;
-    padding: 0 10px;
-    transition: .3s;
-    border-radius: 3px;
-
-    &:hover,&:active{
-     background: var(--gradient-primary);
-    }
-   }
-
-   .active{
-    background: var(--gradient-primary);
-   }
-  }
- }
 
  & .footer{
   height: 40px;
@@ -121,5 +43,18 @@
   display: flex;
  flex-direction: column;
  justify-content: space-between;
+ }
+}
+
+.active{
+ position: fixed;
+ left: 0;
+ bottom: 0;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+
+ @media screen and (min-width: 1024px){
+  display: none;
  }
 }

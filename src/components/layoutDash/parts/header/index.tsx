@@ -1,15 +1,14 @@
+import ButtonMenu from "@/components/ButtonMenu"
 import { schemaAssets } from "@/schemas/others/assets"
 import Link from "next/link"
-import { FiGift, FiMenu, FiUser } from "react-icons/fi"
+import { FiGift, FiUser } from "react-icons/fi"
 import styled from "./style.module.scss"
 
 const HeaderPart = () => {
  return (
   <header className={styled.header}>
    <nav className={styled.navMenu}>
-    <button className={styled.btnMenu}>
-     <FiMenu />
-    </button>
+    <ButtonMenu />
 
     <figure className={styled.logo}>
      <Link href="/dash">

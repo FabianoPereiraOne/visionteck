@@ -1,24 +1,19 @@
-import Link from "next/link"
+'use client'
+import { useVisionContext } from "@/context"
 import { memo } from "react"
-import { FiCalendar, FiGrid, FiHeadphones, FiHome, FiLogOut, FiSearch, FiSettings } from "react-icons/fi"
+import { FiLogOut } from "react-icons/fi"
+import ContentSearch from "./parts/contentSearch"
+import NavLinks from "./parts/navLinks"
 import styled from "./style.module.scss"
 
 const SidebarPart = () => {
+ const { openMenu } = useVisionContext()
 
  return (
-  <aside className={styled.aside}>
-   <header className={styled.header}>
-    <article className={styled.contentSearch}>
-     <FiSearch />
-     <input placeholder="Busque por trilhas e ebooks" />
-    </article>
-    <nav className={styled.navigation}>
-     <Link href="/dash"><FiHome />Inicio</Link>
-     <Link href="/trains"><FiGrid />Trilhas</Link>
-     <Link href="/meeting"><FiCalendar />Consultoria</Link>
-     <Link href="/help"><FiHeadphones />Suporte</Link>
-     <Link href="/settings"><FiSettings />Configurações</Link>
-    </nav>
+  <aside className={`${styled.aside} ${openMenu && styled.active}`}>
+   <header>
+    <ContentSearch />
+    <NavLinks />
    </header>
    <footer className={styled.footer}>
     <button className={styled.btnLogout}>
