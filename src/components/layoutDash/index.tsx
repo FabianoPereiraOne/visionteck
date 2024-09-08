@@ -1,3 +1,5 @@
+'use client'
+import { VisionContextProvider } from "@/context"
 import { memo, ReactNode } from "react"
 import BodyPart from "./parts/body"
 import HeaderPart from "./parts/header"
@@ -7,7 +9,7 @@ import SidebarPart from "./parts/sidebar"
 const LayoutDash = ({ children }: { children: ReactNode }) => {
 
  return (
-  <>
+  <VisionContextProvider>
    <HeaderPart />
    <MainContainer>
     <SidebarPart />
@@ -15,7 +17,7 @@ const LayoutDash = ({ children }: { children: ReactNode }) => {
      {children}
     </BodyPart>
    </MainContainer>
-  </>
+  </VisionContextProvider>
  )
 }
 
