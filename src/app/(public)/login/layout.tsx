@@ -1,3 +1,4 @@
+import { VisionContextProvider } from "@/context";
 import { InterFont, MetaDataPage } from "@/schemas/pages/config";
 import "@/styles/globals.scss";
 import { config } from "@/styles/toast";
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
  return (
   <section className={InterFont.className}>
-   {children}
+   <VisionContextProvider>
+    {children}
+   </VisionContextProvider>
    <Toaster position="top-right" toastOptions={config} />
   </section>
  );

@@ -1,4 +1,5 @@
 "use client"
+import { useVisionContext } from "@/context";
 import useDisplayErrors from "@/hooks/useDisplayErrors";
 import { schemaLogin } from "@/schemas/api/users";
 import { schemaAssets } from "@/schemas/others/assets";
@@ -14,6 +15,7 @@ import styled from "./style.module.scss";
 const Login = () => {
  const { handleSubmit, register, reset } = useForm()
  const { displayErrors } = useDisplayErrors()
+ const { setUser } = useVisionContext()
  const router = useRouter()
  const [loading, setLoading] = useState(false)
 
@@ -33,10 +35,11 @@ const Login = () => {
   if (!result.ok) {
    console.error(response?.error)
    setLoading(false)
-   return toast.error("Ops! Erro efetuar login.")
+   return toast.error(response?.error)
   }
 
   setLoading(false)
+  setUser(response?.data)
   reset()
   toast.success(response?.success)
   setTimeout(() => router.push("/dash"), 3000)
