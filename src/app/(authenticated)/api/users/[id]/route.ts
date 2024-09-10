@@ -1,8 +1,14 @@
 import { getUser } from "@/services/prisma/users/get"
+import { paramsProps } from "@/types/general"
 import { httpStatus } from "@/utils/httpStatus"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export async function GET({ id }: { id: string }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: paramsProps }
+) {
+  const { id } = params
+
   if (!id)
     return NextResponse.json(
       {
