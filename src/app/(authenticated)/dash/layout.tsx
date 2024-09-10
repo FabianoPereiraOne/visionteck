@@ -1,7 +1,10 @@
 import LayoutDash from "@/components/layoutDash";
+import { VisionContextProvider } from "@/context";
 import "@/styles/globals.scss";
+import { config } from "@/styles/toast";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import styled from "./style.module.scss";
 
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"] });
@@ -22,9 +25,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.className} ${styled.contentLayout}`}>
-        <LayoutDash>
-          {children}
-        </LayoutDash>
+        <VisionContextProvider>
+          <LayoutDash>
+            {children}
+            <Toaster position="top-right" toastOptions={config} />
+          </LayoutDash>
+        </VisionContextProvider>
       </body>
     </html>
   );
