@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const user = await getUser({ email: data.email })
+    const user = await getUser({ email: data.email.toLowerCase() })
 
     if (!user)
       return NextResponse.json(
@@ -55,6 +55,19 @@ export async function POST(request: NextRequest) {
           status: httpStatus.invalidRequest.statusCode
         }
       )
+
+    const isVerify = user.emailVerified
+    if (!isVerify) {
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.unAuthorized.statusCode,
+          error: "Acesse seu email para confirmar sua conta."
+        },
+        {
+          status: httpStatus.unAuthorized.statusCode
+        }
+      )
+    }
 
     const token = await useGenerateToken({
       id: user.id,

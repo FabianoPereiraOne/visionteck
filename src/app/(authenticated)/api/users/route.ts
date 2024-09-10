@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
   try {
     const user = {
       name,
-      email,
+      email: email?.toLowerCase(),
       phone,
       profession,
       verificationToken,
