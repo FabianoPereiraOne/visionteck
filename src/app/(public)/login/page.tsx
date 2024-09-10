@@ -1,8 +1,8 @@
 "use client"
-import { useVisionContext } from "@/context";
 import useDisplayErrors from "@/hooks/useDisplayErrors";
 import { schemaLogin } from "@/schemas/api/users";
 import { schemaAssets } from "@/schemas/others/assets";
+import { userSession } from "@/schemas/others/config";
 import { fetchLogin } from "@/utils/fetch/login/post";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,6 @@ import styled from "./style.module.scss";
 const Login = () => {
  const { handleSubmit, register, reset } = useForm()
  const { displayErrors } = useDisplayErrors()
- const { setUser } = useVisionContext()
  const router = useRouter()
  const [loading, setLoading] = useState(false)
 
@@ -37,6 +36,8 @@ const Login = () => {
    setLoading(false)
    return toast.error(response?.error)
   }
+
+  if (typeof window !== "undefined") sessionStorage.setItem(userSession, JSON.stringify(response.data))
 
   setLoading(false)
   reset()

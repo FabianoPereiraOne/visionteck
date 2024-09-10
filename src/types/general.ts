@@ -7,7 +7,6 @@ export type paramsProps = {
 export type AppContextType = {
   user: dataUser | null
   openMenu: boolean
-  setUser: (user: any) => void
   setOpenMenu: (open: boolean) => void
 }
 
