@@ -42,7 +42,7 @@ const Login = () => {
   setUser(response?.data)
   reset()
   toast.success(response?.success)
-  setTimeout(() => router.push("/dash"), 3000)
+  setTimeout(() => router.push("/dash"), 1000)
  }
 
 
