@@ -1,6 +1,7 @@
 import { useCompareHash } from "@/hooks/useCompareHash"
 import { useGenerateToken } from "@/hooks/useGenerateToken"
 import { signSchema } from "@/schemas/api/sign"
+import { cookieAuth } from "@/schemas/others/config"
 import { getUser } from "@/services/prisma/users/get"
 import { httpStatus } from "@/utils/httpStatus"
 import { cookies } from "next/headers"
@@ -74,13 +75,36 @@ export async function POST(request: NextRequest) {
       email: user.email,
       type: user.type
     })
-    cookies().set("Authorization", token)
+    cookies().set(cookieAuth, token)
 
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
         data: { ...user, password: "********" },
         success: "Login efetuado com sucesso."
+      },
+      {
+        status: httpStatus.ok.statusCode
+      }
+    )
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      { statusCode: httpStatus.serverError.statusCode, error: error },
+      {
+        status: httpStatus.serverError.statusCode
+      }
+    )
+  }
+}
+
+export async function GET() {
+  try {
+    cookies().delete(cookieAuth)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.ok.statusCode,
+        success: "Sessão finalizada com sucesso."
       },
       {
         status: httpStatus.ok.statusCode
