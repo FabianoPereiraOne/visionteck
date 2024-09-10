@@ -1,13 +1,15 @@
-'use client'
-import { useVisionContext } from "@/context"
+import { useReturnDecoded } from "@/hooks/useReturnDecoded"
+import { cookieAuth } from "@/schemas/others/config"
+import { cookies } from "next/headers"
 import { memo } from "react"
 
-const HeaderBody = () => {
- const { user } = useVisionContext()
+const HeaderBody = async () => {
+ const auth = cookies().get(cookieAuth)?.value
+ const user = await useReturnDecoded(auth)
 
  return (
   <article>
-   {user && user.name}
+   {user && user?.name}
   </article>
  )
 }

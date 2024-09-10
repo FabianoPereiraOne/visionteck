@@ -1,0 +1,19 @@
+import { getUser } from "@/services/prisma/users/get"
+import { PayloadType } from "@/types/payload"
+
+export const useVerifyServerToken = async (
+  decodedToken: PayloadType | null
+) => {
+  if (!decodedToken) return { status: false, data: null }
+
+  try {
+    const result = await getUser({ id: decodedToken?.id })
+
+    if (!result) return { status: false, data: null }
+
+    return { status: true, data: { ...result, password: "********" } }
+  } catch (error) {
+    console.error(error)
+    return { status: false, data: null }
+  }
+}

@@ -25,7 +25,7 @@ const VerifyAccount = ({ searchParams }: { searchParams: searchParamsProps }) =>
 
  useEffect(() => {
   loadVerifyToken()
- })
+ }, [])
 
  return (
   <LoadingMessageCenter defaultProps={!error ? defaultLoading : defaultError} />

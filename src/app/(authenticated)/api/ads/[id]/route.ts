@@ -1,13 +1,32 @@
-import { getUser } from "@/services/prisma/users/get"
+import { useVerifyUser } from "@/hooks/useVerifyUser"
+import { getAds } from "@/services/prisma/ads/get"
+import { paramsProps } from "@/types/general"
 import { httpStatus } from "@/utils/httpStatus"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export async function GET({ id }: { id: string }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: paramsProps }
+) {
+  const { isUser } = await useVerifyUser(request)
+  if (!isUser)
+    return NextResponse.json(
+      {
+        statusCode: httpStatus.unAuthorized.statusCode,
+        error: "Faça login no sistema."
+      },
+      {
+        status: httpStatus.unAuthorized.statusCode
+      }
+    )
+
+  const { id } = params
+
   if (!id)
     return NextResponse.json(
       {
         statusCode: httpStatus.invalidRequest.statusCode,
-        error: "ID do usuário obrigatório."
+        error: "ID do anúncio obrigatório."
       },
       {
         status: httpStatus.invalidRequest.statusCode
@@ -15,13 +34,13 @@ export async function GET({ id }: { id: string }) {
     )
 
   try {
-    const data = await getUser({ id })
+    const data = await getAds({ id })
 
     if (!data)
       return NextResponse.json(
         {
           statusCode: httpStatus.notFound.statusCode,
-          error: "Usuário não está registrado no sistema."
+          error: "Anúncio não encontrado."
         },
         {
           status: httpStatus.notFound.statusCode
@@ -31,7 +50,7 @@ export async function GET({ id }: { id: string }) {
     return NextResponse.json(
       {
         statusCode: httpStatus.ok.statusCode,
-        data: { ...data, password: "********" },
+        data,
         success: httpStatus.ok.success
       },
       {

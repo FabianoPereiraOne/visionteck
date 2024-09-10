@@ -2,9 +2,10 @@ import { useReturnDecoded } from "@/hooks/useReturnDecoded"
 import { cookies } from "next/headers"
 import { NextResponse, type NextRequest } from "next/server"
 import { useVerifyToken } from "./hooks/useVerifyToken"
+import { cookieAuth } from "./schemas/others/config"
 
 export async function middleware(request: NextRequest) {
-  const token = cookies().get("Authorization")
+  const token = cookies().get(cookieAuth)
   const isRouterDash = request.nextUrl.pathname.startsWith("/dash")
   const isRouterLogin = request.nextUrl.pathname.startsWith("/login")
   const isRouterRegister = request.nextUrl.pathname.startsWith("/register")
