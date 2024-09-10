@@ -39,7 +39,7 @@ const Login = () => {
    return toast.error(response?.error)
   }
 
-  sessionStorage.setItem(userSession, JSON.stringify(response.data))
+  if (sessionStorage) sessionStorage.setItem(userSession, JSON.stringify(response.data))
   setLoading(false)
   reset()
   toast.success(response?.success)

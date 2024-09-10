@@ -6,7 +6,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 const VisionContext = createContext({} as AppContextType)
 
 export function VisionContextProvider({ children }: { children: ReactNode }) {
-  const saveUser = sessionStorage.getItem(userSession)
+  const saveUser = sessionStorage && sessionStorage.getItem(userSession)
   const userSessionData = saveUser ? JSON.parse(saveUser) : null
   const [user, setUser] = useState(userSessionData)
   const [openMenu, setOpenMenu] = useState(false)
