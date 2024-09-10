@@ -1,4 +1,5 @@
 import LayoutDash from "@/components/layoutDash";
+import { VisionContextProvider } from "@/context";
 import "@/styles/globals.scss";
 import { config } from "@/styles/toast";
 import type { Metadata } from "next";
@@ -24,10 +25,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.className} ${styled.contentLayout}`}>
-        <LayoutDash>
-          {children}
-          <Toaster position="top-right" toastOptions={config} />
-        </LayoutDash>
+        <VisionContextProvider>
+          <LayoutDash>
+            {children}
+            <Toaster position="top-right" toastOptions={config} />
+          </LayoutDash>
+        </VisionContextProvider>
       </body>
     </html>
   );
