@@ -11,7 +11,7 @@ import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const { isAdmin } = await useVerifyAdmin(request)
+  const { isAdmin } = await useVerifyAdmin()
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const { isAdmin } = await useVerifyAdmin(request)
+  const { isAdmin } = await useVerifyAdmin()
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -172,7 +172,7 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { isAdmin } = await useVerifyAdmin(request)
+  const { isAdmin } = await useVerifyAdmin()
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -240,7 +240,7 @@ export async function DELETE(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const { isUser } = await useVerifyUser(request)
+  const { isUser } = await useVerifyUser()
   if (!isUser)
     return NextResponse.json(
       {

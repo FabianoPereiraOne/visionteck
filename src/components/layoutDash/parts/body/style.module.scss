@@ -1,8 +1,20 @@
 .section{
+max-width: 2000px;
  flex: 1;
- height: 100%;
+ height: calc(100vh - 70px);
  padding: 20px;
- overflow-x: hidden;
+ overflow: hidden auto;
+ margin: 0 auto;
+
+ &::-webkit-scrollbar{
+  width: 5px;
+  background: var(--color-gray-dark);
+}
+
+&::-webkit-scrollbar-thumb{
+  background: var(--gradient-primary);
+  border-radius: 36px;
+}
 
  @media screen and (min-width: 768px){
   padding: 36px;
