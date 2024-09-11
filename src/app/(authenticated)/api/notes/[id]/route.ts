@@ -9,7 +9,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: paramsProps }
 ) {
-  const { isUser } = await useVerifyUser(request)
+  const { isUser } = await useVerifyUser()
   if (!isUser)
     return NextResponse.json(
       {
