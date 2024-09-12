@@ -1,0 +1,192 @@
+.containerPopup {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+
+  & .popup {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    background: var(--color-black-normal);
+    padding: 16px;
+    border-radius: 6px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & .btnClose {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: var(--size24);
+      color: var(--color-white-normal);
+      transition: 0.3s;
+
+      &:hover {
+        color: var(--color-orange-normal);
+      }
+    }
+
+    & hr {
+      margin: 16px 0 0 0;
+      width: 100%;
+      height: 1px;
+      background: var(--color-gray-dark);
+      border: none;
+    }
+
+    & .titleGroup {
+      width: auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      & h4 {
+        font-size: var(--size16);
+        font-weight: 600;
+        color: var(--color-white-normal);
+        max-width: 80%;
+
+        @media screen and (min-width: 768px) {
+          font-size: var(--size20);
+        }
+      }
+
+      & p {
+        font-size: var(--size12);
+        max-width: 80%;
+        font-weight: 400;
+        color: var(--color-gray-normal);
+
+        @media screen and (min-width: 768px) {
+          font-size: var(--size16);
+        }
+      }
+    }
+
+    & .form {
+      margin: 36px 0 0 0;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      & .btnSubmit {
+        max-width: 200px;
+        width: 80%;
+        height: 36px;
+        border-radius: 6px;
+        background: var(--color-gray-light);
+        border: none;
+        margin: 16px auto 0 auto;
+        font-size: var(--size16);
+        font-weight: 500;
+        color: var(--color-white-normal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.3s;
+
+        & svg {
+          font-size: var(--size20);
+        }
+
+        &:hover {
+          background: var(--gradient-primary);
+        }
+      }
+    }
+
+    & .containerView {
+      margin: 36px 0 0 0;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      & h6 {
+        font-size: var(--size16);
+        font-weight: 500;
+        color: var(--color-white-normal);
+        max-width: 80%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        & svg {
+          font-size: var(--size18);
+        }
+
+        @media screen and (min-width: 768px) {
+          font-size: var(--size18);
+        }
+      }
+
+      & .listView {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        & .row {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          & p {
+            font-size: var(--size16);
+            font-weight: 400;
+            color: var(--color-white-normal);
+            white-space: nowrap;
+            max-width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          & .btnGroup {
+            flex: 3;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+
+            & button {
+              border: none;
+              background: none;
+              font-size: var(--size16);
+              font-weight: 400;
+              color: var(--color-white-normal);
+              transition: 0.3s;
+
+              &:hover {
+                color: var(--color-orange-normal);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      padding: 36px;
+    }
+  }
+}
