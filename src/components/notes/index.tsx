@@ -1,6 +1,7 @@
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { getAllNotes } from "@/services/prisma/notes/getAll"
 import { format } from "date-fns"
+import { ptBR } from 'date-fns/locale'
 import { memo } from "react"
 import { FiBookmark } from "react-icons/fi"
 import ButtonAdd from "./parts/buttonAdd"
@@ -30,7 +31,7 @@ const Notes = async () => {
        </strong>
        <p className={styled.description}>
         {note?.description} -
-        {format(note?.createdAt.toISOString(), "dd MMM yyyy")}
+        {format(note?.createdAt.toISOString(), "dd MMM yyyy", { locale: ptBR })}
        </p>
       </article>
      )

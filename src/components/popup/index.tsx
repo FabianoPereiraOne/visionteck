@@ -1,8 +1,10 @@
+'use client'
 import { PopupProps } from "@/types/popup"
 import { FiEdit, FiTrash, FiXCircle } from "react-icons/fi"
+import PulseLoader from "react-spinners/PulseLoader"
 import styled from "./style.module.scss"
 
-const Popup = ({ fcToggle, layout }: PopupProps) => {
+const Popup = ({ fcToggle, fcSubmit, fcHandleSubmit, fcEdit, fcDel, layout, loading, data }: PopupProps) => {
 
  const handlerClosePopup = (event: any) => {
   const isContainer = event?.target?.id
@@ -25,12 +27,12 @@ const Popup = ({ fcToggle, layout }: PopupProps) => {
      </p>
      <hr />
     </div>
-    <form className={styled.form}>
+    <form className={styled.form} onSubmit={fcHandleSubmit(fcSubmit)}>
      {layout?.inputs.map((element) => {
       return element
      })}
      <button type="submit" className={styled.btnSubmit}>
-      {layout?.buttonSubmit}
+      {loading ? <PulseLoader color="#f9f9f9" size={10} /> : layout?.buttonSubmit}
      </button>
     </form>
     <div className={styled.containerView}>
@@ -39,39 +41,21 @@ const Popup = ({ fcToggle, layout }: PopupProps) => {
       {layout?.listView}
      </h6>
      <ul className={styled.listView}>
-      <li className={styled.row}>
-       <p>&#x2022;{" "} Atualização 01</p>
-       <div className={styled.btnGroup}>
-        <button>
-         <FiEdit />
-        </button>
-        <button>
-         <FiTrash />
-        </button>
-       </div>
-      </li>
-      <li className={styled.row}>
-       <p>&#x2022;{" "} Atualização 02</p>
-       <div className={styled.btnGroup}>
-        <button>
-         <FiEdit />
-        </button>
-        <button>
-         <FiTrash />
-        </button>
-       </div>
-      </li>
-      <li className={styled.row}>
-       <p>&#x2022;{" "} Atualização 03</p>
-       <div className={styled.btnGroup}>
-        <button>
-         <FiEdit />
-        </button>
-        <button>
-         <FiTrash />
-        </button>
-       </div>
-      </li>
+      {data?.length > 0 ? data.map((item: { id: string, title: string }) => {
+       return (
+        <li className={styled.row} key={item?.id}>
+         <p>&#x2022;{" "} {item?.title}</p>
+         <div className={styled.btnGroup}>
+          <button onClick={() => fcEdit(item)}>
+           <FiEdit />
+          </button>
+          <button onClick={() => fcDel(item)}>
+           <FiTrash />
+          </button>
+         </div>
+        </li>
+       )
+      }) : <p>Nenhum item cadastrado.</p>}
      </ul>
     </div>
    </article>

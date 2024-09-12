@@ -14,3 +14,13 @@ export type PatchNoteProps = {
   bullet?: Bullet
   bulletColor?: string
 }
+
+export type NoteProps = {
+  id: number
+  title: string
+  description: string
+  bullet: Bullet
+  bulletColor: string
+  createdAt: Date
+  updatedAt: Date
+}

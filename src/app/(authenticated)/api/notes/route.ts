@@ -241,6 +241,7 @@ export async function DELETE(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   const { isUser } = await useVerifyUser()
+
   if (!isUser)
     return NextResponse.json(
       {
