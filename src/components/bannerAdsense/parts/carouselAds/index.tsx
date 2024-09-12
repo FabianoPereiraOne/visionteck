@@ -17,7 +17,7 @@ const CarouselAds = ({ listAds }: { listAds: TypeAds[] }) => {
     delay: 5000,
     disableOnInteraction: false,
    }}
-   speed={3000}
+   speed={1500}
    navigation={false}
    modules={[Autoplay]}
    className={styled.carousel}

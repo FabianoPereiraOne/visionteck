@@ -27,24 +27,6 @@
       font-size: var(--size20);
      }
    }
-
-   & .btnAdd{
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--color-white-normal);
-    color: var(--color-black-dark);
-    transition: .3s;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--size16);
-
-    &:hover{
-     background: var(--color-orange-normal);
-    }
-   }
  }
 
  & .notes{

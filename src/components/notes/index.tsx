@@ -2,7 +2,8 @@ import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { getAllNotes } from "@/services/prisma/notes/getAll"
 import { format } from "date-fns"
 import { memo } from "react"
-import { FiBookmark, FiPlus } from "react-icons/fi"
+import { FiBookmark } from "react-icons/fi"
+import ButtonAdd from "./parts/buttonAdd"
 import styled from "./style.module.scss"
 
 const Notes = async () => {
@@ -16,7 +17,7 @@ const Notes = async () => {
   <section className={styled.container}>
    <section className={styled.contentTitle}>
     <h3 className={styled.title}><FiBookmark />Notas de atualização</h3>
-    {isAdmin && <button className={styled.btnAdd}><FiPlus /></button>}
+    {isAdmin && <ButtonAdd />}
    </section>
    <section className={styled.notes}>
     {notes.map((note) => {
