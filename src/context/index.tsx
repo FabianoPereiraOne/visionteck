@@ -1,17 +1,20 @@
 "use client"
-import useGetUserData from "@/hooks/useGetUserData";
-import { AppContextType } from "@/types/general";
-import { createContext, ReactNode, useContext, useState } from "react";
+import useGetUserData from "@/hooks/useGetUserData"
+import { AppContextType } from "@/types/general"
+import { createContext, ReactNode, useContext, useState } from "react"
 
 const VisionContext = createContext({} as AppContextType)
 
 export function VisionContextProvider({ children }: { children: ReactNode }) {
   const { getUserData } = useGetUserData()
   const [openMenu, setOpenMenu] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
   const user = getUserData()
 
   return (
-    <VisionContext.Provider value={{ user, openMenu, setOpenMenu }}>
+    <VisionContext.Provider
+      value={{ user, openMenu, openPopup, setOpenMenu, setOpenPopup }}
+    >
       {children}
     </VisionContext.Provider>
   )

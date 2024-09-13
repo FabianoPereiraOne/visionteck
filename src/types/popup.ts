@@ -1,13 +1,18 @@
-import { FormEventHandler } from "react"
 import { LayoutType } from "./layout"
 
 export type PopupProps = {
-  data: []
   loading: boolean
+  update: boolean
   layout: LayoutType
   fcToggle: () => void
   fcSubmit: (data: any) => void
   fcEdit: (item: any) => void
   fcDel: (item: any) => void
-  fcHandleSubmit: (data: any) => FormEventHandler<HTMLFormElement>
+  fcGetData: () => Promise<Response>
+}
+
+export type DataViewProps = {
+  fcEdit: (item: any) => void
+  fcDel: (item: any) => void
+  fcGetData: () => Promise<Response>
 }
