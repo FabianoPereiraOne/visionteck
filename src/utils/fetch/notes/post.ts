@@ -1,10 +1,21 @@
-import { PostNoteProps } from "@/types/note"
+"use server"
+import { cookieAuth } from "@/schemas/others/config"
+import { NoteProps } from "@/types/note"
+import { baseURL } from "@/utils/http/baseUrl"
+import { revalidateTag } from "next/cache"
+import { cookies } from "next/headers"
 
-export const fetchCreateNote = async (data: PostNoteProps) => {
-  const result = await fetch("/api/notes", {
+export const fetchCreateNote = async (data: NoteProps) => {
+  const token = cookies().get(cookieAuth)?.value ?? ""
+
+  await fetch(`${baseURL}/api/notes`, {
     method: "POST",
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Authorization: token
+    }
   })
 
-  return result
+  revalidateTag("get-all-notes")
 }

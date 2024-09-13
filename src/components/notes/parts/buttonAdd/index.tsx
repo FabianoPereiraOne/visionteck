@@ -5,104 +5,109 @@ import { layoutAddNote } from "@/layouts/note/add"
 import { notesSchema } from "@/schemas/api/notes"
 import { NoteProps } from "@/types/note"
 import { fetchDeleteNote } from "@/utils/fetch/notes/delete"
-import { fetchAllNotes } from "@/utils/fetch/notes/getAll"
+import { fetchClientAllNotes } from "@/utils/fetch/notes/getAllClient"
 import { fetchCreateNote } from "@/utils/fetch/notes/post"
-import { memo, useEffect, useState } from "react"
+import { fetchUpdateNote } from "@/utils/fetch/notes/update"
+import { memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { FiPlus } from "react-icons/fi"
 import styled from "./style.module.scss"
 
 const ButtonAdd = () => {
- const [open, setOpen] = useState(false)
- const [loading, setLoading] = useState(false)
- const [notes, setNotes] = useState<any>([])
- const { register, handleSubmit, reset } = useForm()
- const { displayErrors } = useDisplayErrors()
+  const [open, setOpen] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { register, reset, getValues, setValue } = useForm()
+  const { displayErrors } = useDisplayErrors()
 
- const handlerTogglePopup = () => {
-  setOpen(internalValue => !internalValue)
- }
-
- const handlerSubmit = async (data: any) => {
-  setLoading(true)
-
-  const { success, error } = notesSchema.safeParse(data)
-
-  if (!success) {
-   setLoading(false)
-   return displayErrors(error?.errors)
+  const handlerTogglePopup = () => {
+    setOpen(internalValue => !internalValue)
   }
 
-  try {
-   const result = await fetchCreateNote(data)
-   const response = await result.json()
-   const note = response?.data
+  const handlerSubmit = async () => {
+    setLoading(true)
+    const dataCreate = getValues()
 
-   setNotes([note, ...notes])
-   setLoading(false)
-   toast.success(response.success)
-   reset()
-  } catch (error) {
-   setLoading(false)
-   console.error(error)
-   toast.error("Erro ao criar nova nota.")
+    const { success, data, error } = notesSchema.safeParse(dataCreate)
+
+    if (!success) {
+      setLoading(false)
+      return displayErrors(error?.errors)
+    }
+
+    try {
+      await fetchCreateNote(data as NoteProps).then(() => {
+        setLoading(false)
+        toast.success("Nota Criada com sucesso.")
+        reset()
+      })
+    } catch (error) {
+      setLoading(false)
+      console.error(error)
+      toast.error("Erro ao criar nova nota.")
+    }
   }
- }
 
- const handlerDeleteNote = async (note: NoteProps) => {
-  const id = note?.id
+  const handlerDeleteNote = async (note: NoteProps) => {
+    const id = note?.id
 
-  if (!id) return toast.error("Não foi possível deletar nota.")
+    if (!id) return toast.error("Não foi possível deletar nota.")
 
-  try {
-   const result = await fetchDeleteNote({ id })
-   const response = await result.json()
-   const listNotes = notes.filter((note: NoteProps) => note?.id !== id)
-
-   setNotes(listNotes)
-   toast.success(response.success)
-  } catch (error) {
-   console.error(error)
-   toast.error("Erro ao criar nova nota.")
+    try {
+      await fetchDeleteNote({ id }).then(() => {
+        toast.success("Nota deletada com sucesso.")
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error("Erro ao deletar nota.")
+    }
   }
- }
 
- const loadDataNotes = async () => {
-  try {
-   const result = await fetchAllNotes()
-   const response = await result.json()
-
-   setNotes(response.data)
-  } catch (error) {
-   console.error(error)
-   toast.error("Erro ao carregar notas.")
+  const loadSetValues = (note: NoteProps) => {
+    setValue("id", note?.id)
+    setValue("title", note?.title)
+    setValue("description", note?.description)
+    setValue("bullet", note?.bullet)
+    setValue("bulletColor", note?.bulletColor)
+    setUpdate(true)
   }
- }
 
- useEffect(() => {
-  if (open) loadDataNotes()
- }, [open])
+  const handlerUpdateNote = async () => {
+    const note = getValues()
+    const id = note?.id
 
- return (
-  <>
-   <button className={styled.btnAdd} onClick={handlerTogglePopup}>
-    <FiPlus />
-   </button>
-   {open && (
-    <Popup
-     fcEdit={() => { }}
-     fcDel={handlerDeleteNote}
-     loading={loading}
-     fcSubmit={handlerSubmit}
-     fcHandleSubmit={handleSubmit}
-     fcToggle={handlerTogglePopup}
-     layout={layoutAddNote({ register })}
-     data={notes}
-    />
-   )}
-  </>
- )
+    if (!id) return toast.error("Não foi possível atualizar nota.")
+
+    try {
+      await fetchUpdateNote({ id, data: note }).then(() => {
+        toast.success("Nota atualizada com sucesso.")
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error("Erro ao atualizar nota.")
+    }
+  }
+
+  return (
+    <>
+      <button className={styled.btnAdd} onClick={handlerTogglePopup}>
+        <FiPlus />
+      </button>
+      {open && (
+        <Popup
+          fcEdit={loadSetValues}
+          fcDel={handlerDeleteNote}
+          fcSubmit={update ? handlerUpdateNote : handlerSubmit}
+          layout={layoutAddNote({ register })}
+          fcToggle={handlerTogglePopup}
+          loading={loading}
+          fcGetData={fetchClientAllNotes}
+          update={update}
+        />
+      )}
+    </>
+  )
 }
 
 export default memo(ButtonAdd)

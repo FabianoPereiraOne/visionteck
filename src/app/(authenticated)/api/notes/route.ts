@@ -2,16 +2,22 @@ import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { notesSchema } from "@/schemas/api/notes"
+import { cookieAuth } from "@/schemas/others/config"
 import { createNote } from "@/services/prisma/notes/create"
 import { deleteNote } from "@/services/prisma/notes/delete"
 import { getNote } from "@/services/prisma/notes/get"
 import { getAllNotes } from "@/services/prisma/notes/getAll"
 import { updateNote } from "@/services/prisma/notes/update"
 import { httpStatus } from "@/utils/httpStatus"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
+  const token = request.headers.get("Authorization")
+  token && (await cookies().set(cookieAuth, token))
+
   const { isAdmin } = await useVerifyAdmin()
+
   if (!isAdmin)
     return NextResponse.json(
       {
@@ -80,6 +86,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const token = request.headers.get("Authorization")
+  token && (await cookies().set(cookieAuth, token))
+
   const { isAdmin } = await useVerifyAdmin()
   if (!isAdmin)
     return NextResponse.json(
@@ -172,6 +181,9 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const token = request.headers.get("Authorization")
+  token && (await cookies().set(cookieAuth, token))
+
   const { isAdmin } = await useVerifyAdmin()
   if (!isAdmin)
     return NextResponse.json(
@@ -240,6 +252,10 @@ export async function DELETE(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const token = request.headers.get("Authorization")
+
+  token && (await cookies().set(cookieAuth, token))
+
   const { isUser } = await useVerifyUser()
 
   if (!isUser)

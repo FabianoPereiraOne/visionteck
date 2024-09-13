@@ -137,52 +137,6 @@
           font-size: var(--size18);
         }
       }
-
-      & .listView {
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-
-        & .row {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-
-          & p {
-            font-size: var(--size16);
-            font-weight: 400;
-            color: var(--color-white-normal);
-            white-space: nowrap;
-            max-width: 80%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          & .btnGroup {
-            flex: 3;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-
-            & button {
-              border: none;
-              background: none;
-              font-size: var(--size16);
-              font-weight: 400;
-              color: var(--color-white-normal);
-              transition: 0.3s;
-
-              &:hover {
-                color: var(--color-orange-normal);
-              }
-            }
-          }
-        }
-      }
     }
 
     @media screen and (min-width: 768px) {
