@@ -1,3 +1,4 @@
+import Loading from "@/components/loading"
 import { DataViewProps } from "@/types/popup"
 import { memo, useEffect, useState } from "react"
 import { FiEdit, FiTrash } from "react-icons/fi"
@@ -29,7 +30,7 @@ const DataView = ({ fcGetData, fcEdit, fcDel }: DataViewProps) => {
 
   return (
     <ul className={styled.listView}>
-      {data?.length > 0 &&
+      {data?.length > 0 ? (
         data.map((item: { id: string; title: string }) => {
           return (
             <li className={styled.row} key={item?.id}>
@@ -44,7 +45,10 @@ const DataView = ({ fcGetData, fcEdit, fcDel }: DataViewProps) => {
               </div>
             </li>
           )
-        })}
+        })
+      ) : (
+        <Loading />
+      )}
     </ul>
   )
 }

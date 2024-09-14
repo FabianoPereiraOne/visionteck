@@ -1,7 +1,6 @@
 import { LayoutType } from "./layout"
 
 export type PopupProps = {
-  loading: boolean
   update: boolean
   layout: LayoutType
   fcToggle: () => void
