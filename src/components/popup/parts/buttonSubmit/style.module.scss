@@ -1,0 +1,25 @@
+.btnSubmit {
+  max-width: 200px;
+  width: 80%;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--color-gray-light);
+  border: none;
+  margin: 16px auto 0 auto;
+  font-size: var(--size16);
+  font-weight: 500;
+  color: var(--color-white-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.3s;
+
+  & svg {
+    font-size: var(--size20);
+  }
+
+  &:hover {
+    background: var(--gradient-primary);
+  }
+}

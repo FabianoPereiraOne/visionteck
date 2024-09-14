@@ -1,8 +1,7 @@
 "use client"
 import { PopupProps } from "@/types/popup"
-import { Suspense, useMemo } from "react"
 import { FiXCircle } from "react-icons/fi"
-import PulseLoader from "react-spinners/PulseLoader"
+import ButtonSubmit from "./parts/buttonSubmit"
 import DataView from "./parts/dataView"
 import styled from "./style.module.scss"
 
@@ -12,12 +11,9 @@ const Popup = ({
   fcEdit,
   fcDel,
   layout,
-  loading,
   fcGetData,
   update
 }: PopupProps) => {
-  const load = useMemo(() => loading, [loading])
-
   const handlerClosePopup = (event: any) => {
     const isContainer = event?.target?.id
 
@@ -45,22 +41,12 @@ const Popup = ({
           {layout?.inputs.map(element => {
             return element
           })}
-          <button type='submit' className={styled.btnSubmit}>
-            {load ? (
-              <PulseLoader color='#f9f9f9' size={10} />
-            ) : update ? (
-              layout?.buttonUpdate
-            ) : (
-              layout?.buttonSubmit
-            )}
-          </button>
+          <ButtonSubmit layout={layout} update={update} />
         </form>
         <div className={styled.containerView}>
           <hr />
           <h6>{layout?.listView}</h6>
-          <Suspense fallback={<h1>Carregando...</h1>}>
-            <DataView fcDel={fcDel} fcEdit={fcEdit} fcGetData={fcGetData} />
-          </Suspense>
+          <DataView fcDel={fcDel} fcEdit={fcEdit} fcGetData={fcGetData} />
         </div>
       </article>
     </div>

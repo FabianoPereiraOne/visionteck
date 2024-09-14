@@ -17,33 +17,31 @@ import styled from "./style.module.scss"
 const ButtonAdd = () => {
   const [open, setOpen] = useState(false)
   const [update, setUpdate] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { register, reset, getValues, setValue } = useForm()
+  const { register, reset, getValues, setValue, watch } = useForm()
   const { displayErrors } = useDisplayErrors()
 
   const handlerTogglePopup = () => {
+    if (open) reset()
+
     setOpen(internalValue => !internalValue)
+    setUpdate(false)
   }
 
   const handlerSubmit = async () => {
-    setLoading(true)
     const dataCreate = getValues()
 
     const { success, data, error } = notesSchema.safeParse(dataCreate)
 
     if (!success) {
-      setLoading(false)
       return displayErrors(error?.errors)
     }
 
     try {
       await fetchCreateNote(data as NoteProps).then(() => {
-        setLoading(false)
         toast.success("Nota Criada com sucesso.")
         reset()
       })
     } catch (error) {
-      setLoading(false)
       console.error(error)
       toast.error("Erro ao criar nova nota.")
     }
@@ -101,7 +99,6 @@ const ButtonAdd = () => {
           fcSubmit={update ? handlerUpdateNote : handlerSubmit}
           layout={layoutAddNote({ register })}
           fcToggle={handlerTogglePopup}
-          loading={loading}
           fcGetData={fetchClientAllNotes}
           update={update}
         />
