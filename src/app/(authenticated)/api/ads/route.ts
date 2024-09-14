@@ -1,6 +1,7 @@
+import useDeleteImageBucket from "@/hooks/useDeleteImageBucket"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
-import { AdsSchema } from "@/schemas/api/ads"
+import { adsSchema } from "@/schemas/api/ads"
 import { deleteAds } from "@/services/prisma/ads/delete"
 import { getAds } from "@/services/prisma/ads/get"
 import { getAllAds } from "@/services/prisma/ads/getAll"
@@ -8,6 +9,7 @@ import { updateAds } from "@/services/prisma/ads/patch"
 import { createAds } from "@/services/prisma/ads/post"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
+const { deleteImageBucket } = useDeleteImageBucket()
 
 export async function POST(request: NextRequest) {
   const { isAdmin } = await useVerifyAdmin()
@@ -24,7 +26,7 @@ export async function POST(request: NextRequest) {
 
   const { title, description, link } = await request.json()
 
-  const { success, error } = AdsSchema.safeParse({
+  const { success, error } = adsSchema.safeParse({
     title,
     description,
     link
@@ -118,6 +120,8 @@ export async function PATCH(request: NextRequest) {
         }
       )
 
+    await deleteImageBucket({ name: hasAds?.link })
+
     const adsUpdate = {
       id,
       title,
@@ -193,6 +197,7 @@ export async function DELETE(request: NextRequest) {
       )
 
     const data = await deleteAds({ id })
+    await deleteImageBucket({ name: data?.link })
 
     return NextResponse.json(
       {

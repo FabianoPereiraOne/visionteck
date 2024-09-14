@@ -1,17 +1,24 @@
 .btnAdd {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-white-normal);
-  color: var(--color-black-dark);
+  width: 28px;
+  height: 28px;
+  background: none;
+  border-image: var(--gradient-primary) 1;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  color: var(--color-white-normal);
   transition: 0.3s;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--size16);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
 
   &:hover {
-    background: var(--color-orange-normal);
+    color: var(--color-white-normal);
+    background: var(--gradient-primary);
   }
 }
