@@ -1,5 +1,5 @@
 "use client"
-import Popup from "@/components/popup"
+import ButtonAdmin from "@/components/buttonAdmin"
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { layoutAddAds } from "@/layouts/ads/add"
 import { adsSchema } from "@/schemas/api/ads"
@@ -12,19 +12,12 @@ import { fetchUploadFile } from "@/utils/fetch/uploads/post"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { FiSettings } from "react-icons/fi"
-import styled from "./style.module.scss"
 
 const ButtonAds = () => {
-  const [open, setOpen] = useState(false)
   const [update, setUpdate] = useState(false)
   const [preview, setPreview] = useState("")
   const { register, watch, getValues, reset, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
-
-  const handlerTogglePopup = () => {
-    setOpen(IOpen => !IOpen)
-  }
 
   const handlerSubmit = async () => {
     const dataValues = getValues()
@@ -142,20 +135,16 @@ const ButtonAds = () => {
 
   return (
     <>
-      <button className={styled.button} onClick={handlerTogglePopup}>
-        <FiSettings /> Anúncios
-      </button>
-      {open && (
-        <Popup
-          fcDel={handlerDeleteAds}
-          fcEdit={loadSetValues}
-          fcGetData={fetchAllAds}
-          fcSubmit={update ? handlerUpdateAds : handlerSubmit}
-          fcToggle={handlerTogglePopup}
-          layout={layoutAddAds({ register, preview })}
-          update={update}
-        />
-      )}
+      <ButtonAdmin
+        update={update}
+        title='Anúncios'
+        layout={layoutAddAds({ register, preview })}
+        fcUpdate={handlerUpdateAds}
+        fcSubmit={handlerSubmit}
+        fcDelete={handlerDeleteAds}
+        fcGetData={fetchAllAds}
+        fcLoadSetValues={loadSetValues}
+      />
     </>
   )
 }

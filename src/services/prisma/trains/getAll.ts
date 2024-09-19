@@ -3,7 +3,10 @@ import { prismaClient } from "../config"
 
 export const getAllTrains = async () => {
   const result = await prismaClient.train.findMany({
-    select: selectSchemaTrain
+    select: selectSchemaTrain,
+    orderBy: {
+      createdAt: "desc"
+    }
   })
 
   return result

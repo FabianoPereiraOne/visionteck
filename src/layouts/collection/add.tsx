@@ -1,27 +1,25 @@
-import { Bullet } from "@prisma/client"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 import { FiLayers, FiPlus, FiRefreshCcw } from "react-icons/fi"
 import styled from "../global/styles/index.module.scss"
-const Bullets = Object.values(Bullet)
 
-export const layoutAddNote = ({
+export const layoutAddCollection = ({
   register
 }: {
   register: UseFormRegister<FieldValues>
 }) => {
   return {
-    title: "Notas de atualização",
-    subtitle: `Adicione oque foi implementado na plataforma.`,
+    title: "Coleção de trilhas",
+    subtitle: `Adicione uma nova coleção.`,
     buttonSubmit: (
       <>
         <FiPlus />
-        Adicionar novo
+        Adicionar nova
       </>
     ),
     buttonUpdate: (
       <>
         <FiRefreshCcw />
-        Atualizar nota
+        Atualizar coleção
       </>
     ),
     listView: (
@@ -34,7 +32,6 @@ export const layoutAddNote = ({
         key='title'
         id='title'
         className={styled.input}
-        data-tag='input'
         type='text'
         maxLength={50}
         placeholder='Titulo'
@@ -44,35 +41,19 @@ export const layoutAddNote = ({
         key='description'
         className={styled.textarea}
         id='description'
-        data-tag='textarea'
         placeholder='Descrição'
         {...register("description")}
       />,
 
       <div className={styled.containerFlex} key='groupBullet'>
         <input
-          key='bulletColor'
-          id='bulletColor'
+          key='themeColor'
+          id='themeColor'
           className={styled.inputColor}
-          data-tag='inputColor'
           type='color'
           placeholder='Cor'
-          {...register("bulletColor")}
+          {...register("themeColor")}
         />
-        <select
-          id='bullet'
-          {...register("bullet")}
-          key='bullet'
-          className={styled.select}
-        >
-          {Bullets.map((bullet, index) => {
-            return (
-              <option key={`bullet-${index}`} value={bullet}>
-                {bullet}
-              </option>
-            )
-          })}
-        </select>
       </div>
     ]
   }
