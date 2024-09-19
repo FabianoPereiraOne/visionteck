@@ -38,7 +38,7 @@ const Popup = ({
           <hr />
         </div>
         <form className={styled.form} action={fcSubmit}>
-          {layout?.inputs.map(element => {
+          {layout?.inputs?.map(element => {
             return element
           })}
           <ButtonSubmit layout={layout} update={update} />

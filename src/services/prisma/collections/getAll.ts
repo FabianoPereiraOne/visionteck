@@ -3,7 +3,10 @@ import { prismaClient } from "../config"
 
 export const getAllColetions = async () => {
   const result = await prismaClient.collection.findMany({
-    select: selectSchemaCollection
+    select: selectSchemaCollection,
+    orderBy: {
+      createdAt: "desc"
+    }
   })
 
   return result

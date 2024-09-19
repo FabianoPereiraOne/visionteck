@@ -11,7 +11,7 @@ export const layoutAddAds = ({
 }) => {
   return {
     title: "Lista de Anúncios",
-    subtitle: `Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.`,
+    subtitle: `Crie anúncios impressionantes para os usuários.`,
     buttonSubmit: (
       <>
         <FiPlus />
