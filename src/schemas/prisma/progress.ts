@@ -1,6 +1,6 @@
 export const selectSchemaProgress = {
   id: true,
-  class: true,
+  classId: true,
   userId: true,
   rating: true,
   completed: true,

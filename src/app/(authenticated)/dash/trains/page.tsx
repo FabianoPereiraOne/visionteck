@@ -1,11 +1,13 @@
 import HeaderBody from "@/components/headerBody"
 import { AdminPart } from "./parts/adminPart"
-import { CollectionPart } from "./parts/collection"
+import { ListingCollections } from "./parts/listingCollections"
+import { TitlePart } from "./parts/titlePart"
 
 export default async function Trains() {
   return (
     <section>
-      <HeaderBody children={<CollectionPart />} btnAdmin={<AdminPart />} />
+      <HeaderBody children={<TitlePart />} btnAdmin={<AdminPart />} />
+      <ListingCollections />
     </section>
   )
 }

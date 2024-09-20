@@ -14,3 +14,14 @@ export type PatchProgressProps = {
   completed?: boolean
   completedAt?: string | null
 }
+
+export type Progress = {
+  id: number
+  classId: string
+  userId: string
+  rating: number
+  completed: boolean
+  completedAt: string | null
+  createdAt: Date
+  updatedAt: Date
+}

@@ -10,7 +10,6 @@ export const selectSchemaUser = {
   createdAt: true,
   updatedAt: true,
   progress: true,
-  trains: true,
   emailVerified: true,
   verificationToken: true
 }

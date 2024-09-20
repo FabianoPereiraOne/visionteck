@@ -1,4 +1,5 @@
 import { ClassType } from "@prisma/client"
+import { Progress } from "./progress"
 
 export type postClassProps = {
   title: string
@@ -15,4 +16,16 @@ export type patchClassProps = {
   linkClass?: string
   type?: ClassType
   moduleId?: string
+}
+
+export type Class = {
+  id: string
+  title: string
+  type: ClassType
+  description: string
+  linkClass: string
+  moduleId: string
+  createdAt: Date
+  updatedAt: Date
+  progress: Progress[]
 }

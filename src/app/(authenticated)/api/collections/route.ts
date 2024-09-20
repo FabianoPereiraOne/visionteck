@@ -5,7 +5,7 @@ import { collectionsSchema } from "@/schemas/api/collections"
 import { createCollection } from "@/services/prisma/collections/create"
 import { deleteCollection } from "@/services/prisma/collections/delete"
 import { getCollection } from "@/services/prisma/collections/get"
-import { getAllColetions } from "@/services/prisma/collections/getAll"
+import { getAllCollections } from "@/services/prisma/collections/getAll"
 import { updateCollection } from "@/services/prisma/collections/update"
 import { httpStatus } from "@/utils/httpStatus"
 import { NextRequest, NextResponse } from "next/server"
@@ -229,7 +229,7 @@ export async function GET(request: NextRequest) {
     )
 
   try {
-    const data = await getAllColetions()
+    const data = await getAllCollections()
 
     return NextResponse.json(
       {

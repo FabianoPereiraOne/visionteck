@@ -14,7 +14,7 @@ import toast from "react-hot-toast"
 import { FiPlus } from "react-icons/fi"
 import styled from "./style.module.scss"
 
-export const CollectionPart = () => {
+export const TitlePart = () => {
   const [update, setUpdate] = useState(false)
   const { register, getValues, reset, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()

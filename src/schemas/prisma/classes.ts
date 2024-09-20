@@ -1,11 +1,15 @@
+import { selectSchemaProgress } from "./progress"
+
 export const selectSchemaClass = {
   id: true,
   title: true,
   type: true,
   description: true,
   linkClass: true,
-  module: true,
+  moduleId: true,
   createdAt: true,
   updatedAt: true,
-  progress: true
+  progress: {
+    select: selectSchemaProgress
+  }
 }
