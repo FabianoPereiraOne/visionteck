@@ -4,7 +4,7 @@ export type postModuleProps = {
   title: string
   description: string
   lock?: boolean
-  open?: Date
+  open?: string
   trainId: string
 }
 
@@ -13,7 +13,7 @@ export type patchModuleProps = {
   title?: string
   description?: string
   lock?: boolean
-  open?: Date
+  open?: string
   trainId?: string
 }
 
@@ -22,7 +22,7 @@ export type Module = {
   title: string
   description: string
   lock: boolean | null
-  open: Date | null
+  open: string | null
   trainId: string | null
   createdAt: Date
   updatedAt: Date
