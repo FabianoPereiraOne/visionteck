@@ -22,7 +22,7 @@ export type Module = {
   title: string
   description: string
   lock: boolean | null
-  open: string | null
+  open: Date | null
   trainId: string | null
   createdAt: Date
   updatedAt: Date

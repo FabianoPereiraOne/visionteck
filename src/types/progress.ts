@@ -19,7 +19,7 @@ export type Progress = {
   id: number
   classId: string
   userId: string
-  rating: number
+  rating: number | null
   completed: boolean
   completedAt: string | null
   createdAt: Date
