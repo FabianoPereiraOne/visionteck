@@ -1,3 +1,5 @@
+import { selectSchemaTrain } from "./trains"
+
 export const selectSchemaCollection = {
   id: true,
   title: true,
@@ -5,5 +7,7 @@ export const selectSchemaCollection = {
   themeColor: true,
   createdAt: true,
   updatedAt: true,
-  trains: true
+  trains: {
+    select: selectSchemaTrain
+  }
 }

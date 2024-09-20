@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .contentTitle {
+    font-size: var(--size18);
+    font-weight: 400;
+    color: var(--color-gray-normal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    & svg {
+      font-size: var(--size20);
+    }
+
+    & .title {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .link {
+    font-size: var(--size24);
+    font-weight: 400;
+    color: var(--color-gray-normal);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: var(--color-orange-normal);
+    }
+  }
+}
