@@ -24,7 +24,7 @@ export type Class = {
   type: ClassType
   description: string
   linkClass: string
-  moduleId: string
+  moduleId: string | null
   createdAt: Date
   updatedAt: Date
   progress: Progress[]
