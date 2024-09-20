@@ -1,4 +1,5 @@
 import { Role } from "@prisma/client"
+import { Progress } from "./progress"
 
 export type UserProps = {
   name: string
@@ -33,33 +34,18 @@ export type dataUser = {
   name: string
   email: string
   phone: string
-  plan: object
+  plan: {
+    id: number | null
+    title: string
+    description: string
+    price: number
+  }
   profession: string
   type: Role
   status: boolean
-  createdAt: string
-  updatedAt: string
-  progress: {
-    id: number
-    class: string
-    userId: string
-    rating: number
-    completed: boolean
-    completedAt: string
-    createdAt: string
-    updatedAt: string
-  }
-  trains: {
-    id: string
-    title: string
-    description: string
-    linkCover: string
-    collection: object
-    createdAt: string
-    updatedAt: string
-    modules: []
-    user: object
-  }
+  createdAt: Date
+  updatedAt: Date
+  progress: Progress
   emailVerified: boolean
   verificationToken: string
 }
