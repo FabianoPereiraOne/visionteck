@@ -1,3 +1,4 @@
+"use server"
 import { getAllAds } from "@/services/prisma/ads/getAll"
 import { TypeAds } from "@/types/ads"
 import CarouselAds from "./parts/carouselAds"

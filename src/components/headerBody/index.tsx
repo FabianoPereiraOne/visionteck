@@ -1,3 +1,4 @@
+"use server"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { memo, ReactNode } from "react"
 import styled from "./style.module.scss"

@@ -1,3 +1,4 @@
+"use server"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { NoteProps } from "@/types/note"
 import { fetchAllNotes } from "@/utils/fetch/notes/getAll"
