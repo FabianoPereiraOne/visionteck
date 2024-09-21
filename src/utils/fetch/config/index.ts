@@ -4,11 +4,11 @@ import { baseURL } from "@/utils/http/baseUrl"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
-const token = cookies().get(cookieAuth)?.value ?? ""
-
 const serverAPI = () => {
   const getAll = async ({ route }: { route: string }) => {
     "use server"
+
+    const token = cookies().get(cookieAuth)?.value ?? ""
 
     const result = await fetch(`${baseURL}/api/${route}`, {
       method: "GET",
@@ -24,6 +24,8 @@ const serverAPI = () => {
 
   const CreateOn = async ({ route, data }: { route: string; data: any }) => {
     "use server"
+
+    const token = cookies().get(cookieAuth)?.value ?? ""
 
     try {
       await fetch(`${baseURL}/api/${route}`, {
@@ -51,6 +53,9 @@ const serverAPI = () => {
     data: any
   }) => {
     "use server"
+
+    const token = cookies().get(cookieAuth)?.value ?? ""
+
     await fetch(`${baseURL}/api/${route}?id=${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
@@ -71,6 +76,9 @@ const serverAPI = () => {
     route: string
   }) => {
     "use server"
+
+    const token = cookies().get(cookieAuth)?.value ?? ""
+
     await fetch(`${baseURL}/api/${route}?id=${id}`, {
       method: "DELETE",
       credentials: "include",
@@ -90,6 +98,9 @@ const serverAPI = () => {
     route: string
   }) => {
     "use server"
+
+    const token = cookies().get(cookieAuth)?.value ?? ""
+
     const result = await fetch(`${baseURL}/api/${route}/${id}`, {
       method: "GET",
       credentials: "include",
