@@ -136,6 +136,7 @@ const ButtonAds = () => {
   return (
     <>
       <ButtonAdmin
+        reset={reset}
         update={update}
         title='Anúncios'
         layout={layoutAddAds({ register, preview })}

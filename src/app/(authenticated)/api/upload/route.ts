@@ -7,7 +7,7 @@ import path from "path"
 
 export async function POST(request: NextRequest) {
   const { clearString } = useClearString()
-  const { isAdmin } = await useVerifyAdmin()
+  const { isAdmin } = await useVerifyAdmin(request)
   if (!isAdmin) {
     return NextResponse.json(
       {

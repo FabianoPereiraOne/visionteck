@@ -1,11 +1,18 @@
+"use server"
 import { useVerifyArrayEmpty } from "@/hooks/useVerifyArrayEmpty"
-import { getAllCollections } from "@/services/prisma/collections/getAll"
+import { Collection } from "@/types/collection"
+import { fetchAllCollections } from "@/utils/fetch/collections/getAll"
 import { CollectionPart } from "./parts/collection"
 import styled from "./style.module.scss"
 
 export const ListingCollections = async () => {
-  const data = await getAllCollections()
-  const collections = data?.filter(collection => collection?.trains?.length > 0)
+  const result = await fetchAllCollections()
+  const response = await result?.json()
+  const listData: Collection[] = response?.data ?? []
+  const collections = listData.filter(
+    collection => collection?.trains?.length > 0
+  )
+
   const { isEmpty } = useVerifyArrayEmpty()
 
   if (isEmpty(collections)) return <>Not found</>

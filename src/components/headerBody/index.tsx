@@ -1,16 +1,24 @@
+"use server"
+import { useReturnDecoded } from "@/hooks/useReturnDecoded"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
-import { memo, ReactNode } from "react"
+import { cookieAuth } from "@/schemas/others/config"
+import { cookies } from "next/headers"
+import { ReactNode } from "react"
 import styled from "./style.module.scss"
 
 const HeaderBody = async ({
-  title,
+  enableUserTitle,
   btnAdmin,
   children
 }: {
-  title?: string
+  enableUserTitle?: boolean
   btnAdmin: ReactNode
   children?: ReactNode
 }) => {
+  const auth = cookies().get(cookieAuth)?.value
+  const user = await useReturnDecoded(auth)
+  const title = enableUserTitle && `👋 Olá, ${user && user?.name}`
+
   const { isAdmin } = await useVerifyAdmin()
 
   return (
@@ -22,4 +30,4 @@ const HeaderBody = async ({
   )
 }
 
-export default memo(HeaderBody)
+export default HeaderBody

@@ -1,10 +1,13 @@
+"use server"
 import { postCollectionProps } from "@/types/collection"
+import serverAPI from "../config"
 
-export const fetchCreateCollection = async (data: postCollectionProps) => {
-  const result = await fetch("/api/collections", {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-
+export const fetchCreateCollection = async ({
+  data
+}: {
+  data: postCollectionProps
+}) => {
+  const { CreateOn } = serverAPI()
+  const result = CreateOn({ route: "collections", data })
   return result
 }

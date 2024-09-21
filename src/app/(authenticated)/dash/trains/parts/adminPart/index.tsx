@@ -1,5 +1,4 @@
 "use client"
-
 import ButtonAdmin from "@/components/buttonAdmin"
 import { layoutAddAds } from "@/layouts/ads/add"
 import { useState } from "react"
@@ -7,10 +6,11 @@ import { useForm } from "react-hook-form"
 
 export const AdminPart = () => {
   const [update, setUpdate] = useState(false)
-  const { register } = useForm()
+  const { register, reset } = useForm()
 
   return (
     <ButtonAdmin
+      reset={reset}
       update={update}
       title='Trilhas'
       layout={layoutAddAds({ register, preview: "" })}
