@@ -4,7 +4,6 @@ import { NoteProps } from "@/types/note"
 import { fetchAllNotes } from "@/utils/fetch/notes/getAll"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { memo } from "react"
 import { FiBookmark } from "react-icons/fi"
 import ButtonAdd from "./parts/buttonAdd"
 import styled from "./style.module.scss"
@@ -55,4 +54,4 @@ const Notes = async () => {
   )
 }
 
-export default memo(Notes)
+export default Notes
