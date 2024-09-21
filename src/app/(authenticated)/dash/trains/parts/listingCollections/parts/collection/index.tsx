@@ -1,3 +1,4 @@
+"use server"
 import { Collection } from "@/types/collection"
 import { HeaderPart } from "./parts/header"
 import { ListingTrains } from "./parts/listingTrains"

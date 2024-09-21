@@ -1,3 +1,4 @@
+"use server"
 import { useVerifyArrayEmpty } from "@/hooks/useVerifyArrayEmpty"
 import { Collection } from "@/types/collection"
 import serverAPI from "@/utils/fetch/config"
