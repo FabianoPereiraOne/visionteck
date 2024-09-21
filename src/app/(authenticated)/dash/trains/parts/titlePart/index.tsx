@@ -4,7 +4,7 @@ import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { layoutAddCollection } from "@/layouts/collection/add"
 import { collectionsSchema } from "@/schemas/api/collections"
 import { fetchDeleteCollection } from "@/utils/fetch/collections/delete"
-import { fetchAllCollections } from "@/utils/fetch/collections/getAll"
+import { fetchClientAllCollections } from "@/utils/fetch/collections/getAllClient"
 import { fetchCreateCollection } from "@/utils/fetch/collections/post"
 import { fetchUpdateCollection } from "@/utils/fetch/collections/update"
 import { Collection } from "@prisma/client"
@@ -29,7 +29,7 @@ export const TitlePart = () => {
     }
 
     try {
-      await fetchCreateCollection(data).then(() => {
+      await fetchCreateCollection({ data }).then(() => {
         toast.success("Coleção criada com sucesso.")
         reset()
       })
@@ -55,13 +55,13 @@ export const TitlePart = () => {
   }
 
   const handlerUpdate = async () => {
-    const dataUpdate = getValues()
-    const id = dataUpdate?.id
+    const data = getValues()
+    const id = data?.id
 
     if (!id) return toast.error("Não foi possível atualizar coleção.")
 
     try {
-      await fetchUpdateCollection(dataUpdate as any).then(() => {
+      await fetchUpdateCollection(data as Collection).then(() => {
         reset()
         setUpdate(false)
         toast.success("Coleção atualizada com sucesso.")
@@ -84,6 +84,7 @@ export const TitlePart = () => {
     <article className={styled.container}>
       <strong className={styled.title}>Coleção de Trilhas</strong>
       <ButtonAdmin
+      reset={reset}
         iconButton={<FiPlus />}
         layout={layoutAddCollection({ register })}
         update={update}
@@ -91,7 +92,7 @@ export const TitlePart = () => {
         fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
         fcDelete={handlerDelete}
-        fcGetData={fetchAllCollections}
+        fcGetData={fetchClientAllCollections}
         fcLoadSetValues={loadSetValues}
       />
     </article>

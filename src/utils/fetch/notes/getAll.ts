@@ -1,19 +1,8 @@
 "use server"
-import { cookieAuth } from "@/schemas/others/config"
-import { baseURL } from "@/utils/http/baseUrl"
-import { cookies } from "next/headers"
+import serverAPI from "../config"
 
 export const fetchAllNotes = async () => {
-  const token = cookies().get(cookieAuth)?.value ?? ""
-
-  const result = await fetch(`${baseURL}/api/notes`, {
-    method: "GET",
-    next: { tags: ["get-all-notes"] },
-    credentials: "include",
-    headers: {
-      Authorization: token
-    }
-  })
-
+  const { getAll } = serverAPI()
+  const result = getAll({ route: "notes" })
   return result
 }

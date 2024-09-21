@@ -37,7 +37,7 @@ const ButtonAdd = () => {
     }
 
     try {
-      await fetchCreateNote(data as NoteProps).then(() => {
+      await fetchCreateNote({ data }).then(() => {
         toast.success("Nota Criada com sucesso.")
         reset()
       })

@@ -2,11 +2,13 @@
 import Popup from "@/components/popup"
 import { LayoutType } from "@/types/layout"
 import { ReactNode, useState } from "react"
+import { FieldValues, UseFormReset } from "react-hook-form"
 import { FiSettings } from "react-icons/fi"
 import styled from "./style.module.scss"
 
 const ButtonAdmin = ({
   title = "",
+  reset,
   update,
   layout,
   variant = "default",
@@ -22,6 +24,7 @@ const ButtonAdmin = ({
   layout: LayoutType
   iconButton?: ReactNode
   variant?: "circle" | "default"
+  reset: UseFormReset<FieldValues>
   fcDelete: (item: any) => void
   fcLoadSetValues: (item: any) => void
   fcSubmit: () => void
@@ -36,6 +39,8 @@ const ButtonAdmin = ({
   }
 
   const handlerTogglePopup = () => {
+    if (open) reset()
+
     setOpen(oldValue => !oldValue)
   }
 

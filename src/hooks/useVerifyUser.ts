@@ -1,10 +1,12 @@
 import { cookieAuth } from "@/schemas/others/config"
 import { cookies } from "next/headers"
+import { NextRequest } from "next/server"
 import { useReturnDecoded } from "./useReturnDecoded"
 import { useVerifyToken } from "./useVerifyToken"
 
-export const useVerifyUser = async () => {
-  const token = cookies().get(cookieAuth)?.value
+export const useVerifyUser = async (request: NextRequest) => {
+  const token =
+    request?.headers?.get("Authorization") ?? cookies().get(cookieAuth)?.value
 
   if (!token) return { isUser: false }
 

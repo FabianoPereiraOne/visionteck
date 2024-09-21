@@ -7,10 +7,11 @@ import { useForm } from "react-hook-form"
 
 export const AdminPart = () => {
   const [update, setUpdate] = useState(false)
-  const { register } = useForm()
+  const { register, reset } = useForm()
 
   return (
     <ButtonAdmin
+      reset={reset}
       update={update}
       title='Trilhas'
       layout={layoutAddAds({ register, preview: "" })}

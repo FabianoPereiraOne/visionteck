@@ -1,19 +1,8 @@
 "use server"
-import { cookieAuth } from "@/schemas/others/config"
-import { baseURL } from "@/utils/http/baseUrl"
-import { revalidateTag } from "next/cache"
-import { cookies } from "next/headers"
+import serverAPI from "../config"
 
 export const fetchDeleteNote = async ({ id }: { id: number }) => {
-  const token = cookies().get(cookieAuth)?.value ?? ""
-
-  await fetch(`${baseURL}/api/notes?id=${id}`, {
-    method: "DELETE",
-    credentials: "include",
-    headers: {
-      Authorization: token
-    }
-  })
-
-  revalidateTag("get-all-notes")
+  const { DeleteOn } = serverAPI()
+  const result = DeleteOn({ route: "notes", id })
+  return result
 }

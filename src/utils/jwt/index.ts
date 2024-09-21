@@ -14,7 +14,7 @@ export async function sign(payload: PayloadType) {
   const jwt = await new jose.SignJWT(payload)
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setExpirationTime("1h")
+    .setExpirationTime("2h")
     .sign(secret)
   return jwt
 }
