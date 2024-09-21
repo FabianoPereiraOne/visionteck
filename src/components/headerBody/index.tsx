@@ -1,6 +1,6 @@
 "use server"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
-import { memo, ReactNode } from "react"
+import { ReactNode } from "react"
 import styled from "./style.module.scss"
 
 const HeaderBody = async ({
@@ -23,4 +23,4 @@ const HeaderBody = async ({
   )
 }
 
-export default memo(HeaderBody)
+export default HeaderBody

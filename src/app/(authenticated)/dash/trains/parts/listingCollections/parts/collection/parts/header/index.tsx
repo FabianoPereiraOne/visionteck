@@ -1,4 +1,3 @@
-"use server"
 import { FiLayers } from "react-icons/fi"
 import styled from "./styled.module.scss"
 
