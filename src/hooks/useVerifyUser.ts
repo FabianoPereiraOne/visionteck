@@ -1,3 +1,4 @@
+"use server"
 import { cookieAuth } from "@/schemas/others/config"
 import { cookies } from "next/headers"
 import { NextRequest } from "next/server"
