@@ -19,6 +19,12 @@ const ButtonAds = () => {
   const { register, watch, getValues, reset, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
 
+  const resetAllValues = () => {
+    setUpdate(false)
+    setPreview("")
+    reset()
+  }
+
   const handlerSubmit = async () => {
     const dataValues = getValues()
     const files = dataValues?.file
@@ -42,9 +48,8 @@ const ButtonAds = () => {
       }
 
       await fetchCreateAds({ data }).then(() => {
+        resetAllValues()
         toast.success("Anúncio criado com sucesso.")
-        reset()
-        setPreview("")
       })
     } catch (error) {
       toast.error("Erro ao fazer upload do arquivo.")
@@ -58,9 +63,8 @@ const ButtonAds = () => {
   }) => {
     try {
       await fetchUpdateAds(dataUpdate).then(() => {
+        resetAllValues()
         toast.success("Anúncio atualizado com sucesso.")
-        setUpdate(false)
-        reset()
       })
     } catch (error) {
       console.error(error)
@@ -68,7 +72,7 @@ const ButtonAds = () => {
     }
   }
 
-  const handlerUpdateAds = async () => {
+  const handlerUpdate = async () => {
     const dataUpdate = getValues()
     const id = dataUpdate?.id
     const files = dataUpdate?.file
@@ -99,13 +103,14 @@ const ButtonAds = () => {
     setUpdate(true)
   }
 
-  const handlerDeleteAds = async (ads: TypeAds) => {
+  const handlerDelete = async (ads: TypeAds) => {
     const id = ads?.id
 
     if (!id) return toast.error("Não foi possível deletar anúncio.")
 
     try {
       await fetchDeleteAds({ id }).then(() => {
+        resetAllValues()
         toast.success("Anúncio deletado com sucesso.")
       })
     } catch (error) {
@@ -136,13 +141,13 @@ const ButtonAds = () => {
   return (
     <>
       <ButtonAdmin
+        title='Anúncios'
         reset={reset}
         update={update}
-        title='Anúncios'
         layout={layoutAddAds({ register, preview })}
-        fcUpdate={handlerUpdateAds}
+        fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
-        fcDelete={handlerDeleteAds}
+        fcDelete={handlerDelete}
         fcGetData={fetchAllAds}
         fcLoadSetValues={loadSetValues}
       />

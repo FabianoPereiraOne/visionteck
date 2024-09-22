@@ -1,6 +1,7 @@
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { trainsSchema } from "@/schemas/api/trains"
+import { visionBucket } from "@/services/firebase/config"
 import { getCollection } from "@/services/prisma/collections/get"
 import { createTrain } from "@/services/prisma/trains/create"
 import { deleteTrains } from "@/services/prisma/trains/delete"
@@ -8,6 +9,7 @@ import { getTrain } from "@/services/prisma/trains/get"
 import { getAllTrains } from "@/services/prisma/trains/getAll"
 import { updateTrain } from "@/services/prisma/trains/update"
 import { httpStatus } from "@/utils/httpStatus"
+import { deleteObject, ref } from "firebase/storage"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -134,6 +136,13 @@ export async function PATCH(request: NextRequest) {
         }
       )
 
+    const isMatch = hasTrain?.linkCover.includes(linkCover)
+
+    if (!isMatch) {
+      const refBucket = ref(visionBucket, hasTrain?.linkCover)
+      await deleteObject(refBucket)
+    }
+
     const train = { id, title, description, linkCover, collectionId }
 
     const data = await updateTrain(train)
@@ -202,6 +211,9 @@ export async function DELETE(request: NextRequest) {
           status: httpStatus.notFound.statusCode
         }
       )
+
+    const refBucket = ref(visionBucket, hasTrain?.linkCover)
+    await deleteObject(refBucket)
 
     const data = await deleteTrains({ id })
     return NextResponse.json(
