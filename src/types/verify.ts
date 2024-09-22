@@ -4,4 +4,5 @@ export type LoadingMsgProps = {
   message: string
   link?: { url: string; name: string }
   children?: ReactNode
+  image?: string
 }

@@ -62,7 +62,11 @@ export const layoutAddTrains = ({
         placeholder='Descrição'
         {...register("description")}
       />,
-      <select {...register("collectionId")} className={styled.select}>
+      <select
+        key='collectionId'
+        {...register("collectionId")}
+        className={styled.select}
+      >
         <option value={0}>Selecione uma coleção</option>
         {collections?.map(collection => {
           return (

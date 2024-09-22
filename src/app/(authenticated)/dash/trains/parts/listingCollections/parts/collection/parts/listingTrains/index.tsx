@@ -15,7 +15,7 @@ import styled from "./style.module.scss"
 export const ListingTrains = ({ data }: { data: Train[] }) => {
   const { isEmpty } = useVerifyArrayEmpty()
   const router = useRouter()
-  const trains = data?.filter(train => train?.modules.length > 0)
+  const trains = data?.filter(train => train?.modules.length >= 0)
   const swiperRef = useRef<SwiperType>()
 
   if (isEmpty(trains)) return <></>

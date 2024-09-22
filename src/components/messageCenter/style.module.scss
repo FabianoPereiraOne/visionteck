@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-black-light);
+  margin: 36px 0 0 0;
+
+  .contentChildren {
+    margin: 36px 0 0 0;
+  }
+
+  & img {
+    max-width: 500px;
+    width: 80%;
+  }
+
+  & h3 {
+    margin: 16px 0 0 0;
+    font-size: var(--size18);
+    font-weight: 500;
+    color: var(--color-white-normal);
+    max-width: 600px;
+    width: 80%;
+    text-align: center;
+    line-height: 1.2em;
+    white-space: pre-line;
+
+    @media screen and (min-width: 768px) {
+      & {
+        font-size: var(--size24);
+      }
+    }
+  }
+
+  & a {
+    margin: 32px 0 0 0;
+    font-size: var(--size16);
+    font-weight: 400;
+    color: var(--color-gray-normal);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      color: var(--color-orange-normal);
+    }
+  }
+}
