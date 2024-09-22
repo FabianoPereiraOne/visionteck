@@ -1,7 +1,8 @@
 import useClearString from "@/hooks/useClearString"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
+import { visionBucket } from "@/services/firebase/config"
 import { httpStatus } from "@/utils/httpStatus"
-import { mkdir, writeFile } from "fs/promises"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
 
@@ -41,20 +42,18 @@ export async function POST(request: NextRequest) {
     const fileExtension = path.extname(originalFileName)
     const fileBaseName = path.basename(originalFileName, fileExtension)
     const newFileName = `${fileBaseName}-${timestamp}${fileExtension}`
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const filePath = path.resolve(
-      process.cwd(),
-      "public",
-      "uploads",
-      newFileName
-    )
-    const dir = path.dirname(filePath)
-    await mkdir(dir, { recursive: true })
+    const nameRef = `/uploads/${newFileName}`
 
-    await writeFile(filePath, buffer)
+    const fileRef = ref(visionBucket, nameRef)
+    const uploadTask = await uploadBytesResumable(fileRef, file)
+    const uploadUrl = await getDownloadURL(uploadTask.ref)
 
     return NextResponse.json(
-      { statusCode: httpStatus.ok.statusCode, path: `/uploads/${newFileName}` },
+      {
+        statusCode: httpStatus.ok.statusCode,
+        success: "Upload realizado com sucesso.",
+        path: uploadUrl
+      },
       {
         status: httpStatus.ok.statusCode
       }

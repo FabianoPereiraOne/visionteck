@@ -46,6 +46,7 @@ export const TitlePart = () => {
 
     try {
       await fetchDeleteCollection({ id }).then(() => {
+        reset()
         toast.success("Coleção deletada com sucesso.")
       })
     } catch (error) {
@@ -84,7 +85,7 @@ export const TitlePart = () => {
     <article className={styled.container}>
       <strong className={styled.title}>Coleção de Trilhas</strong>
       <ButtonAdmin
-      reset={reset}
+        reset={reset}
         iconButton={<FiPlus />}
         layout={layoutAddCollection({ register })}
         update={update}
