@@ -19,6 +19,11 @@ export const TitlePart = () => {
   const { register, getValues, reset, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
 
+  const resetAllValues = () => {
+    setUpdate(false)
+    reset()
+  }
+
   const handlerSubmit = async () => {
     const dataCreate = getValues()
 
@@ -30,8 +35,8 @@ export const TitlePart = () => {
 
     try {
       await fetchCreateCollection({ data }).then(() => {
+        resetAllValues()
         toast.success("Coleção criada com sucesso.")
-        reset()
       })
     } catch (error) {
       console.error(error)
@@ -46,7 +51,7 @@ export const TitlePart = () => {
 
     try {
       await fetchDeleteCollection({ id }).then(() => {
-        reset()
+        resetAllValues()
         toast.success("Coleção deletada com sucesso.")
       })
     } catch (error) {
@@ -63,8 +68,7 @@ export const TitlePart = () => {
 
     try {
       await fetchUpdateCollection(data as Collection).then(() => {
-        reset()
-        setUpdate(false)
+        resetAllValues()
         toast.success("Coleção atualizada com sucesso.")
       })
     } catch (error) {

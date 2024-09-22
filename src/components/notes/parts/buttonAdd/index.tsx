@@ -1,5 +1,5 @@
 "use client"
-import Popup from "@/components/popup"
+import ButtonAdmin from "@/components/buttonAdmin"
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { layoutAddNote } from "@/layouts/note/add"
 import { notesSchema } from "@/schemas/api/notes"
@@ -12,19 +12,15 @@ import { memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { FiPlus } from "react-icons/fi"
-import styled from "./style.module.scss"
 
 const ButtonAdd = () => {
-  const [open, setOpen] = useState(false)
   const [update, setUpdate] = useState(false)
-  const { register, reset, getValues, setValue, watch } = useForm()
+  const { register, reset, getValues, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
 
-  const handlerTogglePopup = () => {
-    if (open) reset()
-
-    setOpen(internalValue => !internalValue)
+  const resetAllValues = () => {
     setUpdate(false)
+    reset()
   }
 
   const handlerSubmit = async () => {
@@ -38,8 +34,8 @@ const ButtonAdd = () => {
 
     try {
       await fetchCreateNote({ data }).then(() => {
+        resetAllValues()
         toast.success("Nota Criada com sucesso.")
-        reset()
       })
     } catch (error) {
       console.error(error)
@@ -47,13 +43,14 @@ const ButtonAdd = () => {
     }
   }
 
-  const handlerDeleteNote = async (note: NoteProps) => {
+  const handlerDelete = async (note: NoteProps) => {
     const id = note?.id
 
     if (!id) return toast.error("Não foi possível deletar nota.")
 
     try {
       await fetchDeleteNote({ id }).then(() => {
+        resetAllValues()
         toast.success("Nota deletada com sucesso.")
       })
     } catch (error) {
@@ -71,7 +68,7 @@ const ButtonAdd = () => {
     setUpdate(true)
   }
 
-  const handlerUpdateNote = async () => {
+  const handlerUpdate = async () => {
     const note = getValues()
     const id = note?.id
 
@@ -79,6 +76,7 @@ const ButtonAdd = () => {
 
     try {
       await fetchUpdateNote({ id, data: note }).then(() => {
+        resetAllValues()
         toast.success("Nota atualizada com sucesso.")
       })
     } catch (error) {
@@ -89,20 +87,18 @@ const ButtonAdd = () => {
 
   return (
     <>
-      <button className={styled.btnAdd} onClick={handlerTogglePopup}>
-        <FiPlus />
-      </button>
-      {open && (
-        <Popup
-          fcEdit={loadSetValues}
-          fcDel={handlerDeleteNote}
-          fcSubmit={update ? handlerUpdateNote : handlerSubmit}
-          layout={layoutAddNote({ register })}
-          fcToggle={handlerTogglePopup}
-          fcGetData={fetchClientAllNotes}
-          update={update}
-        />
-      )}
+      <ButtonAdmin
+        reset={reset}
+        update={update}
+        variant='circle'
+        iconButton={<FiPlus />}
+        layout={layoutAddNote({ register })}
+        fcUpdate={handlerUpdate}
+        fcSubmit={handlerSubmit}
+        fcDelete={handlerDelete}
+        fcGetData={fetchClientAllNotes}
+        fcLoadSetValues={loadSetValues}
+      />
     </>
   )
 }

@@ -72,7 +72,7 @@ const ButtonAds = () => {
     }
   }
 
-  const handlerUpdateAds = async () => {
+  const handlerUpdate = async () => {
     const dataUpdate = getValues()
     const id = dataUpdate?.id
     const files = dataUpdate?.file
@@ -103,7 +103,7 @@ const ButtonAds = () => {
     setUpdate(true)
   }
 
-  const handlerDeleteAds = async (ads: TypeAds) => {
+  const handlerDelete = async (ads: TypeAds) => {
     const id = ads?.id
 
     if (!id) return toast.error("Não foi possível deletar anúncio.")
@@ -141,13 +141,13 @@ const ButtonAds = () => {
   return (
     <>
       <ButtonAdmin
+        title='Anúncios'
         reset={reset}
         update={update}
-        title='Anúncios'
         layout={layoutAddAds({ register, preview })}
-        fcUpdate={handlerUpdateAds}
+        fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
-        fcDelete={handlerDeleteAds}
+        fcDelete={handlerDelete}
         fcGetData={fetchAllAds}
         fcLoadSetValues={loadSetValues}
       />

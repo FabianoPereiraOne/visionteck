@@ -120,8 +120,12 @@ export async function PATCH(request: NextRequest) {
         }
       )
 
-    const refBucket = ref(visionBucket, hasAds?.link)
-    await deleteObject(refBucket)
+    const isMatch = hasAds?.link.includes(link)
+
+    if (!isMatch) {
+      const refBucket = ref(visionBucket, hasAds?.link)
+      await deleteObject(refBucket)
+    }
 
     const adsUpdate = {
       id,
