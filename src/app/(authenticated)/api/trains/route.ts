@@ -1,3 +1,4 @@
+import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { trainsSchema } from "@/schemas/api/trains"
@@ -143,7 +144,13 @@ export async function PATCH(request: NextRequest) {
       await deleteObject(refBucket)
     }
 
-    const train = { id, title, description, linkCover, collectionId }
+    const train = {
+      id,
+      title,
+      description,
+      linkCover,
+      collectionId: useParseNumber(collectionId)
+    }
 
     const data = await updateTrain(train)
 

@@ -1,6 +1,7 @@
 "use client"
 import ButtonAdmin from "@/components/buttonAdmin"
 import useDisplayErrors from "@/hooks/useDisplayErrors"
+import { useParseNumber } from "@/hooks/useParseNumber"
 import { layoutAddTrains } from "@/layouts/trains/add"
 import { trainsSchema } from "@/schemas/api/trains"
 import { patchTrainProps, Train } from "@/types/train"
@@ -46,6 +47,10 @@ export const AdminPart = () => {
 
   const handlerSubmit = async () => {
     const dataValues = getValues()
+    const dataCreate = {
+      ...dataValues,
+      collectionId: useParseNumber(dataValues?.collectionId)
+    }
     const files = dataValues?.file
 
     if (!files[0]) return toast.error("Nenhuma imagem selecionada.")
@@ -58,7 +63,7 @@ export const AdminPart = () => {
       const response = await result.json()
 
       const { success, data, error } = await trainsSchema.safeParse({
-        ...dataValues,
+        ...dataCreate,
         linkCover: response?.path ?? ""
       })
 
@@ -91,13 +96,11 @@ export const AdminPart = () => {
     }
   }
 
-  const loadSubmitUpdate = async ({
-    dataUpdate
-  }: {
-    dataUpdate: patchTrainProps
-  }) => {
+  const loadSubmitUpdate = async ({ data }: { data: patchTrainProps }) => {
     try {
-      await fetchUpdateTrain(dataUpdate).then(() => {
+      await fetchUpdateTrain({
+        data
+      }).then(() => {
         resetAllValues()
         toast.success("Trilha atualizado com sucesso.")
       })
@@ -120,13 +123,14 @@ export const AdminPart = () => {
 
       const result = await fetchUploadFile({ data: dataFile })
       const response = await result.json()
+      delete dataUpdate?.file
 
       return loadSubmitUpdate({
-        dataUpdate: { ...dataUpdate, linkCover: response?.path }
-      } as { dataUpdate: patchTrainProps })
+        data: { ...dataUpdate, id, linkCover: response?.path ?? "" }
+      })
     }
 
-    loadSubmitUpdate({ dataUpdate } as { dataUpdate: patchTrainProps })
+    loadSubmitUpdate({ data: { ...dataUpdate, id } })
   }
 
   const loadSetValues = (train: Train) => {
@@ -134,7 +138,7 @@ export const AdminPart = () => {
     setValue("title", train?.title)
     setValue("description", train?.description)
     setValue("linkCover", train?.linkCover)
-    setValue("collectionId", train?.collectionId)
+    setValue("collectionId", train?.collectionId ?? 0)
     setPreview(train?.linkCover)
     setUpdate(true)
   }
