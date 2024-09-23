@@ -24,7 +24,7 @@ const HeaderBody = async ({
   return (
     <div className={styled.container}>
       {title && <strong className={styled.title}>{title}</strong>}
-      {children}
+      {isAdmin && children}
       {isAdmin && btnAdmin}
     </div>
   )
