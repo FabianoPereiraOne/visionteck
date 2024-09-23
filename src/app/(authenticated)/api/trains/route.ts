@@ -26,13 +26,16 @@ export async function POST(request: NextRequest) {
       }
     )
 
-  const { title, description, linkCover, collectionId } = await request.json()
+  const { title, description, linkCover, collectionId, planId, lock } =
+    await request.json()
 
   const { success, error } = trainsSchema.safeParse({
     title,
     description,
     linkCover,
-    collectionId
+    collectionId,
+    planId,
+    lock
   })
 
   if (!success) {
@@ -69,7 +72,9 @@ export async function POST(request: NextRequest) {
       title,
       description,
       linkCover,
-      collectionId
+      collectionId,
+      planId,
+      lock
     }
 
     const data = await createTrain(train)

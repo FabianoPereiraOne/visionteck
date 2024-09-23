@@ -8,6 +8,8 @@ export const selectSchemaTrain = {
   collectionId: true,
   createdAt: true,
   updatedAt: true,
+  plan: true,
+  lock: true,
   modules: {
     select: selectSchemaModule
   }

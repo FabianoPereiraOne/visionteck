@@ -7,12 +7,22 @@ export const updateTrain = async ({
   title,
   description,
   linkCover,
-  collectionId
+  collectionId,
+  lock,
+  planId
 }: patchTrainProps) => {
   const collection = collectionId
     ? {
         connect: {
           id: collectionId
+        }
+      }
+    : undefined
+
+  const plan = planId
+    ? {
+        connect: {
+          id: planId
         }
       }
     : undefined
@@ -25,7 +35,9 @@ export const updateTrain = async ({
       title,
       description,
       linkCover,
-      collection
+      collection,
+      plan,
+      lock
     },
     select: selectSchemaTrain
   })

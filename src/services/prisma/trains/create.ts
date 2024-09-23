@@ -6,13 +6,25 @@ export const createTrain = async ({
   title,
   description,
   linkCover,
-  collectionId
+  collectionId,
+  lock,
+  planId
 }: PostTrainProps) => {
+  const plan = planId
+    ? {
+        connect: {
+          id: planId
+        }
+      }
+    : undefined
+
   const result = await prismaClient.train.create({
     data: {
       title,
       description,
       linkCover,
+      lock,
+      plan,
       collection: {
         connect: {
           id: collectionId
