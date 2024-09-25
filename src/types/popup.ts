@@ -1,3 +1,4 @@
+import { DataLoadType } from "./general"
 import { LayoutType } from "./layout"
 
 export type PopupProps = {
@@ -7,11 +8,11 @@ export type PopupProps = {
   fcSubmit: (data: any) => void
   fcEdit: (item: any) => void
   fcDel: (item: any) => void
-  fcGetData: () => Promise<Response>
+  data: DataLoadType
 }
 
 export type DataViewProps = {
   fcEdit: (item: any) => void
   fcDel: (item: any) => void
-  fcGetData: () => Promise<Response>
+  data: DataLoadType
 }

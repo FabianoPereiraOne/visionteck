@@ -36,19 +36,16 @@ const Login = () => {
       return toast.error(response?.error)
     }
 
-    if (typeof window !== "undefined")
-      sessionStorage.setItem("userAuth", JSON.stringify(response.data))
-
     setLoading(false)
     reset()
     toast.success(response?.success)
-    setTimeout(() => router.push("/dash"), 1000)
+    router.push("/dash")
   }
 
   return (
     <section className={styled.container}>
-      <div className={styled.backgroundImage}></div>
-      <aside className={styled.sidebar}>
+      <div className={styled.backgroundImage} />
+      <div className={styled.sidebar}>
         <figure className={styled.figure}>
           <img src={schemaAssets.general.logo} alt='Logo' />
         </figure>
@@ -80,7 +77,7 @@ const Login = () => {
             <Link href='/register'>Registrar-se</Link>
           </div>
         </form>
-      </aside>
+      </div>
     </section>
   )
 }

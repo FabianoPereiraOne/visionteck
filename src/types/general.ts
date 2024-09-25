@@ -1,3 +1,7 @@
+import { Collection } from "./collection"
+import { NoteProps } from "./note"
+import { Train } from "./train"
+
 export type paramsProps = {
   id?: string
 }
@@ -13,3 +17,5 @@ export type searchParamsProps = {
   id?: string
   token?: string
 }
+
+export type DataLoadType = Collection[] | Train[] | NoteProps[]

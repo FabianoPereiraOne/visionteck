@@ -1,4 +1,5 @@
 "use server"
+import { cookieAuth } from "@/schemas/others/config"
 import { cookies } from "next/headers"
 
 const useSaveTokenAuth = () => {
@@ -7,7 +8,7 @@ const useSaveTokenAuth = () => {
     const today = Date.now()
 
     await cookies().set({
-      name: "Authorization",
+      name: cookieAuth,
       value: token,
       httpOnly: true,
       path: "/",

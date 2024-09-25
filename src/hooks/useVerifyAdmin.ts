@@ -9,13 +9,15 @@ export const useVerifyAdmin = async (request?: NextRequest) => {
   const token =
     request?.headers?.get("Authorization") ?? cookies().get(cookieAuth)?.value
 
-  if (!token) return { isAdmin: false }
+  if (!token) return { isAdmin: false, data: null }
 
   const decodedToken = await useReturnDecoded(token)
   const logged: any = await useVerifyServerToken(decodedToken)
 
-  if (!logged?.status || logged?.data?.type !== "ADMIN")
-    return { isAdmin: false }
+  if (!logged?.status) return { isAdmin: false, data: null }
 
-  return { isAdmin: true }
+  if (logged?.status && logged?.data?.type !== "ADMIN")
+    return { isAdmin: false, data: logged?.data }
+
+  return { isAdmin: true, data: logged?.data }
 }

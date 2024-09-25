@@ -1,17 +1,19 @@
 "use server"
 import { useParseNumber } from "@/hooks/useParseNumber"
-import { useReturnDecoded } from "@/hooks/useReturnDecoded"
 import { useVerifyAccessPlan } from "@/hooks/useVerifyAccessPlan"
-import { cookieAuth } from "@/schemas/others/config"
 import { Collection } from "@/types/collection"
-import { cookies } from "next/headers"
+import { dataUser } from "@/types/user"
 import { HeaderPart } from "./parts/header"
 import { ListingTrains } from "./parts/listingTrains"
 
-export const CollectionPart = async ({ data }: { data: Collection }) => {
+export const CollectionPart = async ({
+  data,
+  user
+}: {
+  data: Collection
+  user: dataUser
+}) => {
   const { verifyAccess } = useVerifyAccessPlan()
-  const auth = cookies().get(cookieAuth)?.value
-  const user = await useReturnDecoded(auth)
   const userPlan = useParseNumber(`${user?.planId}`)
 
   const trains = data?.trains?.map(train => {
@@ -23,13 +25,9 @@ export const CollectionPart = async ({ data }: { data: Collection }) => {
   })
 
   return (
-    <div>
-      <HeaderPart
-        id={data?.id}
-        title={data?.title}
-        themeColor={data?.themeColor}
-      />
+    <section>
+      <HeaderPart title={data?.title} themeColor={data?.themeColor} />
       <ListingTrains data={trains} />
-    </div>
+    </section>
   )
 }

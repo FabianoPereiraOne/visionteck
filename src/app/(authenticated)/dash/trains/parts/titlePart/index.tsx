@@ -3,18 +3,17 @@ import ButtonAdmin from "@/components/buttonAdmin"
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { layoutAddCollection } from "@/layouts/collection/add"
 import { collectionsSchema } from "@/schemas/api/collections"
+import { Collection } from "@/types/collection"
 import { fetchDeleteCollection } from "@/utils/fetch/collections/delete"
-import { fetchClientAllCollections } from "@/utils/fetch/collections/getAllClient"
 import { fetchCreateCollection } from "@/utils/fetch/collections/post"
 import { fetchUpdateCollection } from "@/utils/fetch/collections/update"
-import { Collection } from "@prisma/client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { FiPlus } from "react-icons/fi"
 import styled from "./style.module.scss"
 
-export const TitlePart = () => {
+export const TitlePart = ({ collections }: { collections: Collection[] }) => {
   const [update, setUpdate] = useState(false)
   const { register, getValues, reset, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
@@ -97,7 +96,7 @@ export const TitlePart = () => {
         fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
         fcDelete={handlerDelete}
-        fcGetData={fetchClientAllCollections}
+        data={collections}
         fcLoadSetValues={loadSetValues}
       />
     </article>

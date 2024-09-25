@@ -11,7 +11,7 @@ const Popup = ({
   fcEdit,
   fcDel,
   layout,
-  fcGetData,
+  data,
   update
 }: PopupProps) => {
   const handlerClosePopup = (event: any) => {
@@ -46,7 +46,7 @@ const Popup = ({
         <div className={styled.containerView}>
           <hr />
           <h6>{layout?.listView}</h6>
-          <DataView fcDel={fcDel} fcEdit={fcEdit} fcGetData={fcGetData} />
+          <DataView fcDel={fcDel} fcEdit={fcEdit} data={data} />
         </div>
       </article>
     </div>

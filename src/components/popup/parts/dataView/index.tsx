@@ -1,37 +1,24 @@
 import Loading from "@/components/loading"
 import { DataViewProps } from "@/types/popup"
-import { memo, useEffect, useState } from "react"
+import { memo, useState } from "react"
 import { FiEdit, FiTrash } from "react-icons/fi"
 import styled from "./style.module.scss"
 
-const DataView = ({ fcGetData, fcEdit, fcDel }: DataViewProps) => {
-  const [data, setData] = useState([])
-
-  const loadDataPopup = async () => {
-    const result = await fcGetData()
-    const response = await result.json()
-    const list = await response?.data
-
-    setData(list)
-  }
+const DataView = ({ data, fcEdit, fcDel }: DataViewProps) => {
+  const [dataFilter, setData] = useState(data ?? [])
 
   const handlerSubmitDelete = (item: any) => {
     const id = item?.id
-    const list = data?.filter((dataItem: any) => dataItem?.id !== id)
+    const list: any = data?.filter((dataItem: any) => dataItem?.id !== id)
 
     setData(list)
-
     fcDel(item)
   }
 
-  useEffect(() => {
-    loadDataPopup()
-  }, [])
-
   return (
     <ul className={styled.listView}>
-      {data?.length > 0 ? (
-        data.map((item: { id: string; title: string }) => {
+      {dataFilter?.length > 0 ? (
+        dataFilter.map((item: { id: string | number; title: string }) => {
           return (
             <li className={styled.row} key={item?.id}>
               <p>&#x2022; {item?.title}</p>

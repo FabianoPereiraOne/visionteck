@@ -1,5 +1,6 @@
 import { useCompareHash } from "@/hooks/useCompareHash"
 import { useGenerateToken } from "@/hooks/useGenerateToken"
+import useSaveTokenAuth from "@/hooks/useSaveTokenAuth"
 import { signSchema } from "@/schemas/api/sign"
 import { cookieAuth } from "@/schemas/others/config"
 import { getUser } from "@/services/prisma/users/get"
@@ -9,6 +10,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   const { email } = await request.json()
+  const { saveTokenAuth } = useSaveTokenAuth()
   const headers = new Headers(request.headers)
   const password = headers.get("password")
 
@@ -77,7 +79,8 @@ export async function POST(request: NextRequest) {
       type: user.type,
       planId: user.plan.id
     })
-    cookies().set(cookieAuth, token)
+
+    await saveTokenAuth(token)
 
     return NextResponse.json(
       {

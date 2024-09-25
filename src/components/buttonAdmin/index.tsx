@@ -1,5 +1,6 @@
 "use client"
 import Popup from "@/components/popup"
+import { DataLoadType } from "@/types/general"
 import { LayoutType } from "@/types/layout"
 import { ReactNode, useState } from "react"
 import { FieldValues, UseFormReset } from "react-hook-form"
@@ -9,6 +10,7 @@ import styled from "./style.module.scss"
 const ButtonAdmin = ({
   title = "",
   reset,
+  data,
   update,
   layout,
   variant = "default",
@@ -16,8 +18,7 @@ const ButtonAdmin = ({
   fcDelete,
   fcLoadSetValues,
   fcSubmit,
-  fcUpdate,
-  fcGetData
+  fcUpdate
 }: {
   title?: string
   update: boolean
@@ -29,7 +30,7 @@ const ButtonAdmin = ({
   fcLoadSetValues: (item: any) => void
   fcSubmit: () => void
   fcUpdate: () => void
-  fcGetData: () => Promise<Response>
+  data: DataLoadType
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -53,7 +54,7 @@ const ButtonAdmin = ({
         <Popup
           fcDel={fcDelete}
           fcEdit={fcLoadSetValues}
-          fcGetData={fcGetData}
+          data={data}
           fcSubmit={update ? fcUpdate : fcSubmit}
           fcToggle={handlerTogglePopup}
           layout={layout}

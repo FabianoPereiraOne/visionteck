@@ -3,11 +3,9 @@ import styled from "./styled.module.scss"
 
 export const HeaderPart = ({
   title,
-  id,
   themeColor
 }: {
   title: string
-  id: number
   themeColor: string
 }) => {
   return (

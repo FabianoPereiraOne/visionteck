@@ -34,12 +34,7 @@ export type dataUser = {
   name: string
   email: string
   phone: string
-  plan: {
-    id: number | null
-    title: string
-    description: string
-    price: number
-  }
+  planId: number
   profession: string
   type: Role
   status: boolean

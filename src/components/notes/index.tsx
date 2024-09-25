@@ -1,5 +1,4 @@
 "use server"
-import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { NoteProps } from "@/types/note"
 import { fetchAllNotes } from "@/utils/fetch/notes/getAll"
 import { format } from "date-fns"
@@ -8,12 +7,10 @@ import { FiBookmark } from "react-icons/fi"
 import ButtonAdd from "./parts/buttonAdd"
 import styled from "./style.module.scss"
 
-const Notes = async () => {
+const Notes = async ({ isAdmin }: { isAdmin: boolean }) => {
   const result = await fetchAllNotes()
   const response = await result.json()
   const notes: NoteProps[] = response?.data ?? []
-
-  const { isAdmin } = await useVerifyAdmin()
 
   if (notes && notes.length <= 0) return <></>
 
@@ -24,7 +21,7 @@ const Notes = async () => {
           <FiBookmark />
           Notas de atualização
         </h3>
-        {isAdmin && <ButtonAdd />}
+        {isAdmin && <ButtonAdd notes={notes} />}
       </section>
       <section className={styled.notes}>
         {notes.map((note: NoteProps) => {

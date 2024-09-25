@@ -4,17 +4,26 @@ import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { useParseNumber } from "@/hooks/useParseNumber"
 import { layoutAddTrains } from "@/layouts/trains/add"
 import { trainsSchema } from "@/schemas/api/trains"
+import { Collection } from "@/types/collection"
 import { patchTrainProps, Train } from "@/types/train"
 import { fetchDeleteTrain } from "@/utils/fetch/trains/delete"
-import { fetchClientAllTrains } from "@/utils/fetch/trains/getAllClient"
 import { fetchCreateTrain } from "@/utils/fetch/trains/post"
 import { fetchUpdateTrain } from "@/utils/fetch/trains/update"
 import { fetchUploadFile } from "@/utils/fetch/uploads/post"
+import { Plan } from "@prisma/client"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const AdminPart = () => {
+export const AdminPart = ({
+  collections,
+  plans,
+  trains
+}: {
+  collections: Collection[]
+  plans: Plan[]
+  trains: Train[]
+}) => {
   const [update, setUpdate] = useState(false)
   const [preview, setPreview] = useState("")
   const { register, reset, watch, getValues, setValue } = useForm()
@@ -115,7 +124,6 @@ export const AdminPart = () => {
   }
 
   const handlerUpdate = async () => {
-    //Função nao ta atualizando planoID
     const dataUpdate = getValues()
     const id = dataUpdate?.id
     const files = dataUpdate?.file
@@ -154,11 +162,11 @@ export const AdminPart = () => {
       reset={resetAllValues}
       update={update}
       title='Trilhas'
-      layout={layoutAddTrains({ register, preview })}
+      layout={layoutAddTrains({ register, preview, collections, plans })}
       fcUpdate={handlerUpdate}
       fcSubmit={handlerSubmit}
       fcDelete={handlerDelete}
-      fcGetData={fetchClientAllTrains}
+      data={trains}
       fcLoadSetValues={loadSetValues}
     />
   )
