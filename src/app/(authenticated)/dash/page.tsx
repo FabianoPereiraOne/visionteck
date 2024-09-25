@@ -1,5 +1,5 @@
-import BannerAdSense from "@/components/bannerAdSense"
-import ButtonAds from "@/components/bannerAdSense/parts/buttonAds"
+import BannerAdSense from "@/components/adSense"
+import ButtonAds from "@/components/adSense/parts/buttonAds"
 import HeaderBody from "@/components/headerBody"
 import Notes from "@/components/notes"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
