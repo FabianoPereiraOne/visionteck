@@ -67,7 +67,7 @@ const ButtonAds = ({ listAds }: { listAds: TypeAds[] }) => {
       })
     } catch (error) {
       console.error(error)
-      toast.error("Erro ao atualizar anúncio.")
+      toast.error("Ops! Erro ao atualizar anúncio.")
     }
   }
 
