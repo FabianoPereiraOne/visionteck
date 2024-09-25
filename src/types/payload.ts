@@ -3,4 +3,5 @@ export type PayloadType = {
   name: string
   email: string
   type: string
+  planId: Number
 }

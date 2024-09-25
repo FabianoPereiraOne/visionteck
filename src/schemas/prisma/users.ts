@@ -3,7 +3,7 @@ export const selectSchemaUser = {
   name: true,
   email: true,
   phone: true,
-  plan: true,
+  planId: true,
   profession: true,
   type: true,
   status: true,

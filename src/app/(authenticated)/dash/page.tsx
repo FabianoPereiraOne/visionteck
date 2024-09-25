@@ -1,15 +1,26 @@
-import BannerAdsense from "@/components/bannerAdsense"
-import ButtonAds from "@/components/bannerAdsense/parts/buttonAds"
+import BannerAdSense from "@/components/adSense"
+import ButtonAds from "@/components/adSense/parts/buttonAds"
 import HeaderBody from "@/components/headerBody"
 import Notes from "@/components/notes"
+import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
+import { getAllAds } from "@/services/prisma/ads/getAll"
+import { TypeAds } from "@/types/ads"
 import styled from "./style.module.scss"
 
 export default async function Dash() {
+  const { isAdmin, data } = await useVerifyAdmin()
+  const listAds: TypeAds[] = await getAllAds()
+
   return (
     <main className={styled.main}>
-      <HeaderBody enableUserTitle={true} btnAdmin={<ButtonAds />} />
-      <BannerAdsense />
-      <Notes />
+      <HeaderBody
+        isAdmin={isAdmin}
+        user={data}
+        enableUserTitle={true}
+        btnAdmin={<ButtonAds listAds={listAds} />}
+      />
+      <BannerAdSense listAds={listAds} />
+      <Notes isAdmin={isAdmin} />
     </main>
   )
 }

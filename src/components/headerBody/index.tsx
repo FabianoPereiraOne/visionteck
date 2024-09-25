@@ -1,30 +1,27 @@
 "use server"
-import { useReturnDecoded } from "@/hooks/useReturnDecoded"
-import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
-import { cookieAuth } from "@/schemas/others/config"
-import { cookies } from "next/headers"
+import { dataUser } from "@/types/user"
 import { ReactNode } from "react"
 import styled from "./style.module.scss"
 
 const HeaderBody = async ({
   enableUserTitle,
   btnAdmin,
-  children
+  children,
+  user,
+  isAdmin
 }: {
   enableUserTitle?: boolean
   btnAdmin: ReactNode
   children?: ReactNode
+  user: dataUser
+  isAdmin: boolean
 }) => {
-  const auth = cookies().get(cookieAuth)?.value
-  const user = await useReturnDecoded(auth)
   const title = enableUserTitle && `👋 Olá, ${user && user?.name}`
-
-  const { isAdmin } = await useVerifyAdmin()
 
   return (
     <div className={styled.container}>
       {title && <strong className={styled.title}>{title}</strong>}
-      {children}
+      {isAdmin && children}
       {isAdmin && btnAdmin}
     </div>
   )

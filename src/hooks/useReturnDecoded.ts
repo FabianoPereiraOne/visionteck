@@ -13,7 +13,8 @@ export const useReturnDecoded = async (
         id: decoded.payload?.id,
         name: decoded.payload?.name,
         email: decoded.payload?.email,
-        type: decoded.payload?.type
+        type: decoded.payload?.type,
+        planId: decoded.payload?.planId
       } as PayloadType
     }
     return null

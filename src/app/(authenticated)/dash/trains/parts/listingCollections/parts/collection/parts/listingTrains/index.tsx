@@ -1,7 +1,7 @@
 "use client"
 import { useVerifyArrayEmpty } from "@/hooks/useVerifyArrayEmpty"
+import { BreakpointsSwapper } from "@/schemas/pages/config"
 import { Train } from "@/types/train"
-import { useRouter } from "next/navigation"
 import { useRef } from "react"
 import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi"
 import { Swiper as SwiperType } from "swiper"
@@ -10,11 +10,11 @@ import "swiper/css/free-mode"
 import "swiper/css/navigation"
 import { FreeMode } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
+import { CardTrain } from "./parts/cardTrain"
 import styled from "./style.module.scss"
 
 export const ListingTrains = ({ data }: { data: Train[] }) => {
   const { isEmpty } = useVerifyArrayEmpty()
-  const router = useRouter()
   const trains = data?.filter(train => train?.modules.length >= 0)
   const swiperRef = useRef<SwiperType>()
 
@@ -27,24 +27,7 @@ export const ListingTrains = ({ data }: { data: Train[] }) => {
         pagination={{
           clickable: true
         }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 30
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 30
-          },
-          1600: {
-            slidesPerView: 5,
-            spaceBetween: 30
-          }
-        }}
+        breakpoints={BreakpointsSwapper}
         freeMode={true}
         spaceBetween={10}
         speed={1000}
@@ -57,13 +40,7 @@ export const ListingTrains = ({ data }: { data: Train[] }) => {
         {trains?.map(train => {
           return (
             <SwiperSlide key={train?.id}>
-              <figure
-                title={train?.title}
-                className={styled.contentImg}
-                onClick={() => router.push(`/dash/trains/${train?.id}`)}
-              >
-                <img src={train?.linkCover} alt={train?.title} />
-              </figure>
+              <CardTrain train={train} />
             </SwiperSlide>
           )
         })}

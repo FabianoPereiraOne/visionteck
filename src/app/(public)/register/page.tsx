@@ -4,6 +4,7 @@ import { userSchema } from "@/schemas/api/users"
 import { schemaAssets } from "@/schemas/others/assets"
 import { createAccount } from "@/utils/fetch/register/create"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -13,6 +14,7 @@ import styled from "./style.module.scss"
 const Register = () => {
   const { displayErrors } = useDisplayErrors()
   const { handleSubmit, register, reset } = useForm()
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
 
   const handlerSubmitRegister = async (dataCreate: any) => {
@@ -44,12 +46,13 @@ const Register = () => {
     setLoading(false)
     reset()
     toast.success(response?.success)
+    router.push("/login")
   }
 
   return (
     <section className={styled.container}>
-      <div className={styled.backgroundImage}></div>
-      <aside className={styled.sidebar}>
+      <div className={styled.backgroundImage} />
+      <div className={styled.sidebar}>
         <figure className={styled.figure}>
           <img src={schemaAssets.general.logo} alt='Logo' />
         </figure>
@@ -109,7 +112,7 @@ const Register = () => {
             <Link href='/login'>Login</Link>
           </div>
         </form>
-      </aside>
+      </div>
     </section>
   )
 }

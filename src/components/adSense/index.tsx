@@ -1,12 +1,9 @@
 "use server"
-import { getAllAds } from "@/services/prisma/ads/getAll"
 import { TypeAds } from "@/types/ads"
 import CarouselAds from "./parts/carouselAds"
 import styled from "./style.module.scss"
 
-const BannerAdsense = async () => {
-  const listAds: TypeAds[] = await getAllAds()
-
+const BannerAdSense = async ({ listAds }: { listAds: TypeAds[] }) => {
   if (listAds?.length <= 0) return <></>
 
   return (
@@ -16,4 +13,4 @@ const BannerAdsense = async () => {
   )
 }
 
-export default BannerAdsense
+export default BannerAdSense

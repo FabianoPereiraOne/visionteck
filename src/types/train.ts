@@ -5,6 +5,7 @@ export type PostTrainProps = {
   description: string
   linkCover: string
   collectionId: number
+  planId: number
 }
 
 export type patchTrainProps = {
@@ -13,6 +14,7 @@ export type patchTrainProps = {
   description?: string
   linkCover?: string
   collectionId?: number
+  planId?: number
 }
 
 export type Train = {
@@ -24,4 +26,6 @@ export type Train = {
   createdAt: Date
   updatedAt: Date
   modules: Module[]
+  planId: number
+  lock: boolean
 }

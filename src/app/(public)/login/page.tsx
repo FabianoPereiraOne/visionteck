@@ -2,7 +2,6 @@
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { schemaLogin } from "@/schemas/api/users"
 import { schemaAssets } from "@/schemas/others/assets"
-import { userSession } from "@/schemas/others/config"
 import { fetchLogin } from "@/utils/fetch/login/post"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -37,19 +36,16 @@ const Login = () => {
       return toast.error(response?.error)
     }
 
-    if (typeof window !== "undefined")
-      sessionStorage.setItem(userSession, JSON.stringify(response.data))
-
     setLoading(false)
     reset()
     toast.success(response?.success)
-    setTimeout(() => router.push("/dash"), 1000)
+    router.push("/dash")
   }
 
   return (
     <section className={styled.container}>
-      <div className={styled.backgroundImage}></div>
-      <aside className={styled.sidebar}>
+      <div className={styled.backgroundImage} />
+      <div className={styled.sidebar}>
         <figure className={styled.figure}>
           <img src={schemaAssets.general.logo} alt='Logo' />
         </figure>
@@ -81,7 +77,7 @@ const Login = () => {
             <Link href='/register'>Registrar-se</Link>
           </div>
         </form>
-      </aside>
+      </div>
     </section>
   )
 }

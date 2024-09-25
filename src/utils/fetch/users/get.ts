@@ -1,8 +1,10 @@
-export const fetchUser = async ({ id }: { id: string }) => {
-  const baseURL = process.env.NEXT_PUBLIC_URL 
+import { prismaClient } from "@/services/prisma/config"
 
-  const result = await fetch(`${baseURL}/api/users?id=${id}`, {
-    method: "GET"
+export const fetchUser = async ({ id }: { id: string }) => {
+  const result = await prismaClient.user.findFirst({
+    where: {
+      id
+    }
   })
 
   return result

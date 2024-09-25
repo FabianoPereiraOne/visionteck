@@ -5,13 +5,15 @@ export const useGenerateToken = async ({
   id,
   name,
   email,
-  type
+  type,
+  planId
 }: {
   id: string
   name: string
   email: string
   type: Role
+  planId: Number
 }) => {
-  const result = await sign({ id, name, email, type })
+  const result = await sign({ id, name, email, type, planId })
   return result
 }

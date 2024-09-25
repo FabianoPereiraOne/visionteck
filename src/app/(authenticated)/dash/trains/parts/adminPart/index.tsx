@@ -4,17 +4,26 @@ import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { useParseNumber } from "@/hooks/useParseNumber"
 import { layoutAddTrains } from "@/layouts/trains/add"
 import { trainsSchema } from "@/schemas/api/trains"
+import { Collection } from "@/types/collection"
 import { patchTrainProps, Train } from "@/types/train"
 import { fetchDeleteTrain } from "@/utils/fetch/trains/delete"
-import { fetchClientAllTrains } from "@/utils/fetch/trains/getAllClient"
 import { fetchCreateTrain } from "@/utils/fetch/trains/post"
 import { fetchUpdateTrain } from "@/utils/fetch/trains/update"
 import { fetchUploadFile } from "@/utils/fetch/uploads/post"
+import { Plan } from "@prisma/client"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-export const AdminPart = () => {
+export const AdminPart = ({
+  collections,
+  plans,
+  trains
+}: {
+  collections: Collection[]
+  plans: Plan[]
+  trains: Train[]
+}) => {
   const [update, setUpdate] = useState(false)
   const [preview, setPreview] = useState("")
   const { register, reset, watch, getValues, setValue } = useForm()
@@ -49,7 +58,8 @@ export const AdminPart = () => {
     const dataValues = getValues()
     const dataCreate = {
       ...dataValues,
-      collectionId: useParseNumber(dataValues?.collectionId)
+      collectionId: useParseNumber(dataValues?.collectionId),
+      planId: useParseNumber(dataValues?.planId)
     }
     const files = dataValues?.file
 
@@ -76,6 +86,7 @@ export const AdminPart = () => {
         toast.success("Trilha criada com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       toast.error("Ops! erro ao criar trilha.")
     }
   }
@@ -91,6 +102,7 @@ export const AdminPart = () => {
         toast.success("Trilha deletada com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       console.error(error)
       toast.error("Ops! erro ao deletar trilha.")
     }
@@ -105,6 +117,7 @@ export const AdminPart = () => {
         toast.success("Trilha atualizado com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       console.error(error)
       toast.error("Erro ao atualizar trilha.")
     }
@@ -138,21 +151,22 @@ export const AdminPart = () => {
     setValue("title", train?.title)
     setValue("description", train?.description)
     setValue("linkCover", train?.linkCover)
-    setValue("collectionId", train?.collectionId ?? 0)
+    setValue("collectionId", train?.collectionId ?? 1)
+    setValue("planId", train?.planId ?? 1)
     setPreview(train?.linkCover)
     setUpdate(true)
   }
 
   return (
     <ButtonAdmin
-      reset={reset}
+      reset={resetAllValues}
       update={update}
       title='Trilhas'
-      layout={layoutAddTrains({ register, preview })}
+      layout={layoutAddTrains({ register, preview, collections, plans })}
       fcUpdate={handlerUpdate}
       fcSubmit={handlerSubmit}
       fcDelete={handlerDelete}
-      fcGetData={fetchClientAllTrains}
+      data={trains}
       fcLoadSetValues={loadSetValues}
     />
   )

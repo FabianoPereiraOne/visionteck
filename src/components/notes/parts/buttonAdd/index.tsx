@@ -5,7 +5,6 @@ import { layoutAddNote } from "@/layouts/note/add"
 import { notesSchema } from "@/schemas/api/notes"
 import { NoteProps } from "@/types/note"
 import { fetchDeleteNote } from "@/utils/fetch/notes/delete"
-import { fetchClientAllNotes } from "@/utils/fetch/notes/getAllClient"
 import { fetchCreateNote } from "@/utils/fetch/notes/post"
 import { fetchUpdateNote } from "@/utils/fetch/notes/update"
 import { memo, useState } from "react"
@@ -13,7 +12,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { FiPlus } from "react-icons/fi"
 
-const ButtonAdd = () => {
+const ButtonAdd = ({ notes }: { notes: NoteProps[] }) => {
   const [update, setUpdate] = useState(false)
   const { register, reset, getValues, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
@@ -96,7 +95,7 @@ const ButtonAdd = () => {
         fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
         fcDelete={handlerDelete}
-        fcGetData={fetchClientAllNotes}
+        data={notes}
         fcLoadSetValues={loadSetValues}
       />
     </>

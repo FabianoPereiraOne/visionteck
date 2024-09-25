@@ -58,7 +58,8 @@ export async function GET(request: NextRequest) {
       id: user.id,
       name: user.name,
       email: user.email,
-      type: user.type
+      type: user.type,
+      planId: user.planId
     })
 
     saveTokenAuth(token)
