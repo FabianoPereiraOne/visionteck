@@ -1,3 +1,4 @@
+import { TypeAds } from "./ads"
 import { Collection } from "./collection"
 import { NoteProps } from "./note"
 import { Train } from "./train"
@@ -18,4 +19,4 @@ export type searchParamsProps = {
   token?: string
 }
 
-export type DataLoadType = Collection[] | Train[] | NoteProps[]
+export type DataLoadType = Collection[] | Train[] | NoteProps[] | TypeAds[]

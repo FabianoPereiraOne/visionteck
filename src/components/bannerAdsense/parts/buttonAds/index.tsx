@@ -5,7 +5,6 @@ import { layoutAddAds } from "@/layouts/ads/add"
 import { adsSchema } from "@/schemas/api/ads"
 import { PatchAdsProps, TypeAds } from "@/types/ads"
 import { fetchDeleteAds } from "@/utils/fetch/ads/delete"
-import { fetchAllAds } from "@/utils/fetch/ads/get"
 import { fetchCreateAds } from "@/utils/fetch/ads/post"
 import { fetchUpdateAds } from "@/utils/fetch/ads/update"
 import { fetchUploadFile } from "@/utils/fetch/uploads/post"
@@ -13,7 +12,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
-const ButtonAds = () => {
+const ButtonAds = ({ listAds }: { listAds: TypeAds[] }) => {
   const [update, setUpdate] = useState(false)
   const [preview, setPreview] = useState("")
   const { register, watch, getValues, reset, setValue } = useForm()
@@ -148,7 +147,7 @@ const ButtonAds = () => {
         fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
         fcDelete={handlerDelete}
-        fcGetData={fetchAllAds}
+        data={listAds}
         fcLoadSetValues={loadSetValues}
       />
     </>
