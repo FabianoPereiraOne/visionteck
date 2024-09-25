@@ -1,6 +1,8 @@
 "use client"
 import { Collection } from "@/types/collection"
 import { fetchClientAllCollections } from "@/utils/fetch/collections/getAllClient"
+import { fetchClientAllPlans } from "@/utils/fetch/plans/getAll"
+import { Plan } from "@prisma/client"
 import { useEffect, useState } from "react"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 import { FiLayers, FiPlus, FiRefreshCcw, FiUpload } from "react-icons/fi"
@@ -14,6 +16,7 @@ export const layoutAddTrains = ({
   preview: string
 }) => {
   const [collections, setCollections] = useState<Collection[]>([])
+  const [plans, setPlans] = useState<Plan[]>([])
 
   const loadDataCollections = async () => {
     const result = await fetchClientAllCollections()
@@ -21,8 +24,15 @@ export const layoutAddTrains = ({
     setCollections(response?.data ?? [])
   }
 
+  const loadDataPlans = async () => {
+    const result = await fetchClientAllPlans()
+    const response = await result.json()
+    setPlans(response?.data)
+  }
+
   useEffect(() => {
     loadDataCollections()
+    loadDataPlans()
   }, [])
 
   return {
@@ -76,7 +86,16 @@ export const layoutAddTrains = ({
           )
         })}
       </select>,
-
+      <select key='plan' {...register("planId")} className={styled.select}>
+        <option value={0}>Selecione um plano (opcional)</option>
+        {plans?.map(plan => {
+          return (
+            <option key={plan?.id} value={plan?.id}>
+              {plan?.title}
+            </option>
+          )
+        })}
+      </select>,
       <div key='file' className={styled.containerUpload}>
         <label htmlFor='file'>
           <FiUpload /> Escolher imagem

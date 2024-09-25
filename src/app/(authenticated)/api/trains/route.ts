@@ -4,6 +4,7 @@ import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { trainsSchema } from "@/schemas/api/trains"
 import { visionBucket } from "@/services/firebase/config"
 import { getCollection } from "@/services/prisma/collections/get"
+import { getPlan } from "@/services/prisma/plans/get"
 import { createTrain } from "@/services/prisma/trains/create"
 import { deleteTrains } from "@/services/prisma/trains/delete"
 import { getTrain } from "@/services/prisma/trains/get"
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       }
     )
 
-  const { title, description, linkCover, collectionId, planId, lock } =
+  const { title, description, linkCover, collectionId, planId } =
     await request.json()
 
   const { success, error } = trainsSchema.safeParse({
@@ -34,8 +35,7 @@ export async function POST(request: NextRequest) {
     description,
     linkCover,
     collectionId,
-    planId,
-    lock
+    planId
   })
 
   if (!success) {
@@ -68,13 +68,25 @@ export async function POST(request: NextRequest) {
         }
       )
 
+    const hasPlan = await getPlan({ id: planId })
+
+    if (!hasPlan)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.notFound.statusCode,
+          error: "Plano não encontrado."
+        },
+        {
+          status: httpStatus.notFound.statusCode
+        }
+      )
+
     const train = {
       title,
       description,
       linkCover,
       collectionId,
-      planId,
-      lock
+      planId
     }
 
     const data = await createTrain(train)
@@ -113,7 +125,8 @@ export async function PATCH(request: NextRequest) {
       }
     )
 
-  const { title, description, linkCover, collectionId } = await request.json()
+  const { title, description, linkCover, collectionId, planId } =
+    await request.json()
   const { searchParams } = await new URL(request.url)
   const id = searchParams.get("id")
 
@@ -154,7 +167,8 @@ export async function PATCH(request: NextRequest) {
       title,
       description,
       linkCover,
-      collectionId: useParseNumber(collectionId)
+      collectionId: collectionId && useParseNumber(collectionId),
+      planId: planId && useParseNumber(planId)
     }
 
     const data = await updateTrain(train)

@@ -2,7 +2,6 @@
 import useDisplayErrors from "@/hooks/useDisplayErrors"
 import { schemaLogin } from "@/schemas/api/users"
 import { schemaAssets } from "@/schemas/others/assets"
-import { userSession } from "@/schemas/others/config"
 import { fetchLogin } from "@/utils/fetch/login/post"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -38,7 +37,7 @@ const Login = () => {
     }
 
     if (typeof window !== "undefined")
-      sessionStorage.setItem(userSession, JSON.stringify(response.data))
+      sessionStorage.setItem("userAuth", JSON.stringify(response.data))
 
     setLoading(false)
     reset()

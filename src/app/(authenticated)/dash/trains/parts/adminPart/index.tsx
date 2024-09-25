@@ -49,7 +49,8 @@ export const AdminPart = () => {
     const dataValues = getValues()
     const dataCreate = {
       ...dataValues,
-      collectionId: useParseNumber(dataValues?.collectionId)
+      collectionId: useParseNumber(dataValues?.collectionId),
+      planId: useParseNumber(dataValues?.planId)
     }
     const files = dataValues?.file
 
@@ -76,6 +77,7 @@ export const AdminPart = () => {
         toast.success("Trilha criada com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       toast.error("Ops! erro ao criar trilha.")
     }
   }
@@ -91,6 +93,7 @@ export const AdminPart = () => {
         toast.success("Trilha deletada com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       console.error(error)
       toast.error("Ops! erro ao deletar trilha.")
     }
@@ -105,12 +108,14 @@ export const AdminPart = () => {
         toast.success("Trilha atualizado com sucesso.")
       })
     } catch (error) {
+      resetAllValues()
       console.error(error)
       toast.error("Erro ao atualizar trilha.")
     }
   }
 
   const handlerUpdate = async () => {
+    //Função nao ta atualizando planoID
     const dataUpdate = getValues()
     const id = dataUpdate?.id
     const files = dataUpdate?.file
@@ -138,14 +143,15 @@ export const AdminPart = () => {
     setValue("title", train?.title)
     setValue("description", train?.description)
     setValue("linkCover", train?.linkCover)
-    setValue("collectionId", train?.collectionId ?? 0)
+    setValue("collectionId", train?.collectionId ?? 1)
+    setValue("planId", train?.planId ?? 1)
     setPreview(train?.linkCover)
     setUpdate(true)
   }
 
   return (
     <ButtonAdmin
-      reset={reset}
+      reset={resetAllValues}
       update={update}
       title='Trilhas'
       layout={layoutAddTrains({ register, preview })}
