@@ -4,7 +4,8 @@ export const schemaAssets = {
     favicon: "/assets/favicon.png",
     error: "/assets/error.png",
     loading: "/assets/load.png",
-    empty: "/assets/empty.svg"
+    empty: "/assets/empty.svg",
+    build: "/assets/build.svg"
   },
   login: {
     imagePrimary: "/assets/body.png"
