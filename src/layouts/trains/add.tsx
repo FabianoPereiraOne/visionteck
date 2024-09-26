@@ -42,7 +42,6 @@ export const layoutAddTrains = ({
         id='title'
         className={styled.input}
         type='text'
-        maxLength={50}
         placeholder='Titulo'
         {...register("title")}
       />,
@@ -69,7 +68,7 @@ export const layoutAddTrains = ({
           })}
       </select>,
       <select key='plan' {...register("planId")} className={styled.select}>
-        <option value={0}>Selecione um plano (opcional)</option>
+        <option value={0}>Selecione um plano</option>
         {plans?.length > 0 &&
           plans?.map(plan => {
             return (

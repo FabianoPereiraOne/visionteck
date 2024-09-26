@@ -1,10 +1,13 @@
 const useClearString = () => {
   const clearString = (fileName = "") => {
-    let cleanedName = fileName.trim()
-
-    cleanedName = cleanedName
+    const cleanedName = fileName
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/[\s]+/g, "-")
       .replace(/[^\w.-]+/g, "")
+      .replace(/--+/g, "-")
+      .replace(/-+$/, "")
       .toLowerCase()
 
     return cleanedName

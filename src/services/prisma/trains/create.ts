@@ -3,6 +3,7 @@ import { PostTrainProps } from "@/types/train"
 import { prismaClient } from "../config"
 
 export const createTrain = async ({
+  id,
   title,
   description,
   linkCover,
@@ -11,6 +12,7 @@ export const createTrain = async ({
 }: PostTrainProps) => {
   const result = await prismaClient.train.create({
     data: {
+      id,
       title,
       description,
       linkCover,
