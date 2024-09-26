@@ -25,15 +25,12 @@ export const metadata: Metadata = {
     "tecnologia",
     "investimentos"
   ],
-  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
   authors: [
     {
       name: "Fabiano Pereira",
       url: "https://portfolio-fabianopereiraone.vercel.app/"
     }
   ],
-  viewport:
-    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   icons: [
     { rel: "apple-touch-icon", url: "/assets/favicon.png" },
     { rel: "icon", url: "/assets/favicon.png" }
@@ -41,7 +38,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0D0D0D"
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0D0D" }
+  ]
 }
 
 export default function RootLayout({

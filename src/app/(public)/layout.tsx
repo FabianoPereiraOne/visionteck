@@ -1,7 +1,7 @@
 import { VisionContextProvider } from "@/context"
 import "@/styles/globals.scss"
 import { config } from "@/styles/toast"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import { Toaster } from "react-hot-toast"
 
@@ -23,18 +23,22 @@ export const metadata: Metadata = {
     "tecnologia",
     "investimentos"
   ],
-  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
   authors: [
     {
       name: "Fabiano Pereira",
       url: "https://portfolio-fabianopereiraone.vercel.app/"
     }
   ],
-  viewport:
-    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   icons: [
     { rel: "apple-touch-icon", url: "/assets/favicon.png" },
     { rel: "icon", url: "/assets/favicon.png" }
+  ]
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0D0D" }
   ]
 }
 
