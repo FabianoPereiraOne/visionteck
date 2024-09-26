@@ -1,6 +1,7 @@
 import { Module } from "./module"
 
 export type PostTrainProps = {
+  id?: string
   title: string
   description: string
   linkCover: string

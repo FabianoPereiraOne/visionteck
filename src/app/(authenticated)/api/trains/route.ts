@@ -1,3 +1,4 @@
+import useClearString from "@/hooks/useClearString"
 import { useParseNumber } from "@/hooks/useParseNumber"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
@@ -15,6 +16,7 @@ import { deleteObject, ref } from "firebase/storage"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
+  const { clearString } = useClearString()
   const { isAdmin } = await useVerifyAdmin(request)
   if (!isAdmin)
     return NextResponse.json(
@@ -81,7 +83,11 @@ export async function POST(request: NextRequest) {
         }
       )
 
+    const titleClean = clearString(title)
+    const hasTrainId = await getTrain({ id: titleClean })
+
     const train = {
+      id: hasTrainId ? undefined : titleClean,
       title,
       description,
       linkCover,

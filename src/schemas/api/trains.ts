@@ -5,5 +5,7 @@ export const trainsSchema = z.object({
   description: z.string().min(1, "Descrição obrigatória."),
   linkCover: z.string().min(1, "Imagem de capa obrigatória."),
   collectionId: z.number({ message: "ID da coleção obrigatório." }),
-  planId: z.number({ message: "ID do plano obrigatório." })
+  planId: z
+    .number({ message: "ID do plano obrigatório." })
+    .min(1, { message: "Selecione um plano para a trilha." })
 })
