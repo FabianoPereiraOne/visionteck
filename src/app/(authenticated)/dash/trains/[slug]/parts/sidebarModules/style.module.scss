@@ -1,10 +1,58 @@
 .container {
-  max-width: 300px;
+  min-height: calc(100vh - 70px);
+  height: 100%;
   width: 100%;
   background: var(--color-black-normal);
   padding: 24px;
-  display: flex;
   flex-direction: column;
   gap: 16px;
-  border-radius: 6px;
+  display: none;
+  position: relative;
+
+  .contentModules {
+    width: 100%;
+    height: auto;
+    margin: 16px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  & .btnClose {
+    width: auto;
+    height: auto;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--size24);
+    font-weight: 400;
+    color: var(--color-white-normal);
+    background: none;
+    border: none;
+
+    @media screen and (min-width: 1200px) {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    max-width: 300px;
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
+  @media screen and (min-width: 1200px) {
+    display: flex;
+  }
+}
+
+.active {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 70px;
 }

@@ -1,5 +1,11 @@
+import styled from "./style.module.scss"
+
 const BodyClass = () => {
-  return <h1>corpo da aula </h1>
+  return (
+    <section className={styled.container}>
+      <h1>hello body</h1>
+    </section>
+  )
 }
 
 export default BodyClass

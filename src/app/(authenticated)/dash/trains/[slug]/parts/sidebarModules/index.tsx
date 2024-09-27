@@ -1,20 +1,31 @@
 import { Module } from "@/types/module"
-import { memo } from "react"
+import { FiXCircle } from "react-icons/fi"
 import { Header } from "./parts/header"
 import { ModuleComponent } from "./parts/module"
 import styled from "./style.module.scss"
 
-const SidebarModules = ({ modules = [] }: { modules: Module[] }) => {
+const SidebarModules = ({
+  modules = [],
+  active,
+  fcOpen
+}: {
+  modules: Module[]
+  active: boolean
+  fcOpen: (item: boolean) => void
+}) => {
   return (
-    <aside className={styled.container}>
+    <aside className={`${styled.container} ${active ? styled.active : ""}`}>
+      <button className={styled.btnClose} onClick={() => fcOpen(false)}>
+        <FiXCircle />
+      </button>
       <Header />
       <ul className={styled.contentModules}>
         {modules.map(module => {
-          return <ModuleComponent module={module} />
+          return <ModuleComponent key={module?.id} module={module} />
         })}
       </ul>
     </aside>
   )
 }
 
-export default memo(SidebarModules)
+export default SidebarModules

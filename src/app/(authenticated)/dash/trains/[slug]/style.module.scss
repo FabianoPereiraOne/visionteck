@@ -9,6 +9,28 @@
 .container {
   width: 100%;
   min-height: calc(100vh - 70px);
-  display: flex;
-  gap: 36px;
+  padding: 20px;
+
+  & .btnModule {
+    max-width: 120px;
+    background: none;
+    border: none;
+    font-size: var(--size18);
+    font-weight: 400;
+    color: var(--color-white-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    @media screen and (min-width: 1200px) {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    display: flex;
+    gap: 36px;
+    padding: 0;
+  }
 }

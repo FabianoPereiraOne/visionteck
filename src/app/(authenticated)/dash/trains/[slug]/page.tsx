@@ -6,6 +6,7 @@ import { fetchTrain } from "@/utils/fetch/trains/get"
 import { fetchClientUser } from "@/utils/fetch/user/get"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { FiArrowLeft } from "react-icons/fi"
 import BodyClass from "./parts/bodyClass"
 import SidebarModules from "./parts/sidebarModules"
 import styled from "./style.module.scss"
@@ -13,6 +14,7 @@ import styled from "./style.module.scss"
 const ModuleController = ({ params }: { params: { slug: string } }) => {
   const router = useRouter()
   const [train, setTrain] = useState<Train | null | undefined>(null)
+  const [open, setOpen] = useState(false)
   const slug = params?.slug
   const { trains, setUser } = useVisionContext()
 
@@ -63,7 +65,14 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
     <>
       {train ? (
         <section className={styled.container}>
-          <SidebarModules modules={train?.modules} />
+          <button className={styled.btnModule} onClick={() => setOpen(!open)}>
+            <FiArrowLeft /> Módulos
+          </button>
+          <SidebarModules
+            modules={train?.modules}
+            active={open}
+            fcOpen={setOpen}
+          />
           <BodyClass />
         </section>
       ) : (

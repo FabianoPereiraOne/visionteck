@@ -7,6 +7,7 @@ import { Metadata } from "next"
 import { AdminPart } from "./parts/adminPart"
 import { ListingCollections } from "./parts/listingCollections"
 import { TitlePart } from "./parts/titlePart"
+import styled from "./style.module.scss"
 
 export const metadata: Metadata = {
   title: "Trilhas | Vision Teck",
@@ -27,7 +28,7 @@ export default async function Trains() {
   const plans = await getAllPlans()
 
   return (
-    <section>
+    <section className={styled.container}>
       <HeaderBody
         user={data}
         isAdmin={isAdmin}

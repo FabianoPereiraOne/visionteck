@@ -3,6 +3,8 @@ import { Class } from "@/types/class"
 import { Module } from "@/types/module"
 import { fetchChangeProgress } from "@/utils/fetch/progress/post"
 import { useMemo } from "react"
+import { FiHexagon } from "react-icons/fi"
+import styled from "./style.module.scss"
 
 export const ModuleComponent = ({ module }: { module: Module }) => {
   const { user, register, setValue } = useVisionContext()
@@ -34,39 +36,42 @@ export const ModuleComponent = ({ module }: { module: Module }) => {
   }) => {
     try {
       const completedAt = new Date().toISOString()
-      setValue(classId, completed)
       await fetchChangeProgress({ completed, classId, userId, completedAt })
+
+      setValue(classId, completed)
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <li>
-      <p>{module?.title}</p>
-      <ul>
+    <li className={styled.container}>
+      <p className={styled.title}>
+        <FiHexagon />
+        {module?.title}
+      </p>
+      <div className={styled.contentClasses}>
         {classes.map(classItem => {
           return (
-            <li>
-              <label key={classItem?.id}>
-                <input
-                  type='checkbox'
-                  defaultChecked={classItem?.completed}
-                  {...register(classItem?.id, {
-                    onChange: event =>
-                      handlerChangeStatusClass({
-                        completed: event?.target?.checked,
-                        classId: classItem?.id,
-                        userId: `${user?.id}`
-                      })
-                  })}
-                />
-                {classItem?.title}
-              </label>
-            </li>
+            <label key={classItem?.id} className={styled.class}>
+              <input
+                className={styled.checkbox}
+                type='checkbox'
+                defaultChecked={classItem?.completed}
+                {...register(classItem?.id, {
+                  onChange: event =>
+                    handlerChangeStatusClass({
+                      completed: event?.target?.checked,
+                      classId: classItem?.id,
+                      userId: `${user?.id}`
+                    })
+                })}
+              />
+              <p className={styled.titleClass}>{classItem?.title}</p>
+            </label>
           )
         })}
-      </ul>
+      </div>
     </li>
   )
 }
