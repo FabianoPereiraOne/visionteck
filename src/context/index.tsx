@@ -1,7 +1,9 @@
 "use client"
 import { AppContextType } from "@/types/general"
 import { Train } from "@/types/train"
+import { dataUser } from "@/types/user"
 import { createContext, ReactNode, useContext, useState } from "react"
+import { useForm } from "react-hook-form"
 
 const VisionContext = createContext({} as AppContextType)
 
@@ -9,6 +11,8 @@ export function VisionContextProvider({ children }: { children: ReactNode }) {
   const [openMenu, setOpenMenu] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [trains, setTrains] = useState<Train[]>([])
+  const [user, setUser] = useState<dataUser | null>(null)
+  const { reset, setValue, register, getValues } = useForm()
 
   return (
     <VisionContext.Provider
@@ -16,9 +20,15 @@ export function VisionContextProvider({ children }: { children: ReactNode }) {
         openMenu,
         openPopup,
         trains,
+        user,
+        setUser,
         setTrains,
         setOpenMenu,
-        setOpenPopup
+        setOpenPopup,
+        reset,
+        setValue,
+        register,
+        getValues
       }}
     >
       {children}

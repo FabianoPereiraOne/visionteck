@@ -1,0 +1,10 @@
+.container {
+  max-width: 300px;
+  width: 100%;
+  background: var(--color-black-normal);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 6px;
+}

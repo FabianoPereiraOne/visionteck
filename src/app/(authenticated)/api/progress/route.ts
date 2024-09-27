@@ -8,6 +8,7 @@ import { createProgress } from "@/services/prisma/progress/create"
 import { deleteProgress } from "@/services/prisma/progress/delete"
 import { getProgress } from "@/services/prisma/progress/get"
 import { getAllProgress } from "@/services/prisma/progress/getAll"
+import { getProgressByParents } from "@/services/prisma/progress/getProgressByParents"
 import { updateProgress } from "@/services/prisma/progress/update"
 import { getUser } from "@/services/prisma/users/get"
 import { httpStatus } from "@/utils/httpStatus"
@@ -79,6 +80,31 @@ export async function POST(request: NextRequest) {
           status: httpStatus.notFound.statusCode
         }
       )
+
+    const hasProgress = await getProgressByParents({ classId, userId })
+
+    if (hasProgress) {
+      const progress = {
+        id: hasProgress?.id,
+        classId,
+        userId,
+        rating,
+        completed,
+        completedAt: completed ? useParseDate(completedAt) : null
+      }
+
+      const data = await updateProgress(progress)
+      return NextResponse.json(
+        {
+          statusCode: httpStatus.ok.statusCode,
+          data,
+          success: "Progresso atualizado com sucesso."
+        },
+        {
+          status: httpStatus.ok.statusCode
+        }
+      )
+    }
 
     const progress = {
       classId,

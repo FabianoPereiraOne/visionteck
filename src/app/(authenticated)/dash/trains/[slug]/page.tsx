@@ -3,6 +3,7 @@ import Loading from "@/components/loading"
 import { useVisionContext } from "@/context"
 import { Train } from "@/types/train"
 import { fetchTrain } from "@/utils/fetch/trains/get"
+import { fetchClientUser } from "@/utils/fetch/user/get"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import BodyClass from "./parts/bodyClass"
@@ -13,7 +14,7 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const router = useRouter()
   const [train, setTrain] = useState<Train | null | undefined>(null)
   const slug = params?.slug
-  const { trains } = useVisionContext()
+  const { trains, setUser } = useVisionContext()
 
   const loadDataTrain = async () => {
     try {
@@ -31,7 +32,21 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
     }
   }
 
+  const loadDataUser = async () => {
+    try {
+      const result = await fetchClientUser()
+      const response = await result?.json()
+      const user = response?.data
+
+      setUser(user)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
+    loadDataUser()
+
     if (trains?.length <= 0) {
       loadDataTrain()
       return
@@ -48,7 +63,7 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
     <>
       {train ? (
         <section className={styled.container}>
-          <SidebarModules />
+          <SidebarModules modules={train?.modules} />
           <BodyClass />
         </section>
       ) : (
