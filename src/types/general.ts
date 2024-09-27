@@ -8,10 +8,12 @@ export type paramsProps = {
 }
 
 export type AppContextType = {
+  trains: Train[]
   openMenu: boolean
   openPopup: boolean
   setOpenMenu: (open: boolean) => void
   setOpenPopup: (open: boolean) => void
+  setTrains: (trains: Train[]) => void
 }
 
 export type searchParamsProps = {

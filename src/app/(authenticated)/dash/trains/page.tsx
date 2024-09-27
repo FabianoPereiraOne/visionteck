@@ -23,6 +23,7 @@ export default async function Trains() {
   const response = await result?.json()
   const listData: Collection[] = response?.data ?? []
   const trains = listData?.map(collection => collection?.trains).flat()
+  const listTrains = trains?.filter(train => train?.modules?.length > 0)
   const plans = await getAllPlans()
 
   return (
@@ -35,7 +36,11 @@ export default async function Trains() {
           <AdminPart collections={listData} plans={plans} trains={trains} />
         }
       />
-      <ListingCollections user={data} listData={listData} />
+      <ListingCollections
+        user={data}
+        listData={listData}
+        listTrains={listTrains}
+      />
     </section>
   )
 }
