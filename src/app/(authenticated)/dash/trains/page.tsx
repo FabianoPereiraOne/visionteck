@@ -7,6 +7,7 @@ import { Metadata } from "next"
 import { AdminPart } from "./parts/adminPart"
 import { ListingCollections } from "./parts/listingCollections"
 import { TitlePart } from "./parts/titlePart"
+import styled from "./style.module.scss"
 
 export const metadata: Metadata = {
   title: "Trilhas | Vision Teck",
@@ -23,10 +24,11 @@ export default async function Trains() {
   const response = await result?.json()
   const listData: Collection[] = response?.data ?? []
   const trains = listData?.map(collection => collection?.trains).flat()
+  const listTrains = trains?.filter(train => train?.modules?.length > 0)
   const plans = await getAllPlans()
 
   return (
-    <section>
+    <section className={styled.container}>
       <HeaderBody
         user={data}
         isAdmin={isAdmin}
@@ -35,7 +37,11 @@ export default async function Trains() {
           <AdminPart collections={listData} plans={plans} trains={trains} />
         }
       />
-      <ListingCollections user={data} listData={listData} />
+      <ListingCollections
+        user={data}
+        listData={listData}
+        listTrains={listTrains}
+      />
     </section>
   )
 }

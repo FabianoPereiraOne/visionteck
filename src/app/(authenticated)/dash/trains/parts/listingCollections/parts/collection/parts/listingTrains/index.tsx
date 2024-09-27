@@ -1,8 +1,9 @@
 "use client"
+import { useVisionContext } from "@/context"
 import { useVerifyArrayEmpty } from "@/hooks/useVerifyArrayEmpty"
 import { BreakpointsSwapper } from "@/schemas/pages/config"
 import { Train } from "@/types/train"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi"
 import { Swiper as SwiperType } from "swiper"
 import "swiper/css"
@@ -10,13 +11,24 @@ import "swiper/css/free-mode"
 import "swiper/css/navigation"
 import { FreeMode } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { CardTrain } from "./parts/cardTrain"
+import CardTrain from "./parts/cardTrain"
 import styled from "./style.module.scss"
 
-export const ListingTrains = ({ data }: { data: Train[] }) => {
+export const ListingTrains = ({
+  data,
+  listTrains
+}: {
+  data: Train[]
+  listTrains: Train[]
+}) => {
   const { isEmpty } = useVerifyArrayEmpty()
   const trains = data?.filter(train => train?.modules.length >= 0)
   const swiperRef = useRef<SwiperType>()
+  const { setTrains } = useVisionContext()
+
+  useEffect(() => {
+    setTrains(listTrains)
+  }, [])
 
   if (isEmpty(trains)) return <></>
 

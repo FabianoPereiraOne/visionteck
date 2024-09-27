@@ -1,0 +1,16 @@
+.container {
+  width: auto;
+  height: auto;
+  display: flex;
+  gap: 10px;
+
+  & .title {
+    font-size: var(--size18);
+    font-weight: 500;
+    color: var(--color-white-normal);
+
+    @media screen and (min-width: 768px) {
+      font-size: var(--size20);
+    }
+  }
+}

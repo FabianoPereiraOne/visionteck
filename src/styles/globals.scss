@@ -1,129 +1,128 @@
+:root {
+  --size12: 0.75rem;
+  --size14: 0.875rem;
+  --size16: 1rem;
+  --size18: 1.125rem;
+  --size20: 1.25rem;
+  --size24: 1.5rem;
+  --size28: 1.75rem;
+  --size32: 2rem;
+  --size36: 2.25rem;
+  --size40: 2.5rem;
+  --size44: 2.75rem;
+  --size48: 3rem;
+  --size52: 3.25rem;
+  --size56: 3.5rem;
+  --size60: 3.75rem;
+  --size64: 4rem;
+  --size68: 4.25rem;
+  --size72: 4.5rem;
 
-:root{
- --size12: 0.75rem;
- --size14: 0.875rem;
- --size16: 1rem;
- --size18: 1.125rem;
- --size20: 1.25rem;
- --size24: 1.5rem;
- --size28: 1.75rem;
- --size32: 2rem;
- --size36: 2.25rem;
- --size40: 2.5rem;
- --size44: 2.75rem;
- --size48: 3rem;
- --size52: 3.25rem;
- --size56: 3.5rem;
- --size60: 3.75rem;
- --size64: 4rem;
- --size68: 4.25rem;
- --size72: 4.5rem;
-
- --color-black-dark: #030303;
- --color-black-normal: #0A0A0A;
- --color-black-light: #0D0D0D;
- --color-white-normal: #F9F9F9;
- --color-green-dark: #043906;
- --color-green-normal: #054907;
- --color-green-light: #086B0B;
- --color-gray-light: #44444466;
- --color-gray-normal: #DDDDDD;
- --color-gray-dark: #1A1A1E;
- --color-orange-dark: #CF6700;
- --color-orange-normal: #FF7F00;
- --color-orange-light: #FF9124;
- --color-red-normal: #AE1A00;
- --color-blue-normal: #007FFF;
- --gradient-primary: linear-gradient(45deg, #AE1A00, #FF9124);
+  --color-black-dark: #030303;
+  --color-black-normal: #0a0a0a;
+  --color-black-light: #0d0d0d;
+  --color-white-normal: #f9f9f9;
+  --color-green-dark: #043906;
+  --color-green-normal: #054907;
+  --color-green-light: #0d9812;
+  --color-gray-light: #44444466;
+  --color-gray-normal: #dddddd;
+  --color-gray-dark: #1a1a1e;
+  --color-orange-dark: #cf6700;
+  --color-orange-normal: #ff7f00;
+  --color-orange-light: #ff9124;
+  --color-red-normal: #ae1a00;
+  --color-blue-normal: #007fff;
+  --gradient-primary: linear-gradient(45deg, #ae1a00, #ff9124);
 }
 
 html,
 body {
-   padding: 0;
-   margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
-*{
-box-sizing: border-box;
-margin: 0;
-padding: 0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 
-&::-webkit-scrollbar {
-   width: 5px;
-   background: var(--color-gray-dark); 
- }
- 
- &::-webkit-scrollbar-thumb {
-   background: var(--gradient-primary);
-   border-radius: 36px; 
- }
+  &::-webkit-scrollbar {
+    width: 5px;
+    background: var(--color-gray-dark);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 36px;
+  }
 }
 
-a{
-text-decoration: none;
+a {
+  text-decoration: none;
 }
 
-button{
-cursor: pointer;
+button {
+  cursor: pointer;
 }
 
-li{
-list-style: none;
+li {
+  list-style: none;
 }
 
-.activeSidebar{
-   display: flex !important;
+.activeSidebar {
+  display: flex !important;
 }
 
-.content_header{
-   grid-area: header;
-   grid-column: 1;
-   grid-row: 1;
+.content_header {
+  grid-area: header;
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.content_body{
-   grid-area: body;
-   grid-column: 1;
-   grid-row: 2;
-   padding: 20px;
+.content_body {
+  grid-area: body;
+  grid-column: 1;
+  grid-row: 2;
+  padding: 20px;
 }
 
-.container{
-width: 100%;
-height: 100vh;
-display: grid;
-grid-template-columns: 1fr;
-grid-template-rows: 1fr;
-grid-template-areas: 
-"header header"
-"body header"
+.container {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "header header"
+    "body header";
 }
 
-@media screen and (min-width: 1024px){
-.container{
-   grid-template-columns: 300px 1fr;
-   grid-template-rows: 100px 1fr;
-   grid-template-areas: 
-   "sidebar header"
-   "sidebar body"
-   }
+@media screen and (min-width: 1024px) {
+  .container {
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 100px 1fr;
+    grid-template-areas:
+      "sidebar header"
+      "sidebar body";
+  }
 
-   .content_sidebar{
-      grid-area: sidebar;
-      grid-column: 1/2;
-      grid-row: 1/3;
-   }
-   
-   .content_header{
-      grid-area: header;
-      grid-column: 2/3;
-      grid-row: 1/2;
-   }
-   
-   .content_body{
-      grid-area: body;
-      grid-column: 2/3;
-      grid-row: 2/3;
-      padding: 36px;
-   }
+  .content_sidebar {
+    grid-area: sidebar;
+    grid-column: 1/2;
+    grid-row: 1/3;
+  }
+
+  .content_header {
+    grid-area: header;
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+
+  .content_body {
+    grid-area: body;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    padding: 36px;
+  }
 }

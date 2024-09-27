@@ -9,12 +9,12 @@ export const useVerifyUser = async (request: NextRequest) => {
   const token =
     request?.headers?.get("Authorization") ?? cookies().get(cookieAuth)?.value
 
-  if (!token) return { isUser: false }
+  if (!token) return { isUser: false, data: null }
 
   const decodedToken = await useReturnDecoded(token)
   const logged = await useVerifyToken(decodedToken)
 
-  if (!logged.status) return { isUser: false }
+  if (!logged.status) return { isUser: false, data: null }
 
-  return { isUser: true }
+  return { isUser: true, data: decodedToken }
 }

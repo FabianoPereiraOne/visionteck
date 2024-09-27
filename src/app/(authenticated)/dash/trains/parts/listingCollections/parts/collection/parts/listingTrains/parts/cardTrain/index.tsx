@@ -1,9 +1,10 @@
 import { Train } from "@/types/train"
 import Link from "next/link"
+import { memo } from "react"
 import { FiLock } from "react-icons/fi"
 import styled from "./style.module.scss"
 
-export const CardTrain = ({ train }: { train: Train }) => {
+const CardTrain = ({ train }: { train: Train }) => {
   return (
     <figure title={train?.title} className={styled.contentImg}>
       <Link
@@ -16,3 +17,5 @@ export const CardTrain = ({ train }: { train: Train }) => {
     </figure>
   )
 }
+
+export default memo(CardTrain)

@@ -27,5 +27,6 @@ export type Class = {
   moduleId: string | null
   createdAt: Date
   updatedAt: Date
+  completed?: boolean
   progress: Progress[]
 }

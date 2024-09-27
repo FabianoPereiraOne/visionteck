@@ -1,12 +1,17 @@
-.contentLayout{
- display: flex;
- flex-direction: column;
- width: 100%;
- min-height: 100vh;
- background-color: var(--color-black-light);
+.contentLayout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-black-light);
 }
 
-.main{
- width: 100%;
- height: auto;
+.main {
+  width: 100%;
+  height: auto;
+  padding: 20px;
+
+  @media screen and (min-width: 768px) {
+    padding: 36px;
+  }
 }

@@ -78,7 +78,7 @@ const Register = () => {
             {...register("email")}
           />
           <input
-            type='tel'
+            type='number'
             maxLength={50}
             placeholder='Celular'
             {...register("phone")}
