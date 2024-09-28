@@ -18,22 +18,6 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const slug = params?.slug
   const { trains, setUser } = useVisionContext()
 
-  const loadDataTrain = async () => {
-    try {
-      const result = await fetchTrain({ id: slug })
-      const response = await result.json()
-
-      if (result?.status !== 200) return router.replace("/dash/trains")
-
-      const originTrain = response?.data ?? {}
-
-      setTrain(originTrain)
-    } catch (error) {
-      console.error(error)
-      router.replace("/dash/trains")
-    }
-  }
-
   const loadDataUser = async () => {
     try {
       const result = await fetchClientUser()
@@ -46,9 +30,27 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
     }
   }
 
-  useEffect(() => {
-    loadDataUser()
+  const loadDataTrain = async (originTrain?: Train) => {
+    try {
+      await loadDataUser()
 
+      if (originTrain) return setTrain(originTrain)
+
+      const result = await fetchTrain({ id: slug })
+      const response = await result.json()
+
+      if (result?.status !== 200) return router.replace("/dash/trains")
+
+      const dataTrain = response?.data ?? {}
+
+      setTrain(dataTrain)
+    } catch (error) {
+      console.error(error)
+      router.replace("/dash/trains")
+    }
+  }
+
+  useEffect(() => {
     if (trains?.length <= 0) {
       loadDataTrain()
       return
@@ -56,7 +58,10 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
 
     const originTrain = trains?.find(train => train?.id === slug)
 
-    if (originTrain) return setTrain(originTrain)
+    if (originTrain) {
+      loadDataTrain(originTrain)
+      return
+    }
 
     router.replace("/dash/trains")
   }, [trains])

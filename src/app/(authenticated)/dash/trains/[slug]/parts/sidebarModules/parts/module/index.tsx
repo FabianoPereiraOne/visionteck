@@ -8,6 +8,7 @@ import styled from "./style.module.scss"
 
 export const ModuleComponent = ({ module }: { module: Module }) => {
   const { user, register, setValue } = useVisionContext()
+
   const classes: Class[] = useMemo(() => {
     const list = module?.classes.map(classItem => {
       const hasProgress = classItem?.progress?.find(progress => {
