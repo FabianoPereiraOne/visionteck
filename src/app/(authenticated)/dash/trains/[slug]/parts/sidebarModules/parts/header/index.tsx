@@ -8,6 +8,7 @@ import { Train } from "@/types/train"
 import { fetchCreateModule } from "@/utils/fetch/modules/create"
 import { fetchDeleteModule } from "@/utils/fetch/modules/delete"
 import { fetchUpdateModule } from "@/utils/fetch/modules/update"
+import { Role } from "@prisma/client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -20,9 +21,10 @@ export const Header = ({
   fcReload: (localTrain?: Train) => Promise<void | NodeJS.Timeout>
 }) => {
   const [update, setUpdate] = useState(false)
-  const { trains, modules } = useVisionContext()
+  const { trains, modules, user } = useVisionContext()
   const { reset, register, getValues, setValue } = useForm()
   const { displayErrors } = useDisplayErrors()
+  const isAdmin = user?.type === Role.ADMIN
 
   const resetAllValues = () => {
     setUpdate(false)
@@ -53,7 +55,6 @@ export const Header = ({
     const { success, data, error } = modulesSchema.safeParse(dataCreate)
 
     if (!success) {
-      console.log(dataCreate)
       return displayErrors(error?.errors)
     }
 
@@ -97,18 +98,20 @@ export const Header = ({
   return (
     <article className={styled.container}>
       <strong className={styled.title}>Módulos</strong>
-      <ButtonAdmin
-        reset={reset}
-        iconButton={<FiPlus />}
-        layout={layoutAddModule({ register, trains })}
-        update={update}
-        variant='circle'
-        fcUpdate={handlerUpdate}
-        fcSubmit={handlerSubmit}
-        fcDelete={handlerDelete}
-        data={modules}
-        fcLoadSetValues={loadSetValues}
-      />
+      {isAdmin && (
+        <ButtonAdmin
+          reset={reset}
+          iconButton={<FiPlus />}
+          layout={layoutAddModule({ register, trains })}
+          update={update}
+          variant='square'
+          fcUpdate={handlerUpdate}
+          fcSubmit={handlerSubmit}
+          fcDelete={handlerDelete}
+          data={modules}
+          fcLoadSetValues={loadSetValues}
+        />
+      )}
     </article>
   )
 }

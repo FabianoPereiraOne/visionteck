@@ -89,7 +89,7 @@ const ButtonAdd = ({ notes }: { notes: NoteProps[] }) => {
       <ButtonAdmin
         reset={reset}
         update={update}
-        variant='circle'
+        variant='square'
         iconButton={<FiPlus />}
         layout={layoutAddNote({ register })}
         fcUpdate={handlerUpdate}

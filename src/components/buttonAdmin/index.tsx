@@ -24,7 +24,7 @@ const ButtonAdmin = ({
   update: boolean
   layout: LayoutType
   iconButton?: ReactNode
-  variant?: "circle" | "default"
+  variant?: "square" | "default"
   reset: UseFormReset<FieldValues>
   fcDelete: (item: any) => void
   fcLoadSetValues: (item: any) => void
@@ -35,7 +35,7 @@ const ButtonAdmin = ({
   const [open, setOpen] = useState(false)
 
   const variants = {
-    circle: styled.btnBullet,
+    square: styled.btnBullet,
     default: styled.button
   }
 

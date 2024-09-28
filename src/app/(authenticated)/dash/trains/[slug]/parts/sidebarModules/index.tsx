@@ -24,7 +24,14 @@ const SidebarModules = ({
       <Header fcReload={fcReload} />
       <ul className={styled.contentModules}>
         {modules.map(module => {
-          return <ModuleComponent key={module?.id} module={module} />
+          return (
+            <ModuleComponent
+              key={module?.id}
+              module={module}
+              fcReload={fcReload}
+              listModules={modules}
+            />
+          )
         })}
       </ul>
     </aside>

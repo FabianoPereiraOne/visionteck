@@ -23,8 +23,7 @@ export default async function Trains() {
   const result = await fetchAllCollections()
   const response = await result?.json()
   const listData: Collection[] = response?.data ?? []
-  const trains = listData?.map(collection => collection?.trains).flat()
-  const listTrains = trains?.filter(train => train?.modules?.length > 0)
+  const listTrains = listData?.map(collection => collection?.trains).flat()
   const plans = await getAllPlans()
 
   return (
@@ -34,7 +33,7 @@ export default async function Trains() {
         isAdmin={isAdmin}
         children={<TitlePart collections={listData} />}
         btnAdmin={
-          <AdminPart collections={listData} plans={plans} trains={trains} />
+          <AdminPart collections={listData} plans={plans} trains={listTrains} />
         }
       />
       <ListingCollections

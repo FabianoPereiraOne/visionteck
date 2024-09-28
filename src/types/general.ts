@@ -6,6 +6,7 @@ import {
   UseFormSetValue
 } from "react-hook-form"
 import { TypeAds } from "./ads"
+import { Class } from "./class"
 import { Collection } from "./collection"
 import { Module } from "./module"
 import { NoteProps } from "./note"
@@ -44,3 +45,4 @@ export type DataLoadType =
   | NoteProps[]
   | TypeAds[]
   | Module[]
+  | Class[]
