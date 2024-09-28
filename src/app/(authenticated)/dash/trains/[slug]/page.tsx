@@ -20,7 +20,7 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const [open, setOpen] = useState(false)
   const slug = params?.slug
   const { verifyAccess } = useVerifyAccessPlan()
-  const { trains, setUser, setValue, setTrains, setModules } =
+  const { trains, setUser, setValue, setTrains, setModules, classActive } =
     useVisionContext()
 
   const loadDataUser = async () => {
@@ -107,7 +107,7 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
             active={open}
             fcOpen={setOpen}
           />
-          <BodyClass />
+          <BodyClass classActive={classActive} />
         </section>
       ) : (
         <div className={styled.contentLoading}>

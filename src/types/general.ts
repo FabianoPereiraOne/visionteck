@@ -22,12 +22,14 @@ export type AppContextType = {
   modules: Module[]
   openMenu: boolean
   openPopup: boolean
+  classActive: Class | null
   user: dataUser | null
   setOpenMenu: (open: boolean) => void
   setOpenPopup: (open: boolean) => void
   setTrains: (trains: Train[]) => void
   setModules: (modules: Module[]) => void
   setUser: (user: dataUser | null) => void
+  setClassActive: (classItem: Class | null) => void
   reset: UseFormReset<FieldValues>
   setValue: UseFormSetValue<FieldValues>
   register: UseFormRegister<FieldValues>
