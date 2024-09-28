@@ -1,4 +1,5 @@
 "use client"
+import { Class } from "@/types/class"
 import { AppContextType } from "@/types/general"
 import { Module } from "@/types/module"
 import { Train } from "@/types/train"
@@ -12,6 +13,7 @@ export function VisionContextProvider({ children }: { children: ReactNode }) {
   const [openMenu, setOpenMenu] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [trains, setTrains] = useState<Train[]>([])
+  const [classActive, setClassActive] = useState<Class | null>(null)
   const [modules, setModules] = useState<Module[]>([])
   const [user, setUser] = useState<dataUser | null>(null)
   const { reset, setValue, register, getValues } = useForm()
@@ -24,8 +26,10 @@ export function VisionContextProvider({ children }: { children: ReactNode }) {
         trains,
         modules,
         user,
+        classActive,
         setUser,
         setTrains,
+        setClassActive,
         setModules,
         setOpenMenu,
         setOpenPopup,

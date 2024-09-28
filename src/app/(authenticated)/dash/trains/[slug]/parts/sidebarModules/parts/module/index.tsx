@@ -25,7 +25,7 @@ export const ModuleComponent = ({
   listModules: Module[]
   fcReload: (localTrain?: Train) => Promise<void | NodeJS.Timeout>
 }) => {
-  const { user, register, setValue, reset, getValues } = useVisionContext()
+  const { user, register, setValue, reset, getValues,setClassActive } = useVisionContext()
   const { displayErrors } = useDisplayErrors()
   const [update, setUpdate] = useState(false)
   const isAdmin = user?.type === Role.ADMIN
@@ -173,7 +173,7 @@ export const ModuleComponent = ({
                     })
                 })}
               />
-              <button onClick={() => {}} className={styled.linkClass}>
+              <button onClick={() => setClassActive(classItem)} className={styled.linkClass}>
                 {classItem?.title}
               </button>
             </li>
