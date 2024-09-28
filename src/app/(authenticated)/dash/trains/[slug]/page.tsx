@@ -1,11 +1,14 @@
 "use client"
 import Loading from "@/components/loading"
 import { useVisionContext } from "@/context"
+import { useVerifyAccessPlan } from "@/hooks/useVerifyAccessPlan"
 import { Train } from "@/types/train"
+import { dataUser } from "@/types/user"
 import { fetchTrain } from "@/utils/fetch/trains/get"
 import { fetchClientUser } from "@/utils/fetch/user/get"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 import { FiArrowLeft } from "react-icons/fi"
 import BodyClass from "./parts/bodyClass"
 import SidebarModules from "./parts/sidebarModules"
@@ -16,32 +19,42 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const [train, setTrain] = useState<Train | null | undefined>(null)
   const [open, setOpen] = useState(false)
   const slug = params?.slug
+  const { verifyAccess } = useVerifyAccessPlan()
   const { trains, setUser } = useVisionContext()
 
   const loadDataUser = async () => {
     try {
       const result = await fetchClientUser()
       const response = await result?.json()
-      const user = response?.data
+      const user: dataUser = response?.data
 
       setUser(user)
+      return user
     } catch (error) {
       console.error(error)
     }
   }
 
-  const loadDataTrain = async (originTrain?: Train) => {
+  const loadDataTrain = async (localTrain?: Train) => {
     try {
-      await loadDataUser()
+      const dataUser = await loadDataUser()
 
-      if (originTrain) return setTrain(originTrain)
+      if (!dataUser?.planId) return router.replace("/dash/trains")
+
+      if (localTrain) return setTrain(localTrain)
 
       const result = await fetchTrain({ id: slug })
       const response = await result.json()
-
-      if (result?.status !== 200) return router.replace("/dash/trains")
-
       const dataTrain = response?.data ?? {}
+
+      const hasAccess = verifyAccess(dataUser?.planId, dataTrain?.planId)
+
+      if (!hasAccess) {
+        toast("Você não tem acesso a essa trilha.", {
+          icon: "ⓘ"
+        })
+        return setTimeout(() => router.replace("/dash/trains"), 500)
+      }
 
       setTrain(dataTrain)
     } catch (error) {
