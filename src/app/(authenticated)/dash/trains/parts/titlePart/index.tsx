@@ -92,7 +92,7 @@ export const TitlePart = ({ collections }: { collections: Collection[] }) => {
         iconButton={<FiPlus />}
         layout={layoutAddCollection({ register })}
         update={update}
-        variant='circle'
+        variant='square'
         fcUpdate={handlerUpdate}
         fcSubmit={handlerSubmit}
         fcDelete={handlerDelete}

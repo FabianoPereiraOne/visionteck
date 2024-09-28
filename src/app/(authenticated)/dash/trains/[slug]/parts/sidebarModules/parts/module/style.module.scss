@@ -2,16 +2,22 @@
   width: 100%;
   height: auto;
 
-  & .title {
-    font-size: var(--size16);
-    font-weight: 500;
-    color: var(--color-white-normal);
+  .contentTitle {
+    width: 100%;
     display: flex;
-    align-items: center;
-    gap: 4px;
+    gap: 8px;
 
-    & svg {
-      color: var(--color-gray-normal);
+    & .title {
+      font-size: var(--size16);
+      font-weight: 500;
+      color: var(--color-white-normal);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      & svg {
+        color: var(--color-gray-normal);
+      }
     }
   }
 
@@ -28,8 +34,7 @@
       color: var(--color-gray-normal);
       display: flex;
       align-items: center;
-      gap: 4px;
-      cursor: pointer;
+      gap: 8px;
 
       & .checkbox {
         all: unset;
@@ -38,6 +43,7 @@
         border-radius: 1px;
         position: relative;
         border: 1px solid var(--color-gray-normal);
+        cursor: pointer;
 
         &::before {
           content: "";
@@ -61,12 +67,17 @@
         }
       }
 
-      & .titleClass {
+      & .linkClass {
         max-width: 90%;
         width: auto;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        border: none;
+        background: none;
+        color: var(--color-gray-normal);
+        font-size: var(--size16);
+        font-weight: 400;
       }
     }
   }
