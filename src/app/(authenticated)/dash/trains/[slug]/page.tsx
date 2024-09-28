@@ -4,7 +4,7 @@ import { useVisionContext } from "@/context"
 import { useVerifyAccessPlan } from "@/hooks/useVerifyAccessPlan"
 import { Train } from "@/types/train"
 import { dataUser } from "@/types/user"
-import { fetchTrain } from "@/utils/fetch/trains/get"
+import { fetchClientAllTrains } from "@/utils/fetch/trains/getAllClient"
 import { fetchClientUser } from "@/utils/fetch/user/get"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -20,7 +20,8 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const [open, setOpen] = useState(false)
   const slug = params?.slug
   const { verifyAccess } = useVerifyAccessPlan()
-  const { trains, setUser } = useVisionContext()
+  const { trains, setUser, setValue, setTrains, setModules } =
+    useVisionContext()
 
   const loadDataUser = async () => {
     try {
@@ -41,11 +42,20 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
 
       if (!dataUser?.planId) return router.replace("/dash/trains")
 
-      if (localTrain) return setTrain(localTrain)
+      if (localTrain) {
+        setValue("trainId", localTrain?.id)
+        return setTrain(localTrain)
+      }
 
-      const result = await fetchTrain({ id: slug })
+      const result = await fetchClientAllTrains()
       const response = await result.json()
-      const dataTrain = response?.data ?? {}
+      const listTrains: Train[] = response?.data ?? []
+      const dataTrain = listTrains.find((train: Train) => train?.id === slug)
+      const listModules = listTrains
+        ?.map((train: Train) => train?.modules)
+        .flat()
+
+      if (!dataTrain) return router.replace("/dash/trains")
 
       const hasAccess = verifyAccess(dataUser?.planId, dataTrain?.planId)
 
@@ -57,6 +67,9 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
       }
 
       setTrain(dataTrain)
+      setValue("trainId", dataTrain?.id)
+      setTrains(listTrains)
+      setModules(listModules)
     } catch (error) {
       console.error(error)
       router.replace("/dash/trains")
@@ -69,10 +82,12 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
       return
     }
 
-    const originTrain = trains?.find(train => train?.id === slug)
+    const trainFiltered = trains?.find(train => train?.id === slug)
 
-    if (originTrain) {
-      loadDataTrain(originTrain)
+    if (trainFiltered) {
+      loadDataTrain(trainFiltered)
+      const listModules = trains?.map((train: Train) => train?.modules).flat()
+      setModules(listModules)
       return
     }
 
@@ -87,6 +102,7 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
             <FiArrowLeft /> Módulos
           </button>
           <SidebarModules
+            fcReload={loadDataTrain}
             modules={train?.modules}
             active={open}
             fcOpen={setOpen}
