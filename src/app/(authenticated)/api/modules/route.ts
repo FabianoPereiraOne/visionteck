@@ -1,3 +1,4 @@
+import { useParseDate } from "@/hooks/useParseDate"
 import { useVerifyAdmin } from "@/hooks/useVerifyAdmin"
 import { useVerifyUser } from "@/hooks/useVerifyUser"
 import { modulesSchema } from "@/schemas/api/modules"
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
         }
       )
 
-    const openISO = new Date(open).toISOString()
+    const openISO = useParseDate(open) ?? undefined
 
     const module = {
       title,

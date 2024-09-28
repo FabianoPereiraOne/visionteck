@@ -18,12 +18,14 @@ export type paramsProps = {
 
 export type AppContextType = {
   trains: Train[]
+  modules: Module[]
   openMenu: boolean
   openPopup: boolean
   user: dataUser | null
   setOpenMenu: (open: boolean) => void
   setOpenPopup: (open: boolean) => void
   setTrains: (trains: Train[]) => void
+  setModules: (modules: Module[]) => void
   setUser: (user: dataUser | null) => void
   reset: UseFormReset<FieldValues>
   setValue: UseFormSetValue<FieldValues>
