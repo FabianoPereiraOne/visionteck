@@ -20,8 +20,15 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
   const [open, setOpen] = useState(false)
   const slug = params?.slug
   const { verifyAccess } = useVerifyAccessPlan()
-  const { trains, setUser, setValue, setTrains, setModules, classActive } =
-    useVisionContext()
+  const {
+    trains,
+    setUser,
+    setValue,
+    setTrains,
+    setModules,
+    classActive,
+    setClassActive
+  } = useVisionContext()
 
   const loadDataUser = async () => {
     try {
@@ -43,7 +50,10 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
       if (!dataUser?.planId) return router.replace("/dash/trains")
 
       if (localTrain) {
+        let classActive = localTrain?.modules[0]?.classes[0] ?? null
+
         setValue("trainId", localTrain?.id)
+        setClassActive(classActive)
         return setTrain(localTrain)
       }
 
@@ -66,10 +76,13 @@ const ModuleController = ({ params }: { params: { slug: string } }) => {
         return setTimeout(() => router.replace("/dash/trains"), 500)
       }
 
+      let classActive = dataTrain?.modules[0]?.classes[0] ?? null
+
       setTrain(dataTrain)
       setValue("trainId", dataTrain?.id)
       setTrains(listTrains)
       setModules(listModules)
+      setClassActive(classActive)
     } catch (error) {
       console.error(error)
       router.replace("/dash/trains")

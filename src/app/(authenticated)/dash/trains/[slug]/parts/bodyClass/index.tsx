@@ -1,6 +1,9 @@
 import MessageCenter from "@/components/messageCenter"
 import { schemaAssets } from "@/schemas/others/assets"
 import { Class } from "@/types/class"
+import { ClassType } from "@prisma/client"
+import { EbookComponent } from "./parts/ebookComponent"
+import { VideoComponent } from "./parts/videoComponent"
 import styled from "./style.module.scss"
 
 const BodyClass = ({ classActive }: { classActive: Class | null }) => {
@@ -16,7 +19,10 @@ const BodyClass = ({ classActive }: { classActive: Class | null }) => {
 
   return (
     <section className={styled.container}>
-      <h1>hello body</h1>
+      {classActive?.type === ClassType.EBOOK && (
+        <EbookComponent classActive={classActive} />
+      )}
+      {classActive?.type === ClassType.VIDEO && <VideoComponent />}
     </section>
   )
 }
