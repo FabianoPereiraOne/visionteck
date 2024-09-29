@@ -4,11 +4,8 @@ import { FiMaximize } from "react-icons/fi"
 import { Document, Page, pdfjs } from "react-pdf"
 import "react-pdf/dist/Page/AnnotationLayer.css"
 import styled from "./style.module.scss"
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString()
+const workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+pdfjs.GlobalWorkerOptions.workerSrc = workerSrc
 
 export const EbookComponent = ({ classActive }: { classActive: Class }) => {
   const [numPages, setNumPages] = useState<number>(0)
