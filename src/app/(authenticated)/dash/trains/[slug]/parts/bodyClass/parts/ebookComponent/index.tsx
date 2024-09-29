@@ -33,7 +33,7 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
     <div className={styled.container}>
       <div className={styled.contentPdf} ref={containerRef}>
         <Document
-          file='/Vision-Teck.pdf'
+          file={classActive?.linkClass}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={error => console.error("Erro ao carregar o PDF:", error)}
         >
