@@ -4,80 +4,24 @@
 
   & .contentPdf {
     width: 100%;
-    height: 350px;
+    height: 700px;
     overflow: hidden;
     position: relative;
 
+    .frame {
+      width: 100%;
+      height: 100%;
+    }
+
     .btnFull {
       position: absolute;
-      right: 16px;
-      bottom: 16px;
+      right: 36px;
+      bottom: 20px;
       background: none;
       border: none;
       color: var(--color-orange-normal);
       font-size: var(--size18);
       font-weight: 400;
-    }
-
-    @media screen and (min-width: 768px) {
-      height: 700px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  & .containerControls {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    margin: 20px 0;
-
-    & .indicators {
-      font-size: var(--size16);
-      font-weight: 400;
-      color: var(--color-gray-normal);
-      order: 1;
-      text-align: center;
-
-      @media screen and (min-width: 768px) {
-        order: initial;
-      }
-    }
-
-    & button {
-      order: 2;
-      max-width: 150px;
-      margin: 16px auto 0 auto;
-      border: none;
-      padding: 8px 16px;
-      background: var(--color-orange-dark);
-      transition: 0.3s;
-      border-radius: 6px;
-      font-size: var(--size16);
-      font-weight: 400;
-      color: var(--color-gray-normal);
-
-      &:hover {
-        background: var(--color-orange-normal);
-      }
-
-      &:disabled {
-        background: var(--color-black-normal);
-      }
-
-      @media screen and (min-width: 768px) {
-        margin: 0 auto;
-        order: initial;
-      }
-    }
-
-    @media screen and (min-width: 768px) {
-      flex-direction: row;
-      align-items: center;
-      margin: 36px 0;
-      justify-content: space-between;
     }
   }
 }
