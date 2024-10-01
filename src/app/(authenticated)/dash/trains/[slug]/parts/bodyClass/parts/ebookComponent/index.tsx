@@ -1,60 +1,70 @@
+"use client"
 import { Class } from "@/types/class"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { FiMaximize } from "react-icons/fi"
-import { Document, Page, pdfjs } from "react-pdf"
 import "react-pdf/dist/Page/AnnotationLayer.css"
 import styled from "./style.module.scss"
-const workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc
 
 export const EbookComponent = ({ classActive }: { classActive: Class }) => {
-  const [numPages, setNumPages] = useState<number>(0)
-  const [pageNumber, setPageNumber] = useState<number>(1)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const iframePdf = useRef<HTMLIFrameElement | null>(null)
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages)
-  }
-
-  const handleFullScreen = () => {
+  const handleFullScreen = (): void => {
     const containerPdf = containerRef.current as HTMLElement
 
     if (!containerPdf) return
 
-    if (containerPdf.requestFullscreen) {
-      containerPdf.requestFullscreen()
+    const isFullScreen =
+      document.fullscreenElement ||
+      (document as any).webkitFullscreenElement ||
+      (document as any).mozFullScreenElement ||
+      (document as any).msFullscreenElement
+
+    const enterFullScreen = (element: HTMLElement) => {
+      if (element.requestFullscreen) {
+        element.requestFullscreen()
+      } else if ((element as any).webkitRequestFullscreen) {
+        ;(element as any).webkitRequestFullscreen()
+      } else if ((element as any).mozRequestFullScreen) {
+        ;(element as any).mozRequestFullScreen()
+      } else if ((element as any).msRequestFullscreen) {
+        ;(element as any).msRequestFullscreen()
+      }
+    }
+
+    const exitFullScreen = () => {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if ((document as any).webkitExitFullscreen) {
+        ;(document as any).webkitExitFullscreen()
+      } else if ((document as any).mozCancelFullScreen) {
+        ;(document as any).mozCancelFullScreen()
+      } else if ((document as any).msExitFullscreen) {
+        ;(document as any).msExitFullscreen()
+      }
+
+      if (iframePdf && iframePdf?.current) {
+        iframePdf.current.style.transform = ""
+      }
+    }
+
+    if (isFullScreen) {
+      exitFullScreen()
+    } else {
+      enterFullScreen(containerPdf)
     }
   }
 
   return (
     <div className={styled.container}>
       <div className={styled.contentPdf} ref={containerRef}>
-        <Document
-          file={classActive?.linkClass}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={error => console.error("Erro ao carregar o PDF:", error)}
-        >
-          <Page pageNumber={pageNumber} className={styled.page} />
-        </Document>
+        <iframe
+          src={classActive?.linkClass}
+          className={styled.frame}
+          ref={iframePdf}
+        />
         <button className={styled.btnFull} onClick={handleFullScreen}>
           <FiMaximize />
-        </button>
-      </div>
-      <div className={styled.containerControls}>
-        <button
-          disabled={pageNumber <= 1}
-          onClick={() => setPageNumber(pageNumber - 1)}
-        >
-          Anterior
-        </button>
-        <p className={styled.indicators}>
-          Página {pageNumber} de {numPages}
-        </p>
-        <button
-          disabled={pageNumber >= numPages}
-          onClick={() => setPageNumber(pageNumber + 1)}
-        >
-          Próximo
         </button>
       </div>
     </div>
