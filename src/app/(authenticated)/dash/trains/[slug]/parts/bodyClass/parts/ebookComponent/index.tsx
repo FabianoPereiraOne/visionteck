@@ -1,44 +1,49 @@
+"use client"
 import { Class } from "@/types/class"
-import { useRef, useState } from "react"
-import { FiMaximize } from "react-icons/fi"
+import { useState } from "react"
 import { Document, Page, pdfjs } from "react-pdf"
-import "react-pdf/dist/Page/AnnotationLayer.css"
 import styled from "./style.module.scss"
-const workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
-pdfjs.GlobalWorkerOptions.workerSrc = workerSrc
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 export const EbookComponent = ({ classActive }: { classActive: Class }) => {
   const [numPages, setNumPages] = useState<number>(0)
   const [pageNumber, setPageNumber] = useState<number>(1)
-  const containerRef = useRef<HTMLDivElement | null>(null)
+
+  if (!classActive) return <></>
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages)
   }
 
-  const handleFullScreen = () => {
-    const containerPdf = containerRef.current as HTMLElement
+  const handleTouch = (event: React.TouchEvent) => {
+    const { clientX } = event.touches[0]
+    const width = window.innerWidth
 
-    if (!containerPdf) return
-
-    if (containerPdf.requestFullscreen) {
-      containerPdf.requestFullscreen()
+    if (clientX < width / 2) {
+      setPageNumber(prevPage => (prevPage > 1 ? prevPage - 1 : prevPage))
+    } else if (clientX > width / 2) {
+      setPageNumber(prevPage => (prevPage < numPages ? prevPage + 1 : prevPage))
     }
   }
 
   return (
     <div className={styled.container}>
-      <div className={styled.contentPdf} ref={containerRef}>
+      <div className={styled.contentPdf}>
         <Document
           file={classActive?.linkClass}
           onLoadSuccess={onDocumentLoadSuccess}
+          loading='Carregando Ebook...'
           onLoadError={error => console.error("Erro ao carregar o PDF:", error)}
         >
-          <Page pageNumber={pageNumber} className={styled.page} />
+          <Page
+            pageNumber={pageNumber}
+            className={styled.page}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+            onTouchStart={handleTouch}
+          />
         </Document>
-        <button className={styled.btnFull} onClick={handleFullScreen}>
-          <FiMaximize />
-        </button>
       </div>
       <div className={styled.containerControls}>
         <button

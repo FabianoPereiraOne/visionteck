@@ -70,14 +70,21 @@ li {
   list-style: none;
 }
 
-.react-pdf__Page__canvas {
-  max-width: 250px !important;
-  width: 100% !important;
+.react-pdf__Document {
   height: 100% !important;
+  margin: 0 auto !important;
+}
 
-  @media screen and (min-width: 768px) {
-    max-width: 500px !important;
-  }
+.react-pdf__Page {
+  margin: 0 auto !important;
+  object-fit: contain;
+}
+
+.react-pdf__Page__canvas {
+  width: 100% !important;
+  margin: 0 auto !important;
+  height: auto !important;
+  background: var(--color-black-light);
 }
 
 .activeSidebar {
