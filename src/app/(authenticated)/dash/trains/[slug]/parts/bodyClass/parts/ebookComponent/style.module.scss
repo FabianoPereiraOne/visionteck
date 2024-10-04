@@ -7,7 +7,7 @@
 
   & .contentPdf {
     width: 100%;
-    min-height: 700px;
+    min-height: 400px;
     overflow: hidden;
     position: relative;
 
@@ -38,6 +38,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      min-height: 700px;
     }
   }
 
