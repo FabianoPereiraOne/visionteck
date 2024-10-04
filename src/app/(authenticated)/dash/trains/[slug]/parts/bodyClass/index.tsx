@@ -22,7 +22,9 @@ const BodyClass = ({ classActive }: { classActive: Class | null }) => {
       {classActive?.type === ClassType.EBOOK && (
         <EbookComponent classActive={classActive} />
       )}
-      {classActive?.type === ClassType.VIDEO && <VideoComponent />}
+      {classActive?.type === ClassType.VIDEO && (
+        <VideoComponent classActive={classActive} />
+      )}
     </section>
   )
 }
