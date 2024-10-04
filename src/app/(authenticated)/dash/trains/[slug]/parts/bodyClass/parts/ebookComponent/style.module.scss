@@ -1,18 +1,25 @@
 .container {
   max-width: 480px;
   margin: 0 auto;
-  height: auto;
+  height: 100%;
   width: 100%;
+  background-color: var(--color-black-light);
 
   & .contentPdf {
     width: 100%;
-    height: auto;
+    min-height: 700px;
     overflow: hidden;
     position: relative;
 
     & .page {
       width: 100%;
       text-align: center;
+      transition: opacity 0.3s ease;
+    }
+
+    & .page-enter,
+    .page-exit {
+      opacity: 0;
     }
 
     .btnFull {

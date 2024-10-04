@@ -9,6 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 export const EbookComponent = ({ classActive }: { classActive: Class }) => {
   const [numPages, setNumPages] = useState<number>(0)
   const [pageNumber, setPageNumber] = useState<number>(1)
+  const [fadeOut, setFadeOut] = useState(false)
 
   if (!classActive) return <></>
 
@@ -27,6 +28,14 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
     }
   }
 
+  const changePage = (newPage: number) => {
+    setFadeOut(true)
+    return setTimeout(() => {
+      setPageNumber(newPage)
+      setFadeOut(false)
+    }, 300)
+  }
+
   return (
     <div className={styled.container}>
       <div className={styled.contentPdf}>
@@ -38,7 +47,7 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
         >
           <Page
             pageNumber={pageNumber}
-            className={styled.page}
+            className={`${styled.page} ${fadeOut ? styled["page-exit"] : ""}`}
             renderAnnotationLayer={false}
             renderTextLayer={false}
             onTouchStart={handleTouch}
@@ -50,7 +59,7 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
           <button
             className={styled.btnControl}
             disabled={pageNumber <= 1}
-            onClick={() => setPageNumber(pageNumber - 1)}
+            onClick={() => changePage(pageNumber - 1)}
           >
             Anterior
           </button>
@@ -60,7 +69,7 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
           <button
             className={styled.btnControl}
             disabled={pageNumber >= numPages}
-            onClick={() => setPageNumber(pageNumber + 1)}
+            onClick={() => changePage(pageNumber + 1)}
           >
             Próximo
           </button>
