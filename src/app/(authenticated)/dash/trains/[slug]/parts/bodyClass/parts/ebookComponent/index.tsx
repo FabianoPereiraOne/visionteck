@@ -45,6 +45,27 @@ export const EbookComponent = ({ classActive }: { classActive: Class }) => {
           />
         </Document>
       </div>
+      {numPages > 0 && (
+        <div className={styled.containerControls}>
+          <button
+            className={styled.btnControl}
+            disabled={pageNumber <= 1}
+            onClick={() => setPageNumber(pageNumber - 1)}
+          >
+            Anterior
+          </button>
+          <p className={styled.indicators}>
+            Página {pageNumber} de {numPages}
+          </p>
+          <button
+            className={styled.btnControl}
+            disabled={pageNumber >= numPages}
+            onClick={() => setPageNumber(pageNumber + 1)}
+          >
+            Próximo
+          </button>
+        </div>
+      )}
     </div>
   )
 }
