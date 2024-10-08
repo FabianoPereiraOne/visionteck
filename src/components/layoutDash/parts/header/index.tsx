@@ -21,7 +21,7 @@ const HeaderPart = () => {
         <button>
           <FiGift />
         </button>
-        <Link href='/dash/settings'>
+        <Link href='/dash/settings' className={styled.linkRedirect}>
           <FiUser />
         </Link>
       </nav>

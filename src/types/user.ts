@@ -43,4 +43,5 @@ export type dataUser = {
   progress: Progress
   emailVerified: boolean
   verificationToken: string
+  password?: string
 }
