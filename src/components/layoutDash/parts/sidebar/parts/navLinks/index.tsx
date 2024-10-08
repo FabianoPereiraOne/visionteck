@@ -8,13 +8,15 @@ import {
   FiHome,
   FiSettings
 } from "react-icons/fi"
+import { useMediaQuery } from "react-responsive"
 import styled from "./style.module.scss"
 
 const NavLinks = () => {
   const { setOpenMenu } = useVisionContext()
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" })
 
   const handlerCloseSidebar = () => {
-    setOpenMenu(false)
+    isTabletOrMobile && setOpenMenu(false)
   }
 
   return (

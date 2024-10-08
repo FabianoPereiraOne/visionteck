@@ -14,21 +14,26 @@ import { Role } from "@prisma/client"
 import { useMemo, useState } from "react"
 import toast from "react-hot-toast"
 import { FiHexagon, FiSettings } from "react-icons/fi"
+import { useMediaQuery } from "react-responsive"
 import styled from "./style.module.scss"
 
 export const ModuleComponent = ({
   module,
   listModules,
-  fcReload
+  fcReload,
+  fcClosePopup
 }: {
   module: Module
   listModules: Module[]
   fcReload: (localTrain?: Train) => Promise<void | NodeJS.Timeout>
+  fcClosePopup: () => void
 }) => {
-  const { user, register, setValue, reset, getValues,setClassActive } = useVisionContext()
+  const { user, register, setValue, reset, getValues, setClassActive } =
+    useVisionContext()
   const { displayErrors } = useDisplayErrors()
   const [update, setUpdate] = useState(false)
   const isAdmin = user?.type === Role.ADMIN
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" })
 
   const classes: Class[] = useMemo(() => {
     const list = module?.classes.map(classItem => {
@@ -135,6 +140,11 @@ export const ModuleComponent = ({
     setUpdate(true)
   }
 
+  const handlerActiveClass = (classItem: Class) => {
+    isTabletOrMobile && fcClosePopup()
+    setClassActive(classItem)
+  }
+
   return (
     <li className={styled.container}>
       <div className={styled.contentTitle}>
@@ -173,7 +183,10 @@ export const ModuleComponent = ({
                     })
                 })}
               />
-              <button onClick={() => setClassActive(classItem)} className={styled.linkClass}>
+              <button
+                onClick={() => handlerActiveClass(classItem)}
+                className={styled.linkClass}
+              >
                 {classItem?.title}
               </button>
             </li>

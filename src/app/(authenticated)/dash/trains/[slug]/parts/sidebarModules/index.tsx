@@ -16,9 +16,13 @@ const SidebarModules = ({
   fcOpen: (item: boolean) => void
   fcReload: (localTrain?: Train) => Promise<void | NodeJS.Timeout>
 }) => {
+  const handlerClosePopup = () => {
+    fcOpen(false)
+  }
+
   return (
     <aside className={`${styled.container} ${active ? styled.active : ""}`}>
-      <button className={styled.btnClose} onClick={() => fcOpen(false)}>
+      <button className={styled.btnClose} onClick={handlerClosePopup}>
         <FiXCircle />
       </button>
       <Header fcReload={fcReload} />
@@ -27,6 +31,7 @@ const SidebarModules = ({
           return (
             <ModuleComponent
               key={module?.id}
+              fcClosePopup={handlerClosePopup}
               module={module}
               fcReload={fcReload}
               listModules={modules}

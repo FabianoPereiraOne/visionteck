@@ -1,60 +1,61 @@
-.aside{
- height: calc(100vh - 70px);
- width: 100%;
- padding: 36px 20px;
- background-color: var(--color-black-dark);
- border-right: 1px solid var(--color-gray-light);
- display: none;
- z-index: 9;
-
- & .footer{
-  height: 40px;
+.aside {
+  height: calc(100vh - 70px);
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 10px;
+  padding: 36px 20px;
+  background-color: var(--color-black-dark);
+  border-right: 1px solid var(--color-gray-light);
+  display: none;
+  z-index: 9;
 
-  & .btnLogout{
-   display: flex;
-   align-items: center;
-   justify-content: flex-start;
-   font-size: var(--size18);
-   color: var(--color-white-normal);
-   gap: 8px;
-   font-weight: 400;
-   max-width: 100%;
-   height: 36px;
-   background: none;
-   border: none;
-   transition: .3s;
+  & .footer {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
 
-   &:hover,&:active{
-    color: var(--color-orange-normal);
-   }
+    & .btnLogout {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: var(--size18);
+      color: var(--color-white-normal);
+      gap: 8px;
+      font-weight: 400;
+      max-width: 100%;
+      height: 36px;
+      background: none;
+      border: none;
+      transition: 0.3s;
+
+      &:hover,
+      &:active {
+        color: var(--color-orange-normal);
+      }
+    }
   }
- }
 
- @media screen and (min-width: 768px){
-  max-width: 300px;
- }
+  @media screen and (min-width: 768px) {
+    max-width: 300px;
+  }
 
- @media screen and (min-width: 1024px){
-  display: flex;
- flex-direction: column;
- justify-content: space-between;
- }
+  @media screen and (min-width: 1025px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
-.active{
- position: fixed;
- left: 0;
- top: 70px;
- display: flex;
- flex-direction: column;
- justify-content: space-between;
+.active {
+  position: fixed;
+  left: 0;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
- @media screen and (min-width: 1024px){
-  display: none;
- }
+  @media screen and (min-width: 1024px) {
+    display: none;
+  }
 }
