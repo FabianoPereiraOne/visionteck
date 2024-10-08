@@ -1,5 +1,6 @@
 "use client"
 import { useVisionContext } from "@/context"
+import { messageWhats, numberWhats } from "@/schemas/others/help"
 import Link from "next/link"
 import {
   FiCalendar,
@@ -33,7 +34,11 @@ const NavLinks = () => {
         <FiCalendar />
         Consultoria
       </Link>
-      <Link href='/dash/help' onClick={handlerCloseSidebar}>
+      <Link
+        href={`https://wa.me/${numberWhats}?text=${messageWhats}`}
+        target='_blank'
+        onClick={handlerCloseSidebar}
+      >
         <FiHeadphones />
         Suporte
       </Link>
