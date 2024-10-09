@@ -43,9 +43,19 @@ export const CalendarPart = ({ list }: { list: listAvailable }) => {
     setListAvailable(listFiltered)
   }, [watchDate])
 
+  const tileDisabled = ({ date }: { date: Date }) => {
+    return !list.some(
+      available =>
+        date.getFullYear() === available.date?.getFullYear() &&
+        date.getMonth() === available.date?.getMonth() &&
+        date.getDate() === available.date?.getDate()
+    )
+  }
+
   return (
     <div className={styled.container}>
       <Calendar
+        tileDisabled={tileDisabled}
         minDate={new Date()}
         {...(register("date"),
         {
