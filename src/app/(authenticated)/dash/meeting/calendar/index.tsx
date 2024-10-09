@@ -1,23 +1,17 @@
 "use client"
 import Popup from "@/components/popup"
 import { layoutAddSchedule } from "@/layouts/schedules/add"
-import { useState } from "react"
+import { listAvailable } from "@/types/available"
+import { useEffect, useState } from "react"
 import Calendar from "react-calendar"
 import "react-calendar/dist/Calendar.css"
 import { useForm } from "react-hook-form"
 import styled from "./style.module.scss"
 
-export const CalendarPart = () => {
+export const CalendarPart = ({ list }: { list: listAvailable }) => {
   const [open, setOpen] = useState(false)
-  const { register, setValue } = useForm()
-
-  const schedules = [
-    { id: "h-0", start: "09:00", end: "10:00", lock: false },
-    { id: "h-1", start: "10:00", end: "11:00", lock: true },
-    { id: "h-2", start: "11:00", end: "12:00", lock: false },
-    { id: "h-3", start: "14:00", end: "15:00", lock: false },
-    { id: "h-3", start: "16:00", end: "17:00", lock: false }
-  ]
+  const [listAvailable, setListAvailable] = useState<listAvailable>([])
+  const { register, setValue, watch } = useForm()
 
   const handlerSubmit = () => {}
 
@@ -25,14 +19,38 @@ export const CalendarPart = () => {
     setOpen(!open)
   }
 
+  const watchDate = watch("date")
+
+  const compareOnlyDates = (date1: Date, date2: Date) => {
+    const dateOnly1 = new Date(
+      date1?.getFullYear(),
+      date1?.getMonth(),
+      date1?.getDate()
+    )
+    const dateOnly2 = new Date(
+      date2?.getFullYear(),
+      date2?.getMonth(),
+      date2?.getDate()
+    )
+
+    return dateOnly1.getTime() === dateOnly2.getTime()
+  }
+
+  useEffect(() => {
+    const listFiltered = list.filter(time =>
+      compareOnlyDates(time?.date, watchDate)
+    )
+    setListAvailable(listFiltered)
+  }, [watchDate])
+
   return (
     <div className={styled.container}>
       <Calendar
         minDate={new Date()}
-        {...(register("dateMeet"),
+        {...(register("date"),
         {
           onChange: value => {
-            setValue("dateMeet", value)
+            setValue("date", value)
             setOpen(true)
           }
         })}
@@ -45,7 +63,7 @@ export const CalendarPart = () => {
           data={[]}
           fcSubmit={handlerSubmit}
           fcToggle={handlerTogglePopup}
-          layout={layoutAddSchedule({ register, schedules })}
+          layout={layoutAddSchedule({ register, list: listAvailable })}
           update={false}
         />
       )}

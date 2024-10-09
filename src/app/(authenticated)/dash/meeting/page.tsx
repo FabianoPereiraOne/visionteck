@@ -1,3 +1,4 @@
+import { getAllAvailableTimes } from "@/services/prisma/availableTime/getAll"
 import { Metadata } from "next"
 import { CalendarPart } from "./calendar"
 import styled from "./style.module.scss"
@@ -12,10 +13,12 @@ export const metadata: Metadata = {
 }
 
 export default async function Meeting() {
+  const listAvailableTime = await getAllAvailableTimes()
+
   return (
     <section className={styled.container}>
       <TitlePart />
-      <CalendarPart />
+      <CalendarPart list={listAvailableTime} />
     </section>
   )
 }

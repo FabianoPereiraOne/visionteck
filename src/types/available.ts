@@ -5,3 +5,14 @@ export type Available = {
   isAvailable: boolean
   userId: string
 }
+
+export type listAvailable = {
+  id: number
+  userId: string | null
+  date: Date
+  startTime: string
+  endTime: string
+  isAvailable: boolean
+  createdAt: Date
+  updatedAt: Date
+}[]

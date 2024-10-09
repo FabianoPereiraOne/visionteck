@@ -1,14 +1,14 @@
-import { Schedules } from "@/types/schedules"
+import { listAvailable } from "@/types/available"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 import { FiLayers, FiPlus, FiRefreshCcw } from "react-icons/fi"
 import styled from "../global/styles/index.module.scss"
 
 export const layoutAddSchedule = ({
   register,
-  schedules
+  list
 }: {
   register: UseFormRegister<FieldValues>
-  schedules: Schedules
+  list: listAvailable
 }) => {
   return {
     title: "Agende uma consultoria",
@@ -37,14 +37,14 @@ export const layoutAddSchedule = ({
         className={styled.select}
       >
         <option value=''>Selecione um horário</option>
-        {schedules?.map(schedule => {
+        {list?.map(schedule => {
           return (
             <option
               key={schedule?.id}
               value={schedule?.id}
-              disabled={schedule?.lock}
+              disabled={!schedule?.isAvailable}
             >
-              {schedule?.start} até {schedule?.end}
+              {schedule?.startTime} até {schedule?.endTime}
             </option>
           )
         })}
