@@ -3,11 +3,10 @@ import { prismaClient } from "../config"
 
 export const createConsultation = async ({
   userId,
-  dateMeet,
+  date,
   status,
   meetingLink,
-  startTime,
-  endTime
+  availableTimeId
 }: PostConsultation) => {
   const result = await prismaClient.consultation.create({
     data: {
@@ -16,11 +15,14 @@ export const createConsultation = async ({
           id: userId
         }
       },
-      dateMeet,
+      date,
       status,
       meetingLink,
-      startTime,
-      endTime
+      availableTime: {
+        connect: {
+          id: availableTimeId
+        }
+      }
     }
   })
 

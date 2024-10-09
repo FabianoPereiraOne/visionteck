@@ -19,16 +19,15 @@ export async function POST(request: NextRequest) {
       }
     )
 
-  const { userId, dateMeet, status, meetingLink, startTime, endTime } =
+  const { userId, date, status, meetingLink, availableTimeId } =
     await request.json()
 
   const { success, error } = consultationsSchema.safeParse({
     userId,
-    dateMeet,
+    date,
     status,
     meetingLink,
-    startTime,
-    endTime
+    availableTimeId
   })
 
   if (!success) {
@@ -48,7 +47,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const dateMeetISO = useParseDate(dateMeet)
+    const dateMeetISO = useParseDate(date)
 
     if (!dateMeetISO)
       return NextResponse.json(
@@ -63,11 +62,10 @@ export async function POST(request: NextRequest) {
 
     const consultation = {
       userId,
-      dateMeet: dateMeetISO,
+      date: dateMeetISO,
       status,
       meetingLink,
-      startTime,
-      endTime
+      availableTimeId
     }
 
     const data = await createConsultation(consultation)

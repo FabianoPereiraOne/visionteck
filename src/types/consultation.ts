@@ -2,9 +2,8 @@ import { Status } from "@prisma/client"
 
 export type PostConsultation = {
   userId: string
-  dateMeet: string
+  date: string
   status: Status
   meetingLink: string
-  startTime: string
-  endTime: string
+  availableTimeId: number
 }
