@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & .title {
+    font-size: var(--size20);
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-white-normal);
+
+    @media screen and (min-width: 1024px) {
+      font-size: var(--size24);
+    }
+  }
+
+  & .subtitle {
+    font-size: var(--size16);
+    font-weight: 400;
+    color: var(--color-gray-normal);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
