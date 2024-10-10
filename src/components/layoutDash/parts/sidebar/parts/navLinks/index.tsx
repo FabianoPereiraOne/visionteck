@@ -2,19 +2,15 @@
 import { useVisionContext } from "@/context"
 import { messageWhats, numberWhats } from "@/schemas/others/help"
 import Link from "next/link"
-import {
-  FiCalendar,
-  FiGrid,
-  FiHeadphones,
-  FiHome,
-  FiSettings
-} from "react-icons/fi"
+import { usePathname } from "next/navigation"
+import { FiGrid, FiHeadphones, FiHome, FiSettings } from "react-icons/fi"
 import { useMediaQuery } from "react-responsive"
 import styled from "./style.module.scss"
 
 const NavLinks = () => {
   const { setOpenMenu } = useVisionContext()
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" })
+  const pathname = usePathname()
 
   const handlerCloseSidebar = () => {
     isTabletOrMobile && setOpenMenu(false)
@@ -22,17 +18,21 @@ const NavLinks = () => {
 
   return (
     <nav className={styled.navigation}>
-      <Link href='/dash' onClick={handlerCloseSidebar}>
+      <Link
+        href='/dash'
+        className={pathname === "/dash" ? `${styled.active}` : ""}
+        onClick={handlerCloseSidebar}
+      >
         <FiHome />
         Inicio
       </Link>
-      <Link href='/dash/trains' onClick={handlerCloseSidebar}>
+      <Link
+        href='/dash/trains'
+        className={pathname === "/dash/trains" ? `${styled.active}` : ""}
+        onClick={handlerCloseSidebar}
+      >
         <FiGrid />
         Trilhas
-      </Link>
-      <Link href='/dash/meeting' onClick={handlerCloseSidebar}>
-        <FiCalendar />
-        Consultoria
       </Link>
       <Link
         href={`https://wa.me/${numberWhats}?text=${messageWhats}`}
@@ -42,7 +42,11 @@ const NavLinks = () => {
         <FiHeadphones />
         Suporte
       </Link>
-      <Link href='/dash/settings' onClick={handlerCloseSidebar}>
+      <Link
+        href='/dash/settings'
+        className={pathname === "/dash/settings" ? `${styled.active}` : ""}
+        onClick={handlerCloseSidebar}
+      >
         <FiSettings />
         Configurações
       </Link>

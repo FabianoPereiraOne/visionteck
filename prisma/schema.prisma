@@ -41,24 +41,22 @@ model Plan {
 }
 
 model User {
-  id                String          @id @default(uuid())
+  id                String     @id @default(uuid())
   name              String
-  email             String          @unique
+  email             String     @unique
   password          String
   profession        String
   phone             String
-  status            Boolean         @default(true)
-  emailVerified     Boolean         @default(false)
+  status            Boolean    @default(true)
+  emailVerified     Boolean    @default(false)
   verificationToken String
-  type              Role            @default(USER)
-  trains            Train[]         @relation("usersOnTrain")
+  type              Role       @default(USER)
+  trains            Train[]    @relation("usersOnTrain")
   planId            Int
-  plan              Plan            @relation(fields: [planId], references: [id])
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  plan              Plan       @relation(fields: [planId], references: [id])
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
   progress          Progress[]
-  consultations     Consultation[]
-  AvailableTime     AvailableTime[]
 
   @@map("users")
 }
@@ -158,41 +156,4 @@ model Ad {
   updatedAt   DateTime @updatedAt
 
   @@map("ads")
-}
-
-model Consultation {
-  id              String         @id @default(uuid())
-  user            User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId          String?
-  date            DateTime
-  status          Status
-  meetingLink     String
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  availableTime   AvailableTime? @relation(fields: [availableTimeId], references: [id], onDelete: SetNull)
-  availableTimeId Int?
-
-  @@map("consultations")
-}
-
-model AvailableTime {
-  id           Int            @id @default(autoincrement())
-  user         User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId       String?
-  date         DateTime
-  startTime    String
-  endTime      String
-  isAvailable  Boolean
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Consultation Consultation[]
-
-  @@map("availablesTimes")
-}
-
-enum Status {
-  PENDING
-  CONFIRMED
-  CANCELLED
-  COMPLETED
 }
