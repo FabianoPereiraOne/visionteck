@@ -16,13 +16,12 @@ export const metadata: Metadata = {
 }
 
 export default async function Settings() {
-  const { data, isAdmin }: { isAdmin: boolean; data: dataUser } =
-    await useVerifyAdmin()
+  const { data }: { isAdmin: boolean; data: dataUser } = await useVerifyAdmin()
   const plan = await getPlan({ id: data?.planId })
 
   return (
     <section className={styled.container}>
-      <TitlePart isAdmin={isAdmin} />
+      <TitlePart />
       <UserData data={data} />
       <PlanData plan={plan} />
     </section>
