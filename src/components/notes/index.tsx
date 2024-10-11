@@ -12,8 +12,6 @@ const Notes = async ({ isAdmin }: { isAdmin: boolean }) => {
   const response = await result.json()
   const notes: NoteProps[] = response?.data ?? []
 
-  if (notes && notes.length <= 0) return <></>
-
   return (
     <section className={styled.container}>
       <section className={styled.contentTitle}>
@@ -34,7 +32,7 @@ const Notes = async ({ isAdmin }: { isAdmin: boolean }) => {
                 </span>
               </strong>
               <p className={styled.description}>
-                {note?.description} -
+                {note?.description} {" - "}
                 {format(
                   new Date(note?.createdAt).toISOString(),
                   "dd MMM yyyy",

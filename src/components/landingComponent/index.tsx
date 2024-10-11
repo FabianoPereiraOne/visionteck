@@ -3,9 +3,9 @@ import Link from "next/link"
 import { FiArrowRight, FiLogIn } from "react-icons/fi"
 import styled from "./style.module.scss"
 
-export default function Home() {
+const LandingComponent = () => {
   return (
-    <main className={styled.container}>
+    <div>
       <header className={styled.header}>
         <figure className={styled.contentLogo}>
           <img src={schemaAssets.general.logo} alt='Vision Teck' />
@@ -27,6 +27,8 @@ export default function Home() {
           </Link>
         </article>
       </section>
-    </main>
+    </div>
   )
 }
+
+export default LandingComponent

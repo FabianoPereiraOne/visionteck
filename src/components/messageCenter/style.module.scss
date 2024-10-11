@@ -20,9 +20,9 @@
 
   & h3 {
     margin: 24px 0 0 0;
-    font-size: var(--size18);
+    font-size: 1.125rem;
     font-weight: 500;
-    color: var(--color-white-normal);
+    color: #fff;
     max-width: 600px;
     width: 80%;
     text-align: center;
@@ -31,23 +31,23 @@
 
     @media screen and (min-width: 768px) {
       & {
-        font-size: var(--size24);
+        font-size: 1.5rem;
       }
     }
   }
 
   & a {
     margin: 32px 0 0 0;
-    font-size: var(--size16);
+    font-size: 1rem;
     font-weight: 400;
-    color: var(--color-gray-normal);
+    color: #ddd;
     transition: 0.3s;
     display: flex;
     align-items: center;
     gap: 8px;
 
     &:hover {
-      color: var(--color-orange-normal);
+      color: #ff7f00;
     }
   }
 }
