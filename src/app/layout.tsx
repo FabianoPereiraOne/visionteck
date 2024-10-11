@@ -49,7 +49,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='pt-BR'>
-      <body className={inter.className}>
+      <body
+        className={inter.className}
+        style={{ margin: 0, background: "#0d0d0d" }}
+      >
         <VisionContextProvider>
           {children}
           <Toaster position='top-right' toastOptions={config} />

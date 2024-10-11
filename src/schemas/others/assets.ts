@@ -5,7 +5,8 @@ export const schemaAssets = {
     error: "/assets/error.png",
     loading: "/assets/load.png",
     empty: "/assets/empty.svg",
-    build: "/assets/build.svg"
+    build: "/assets/build.svg",
+    bg: "/assets/bg.jpg"
   },
   login: {
     imagePrimary: "/assets/body.png"
